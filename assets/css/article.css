@@ -1,0 +1,150 @@
+.article-container {
+  padding: 40px 60px;
+  margin-top: 30px;
+  margin-right: 15px;
+  margin-left: 25px;
+  border-radius: 20px;
+  line-height: 1.5;
+  letter-spacing: 0.05rem;
+  color: #252525;
+  background-color: white;
+  /* border: solid 2px red; */
+}
+
+.article h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.3;
+  letter-spacing: 0.05rem;
+  white-space: normal;
+  /* border: solid 3px darkblue; */
+}
+
+.article h2 {
+  margin: 32px 0;
+  padding: 10px;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  /* border: solid 4px darkcyan; */
+}
+
+.article h3 {
+  padding: 10px;
+  margin: 32px 0;
+  font-size: 1.4rem;
+}
+
+.article p{
+  margin: 10px 0;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  letter-spacing: 0.05rem;
+}
+
+.article ul, .article ol {
+  margin: 20px;
+  padding-left: 0px;
+  list-style-type: disc;
+  list-style-position: outside;
+  color: #000;
+  /* border: solid 3px darkcyan; */
+}
+
+.article li {
+  margin: 7px 0;
+  font-size: 1.1rem;
+  list-style-type: disc;
+  /* border: solid 3px dimgray; */
+}
+
+.article a {
+  color: #FF8C42;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.article a:hover {
+  color: #FFB85C;
+  text-decoration: underline;
+}
+
+
+
+/* =======================================
+   ヘッダー部分
+======================================= */
+
+.article__header {
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  /* border: solid 3px green; */
+}
+
+.artical__date-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  color: #919191;
+}
+.article__thumbnail {
+  margin-top: 20px;
+  /* border: solid 3px peru; */
+}
+
+/* =======================================
+   本文
+======================================= */
+.article__content {
+  margin-bottom: 60px;
+  /* background-color: burlywood; */
+  /* border: solid 3px forestgreen; */
+}
+
+/* =======================================
+   コードブロック
+======================================= */
+pre[class*=language-] {
+  background-color: #EAF2F8;
+  border: 1px solid #D6EAF8;
+  border-radius: 5px;
+}
+.code-block {
+  margin: 25px 0;
+}
+/* =======================================
+   デザイン
+======================================= */
+
+/* h2要素 オレンジ背景とオレンジの下線 */
+.underline-with-background {
+  position: relative;
+  background-color: #FFF2C1; 
+  border-radius: 5px; 
+}
+
+.underline-with-background::after {
+  content:"";
+  display: block;
+  width: 40%;
+  height: 3px;
+  border-bottom: 3px solid #FBAA31;
+  margin: 5px 0 0;
+}
+
+/* h3要素 文字がオレンジ色でオレンジの下線 */
+.orange-underline-heading {
+  font-weight: 600;
+  color: #FBAA31;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+/* =======================================
+   スマートフォン対応
+======================================= */
+
+
+
+/* =======================================
+  タブレット対応
+======================================= */

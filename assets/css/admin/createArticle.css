@@ -1,0 +1,108 @@
+.admin-create {
+  width: 1500px;
+  margin: 0 auto;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  /* border: 3px solid darkslateblue; */
+}
+
+.admin-create__header {
+  margin: 10px;
+  /* border: 5px solid red; */
+}
+
+.admin-create__title {
+  width: 1400px;
+  margin: 20px auto;
+  padding: 10px 0;
+  text-align: center;
+  /* border: 2px solid forestgreen; */
+}
+
+.admin-create__title label {
+  margin-right: 25px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  /* border: 2px solid firebrick; */
+}
+
+.admin-create__title input {
+  width: 1200px;
+  padding: 0.5em;
+  font-size: 150%;
+  letter-spacing: 0.05em;
+  box-sizing: border-box;
+  /* border: 2px solid hotpink; */
+  background-color: #fff7e6;
+  color: #555;
+  border: 2px solid #FBAA31;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.admin-create__title input:focus {
+  outline: none;
+  border-color: #FF8C00;
+  background-color: #fff1d4;
+}
+
+.admin-create__title input:hover{
+  border-color: #FF8C00;
+}
+
+.admin-create__title input::placeholder{
+  opacity: 0.7;
+}
+
+/* =======================================
+  記事本文
+======================================= */
+.admin-create__content {
+  width: 1400px;
+  margin: 20px auto;
+  text-align: center;
+  /* border: 2px solid skyblue; */
+}
+
+.admin-create__content label {
+  display: block;
+  margin: 10px 40px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: left;
+  /* border: 1px solid blue; */
+}
+
+.admin-create__content textarea {
+  width: calc(100% - 80px);
+  margin: 0 40px 40px;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  line-height: 2.0;
+  letter-spacing: 0.05em;
+  overflow: hidden;
+  overflow-anchor: none;
+  resize: none;
+  /* border: 2px solid teal; */
+
+  border: 2px solid #FBAA31;
+  border-radius: 8px;
+  background-color: #fff7e6;
+  color: #555;
+  transition: all 0.3s ease;
+}
+
+.admin-create__content textarea:focus {
+  outline: none;
+  border-color: #FF8C00;
+  background-color: #fff1d4;
+}
+
+.admin-create__content textarea:hover {
+  border-color: #FF8C00;
+}
+
+.admin-create__content textarea::placeholder {
+  opacity: 0.7;
+}
