@@ -6,7 +6,13 @@ echo $parsedown->text('# HelloComposer');
 
 $requestUri = $_SERVER['REQUEST_URI'];
 
-if (preg_match('/^\/pj_homepage\/admin\/articles\/create/', $requestUri)) {
+if (preg_match('/^\/pj_homepage\/articles\/1$/', $requestUri)){
+  // 記事内容を表示
+  require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/controllers/PublicArticleController.php';
+  $controller = new PublicArticleController();
+  $controller->show();
+
+} else if (preg_match('/^\/pj_homepage\/admin\/articles\/create/', $requestUri)) {
   // 新規投稿画面の表示
   require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/controllers/CreateArticleController.php';
   $controller = new CreateArticleController();
