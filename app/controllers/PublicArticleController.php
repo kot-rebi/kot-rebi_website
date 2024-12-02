@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/models/Database.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/models/ArticleModel.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/libs/CustomParsedown.php';
 require 'vendor/autoload.php';
 
 class PublicArticleController 
@@ -11,7 +12,7 @@ class PublicArticleController
   public function __construct()
   {
     $this->articleModel = new ArticleModel(Database::getInstance());
-    $this->parsedown = new Parsedown();
+    $this->parsedown = new CustomParsedown();
     $this->parsedown->setSafeMode(true);
   }
 
