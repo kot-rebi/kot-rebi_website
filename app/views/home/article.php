@@ -15,7 +15,7 @@
         <div class="article-container">
           <!-- メインコンテンツ -->
           <div class="article__header">
-            <h1 class="ariticle__title">PixiJSdeltaTimeの使い方について詳しく解説ああああああ</h1>
+            <h1 class="ariticle__title"><?= htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8') ?></h1>
             <div class="artical__date-wrapper">
               <i class="artical__icon fa-regular fa-clock"></i>
               <p class="article__date">2024.11.14</p>
@@ -25,7 +25,9 @@
             </div>
           </div>
 
-          <div class="article__content">
+          <?= $article['content_html'] ?>
+
+          <!-- <div class="article__content">
             <h2 class="underline-with-background">PixJSとは</h2>
             <p>PixiJSとは、Javascriptで使うことができます。というような説明の文章を入れる部分です。</p>
             <p>参考リンクがある場合は、<a href="#">ここを</a>クリックしてください。</p>
@@ -61,7 +63,7 @@ function greet() {
               <li>前の記事と次の記事</li>
               <li>レスポンス時の見た目調整</li>
             </ul>
-          </div>
+          </div> -->
         </div>
 
       </article>
