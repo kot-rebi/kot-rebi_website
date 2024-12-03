@@ -128,4 +128,32 @@ class ArticleModel
       return false;
     }
   }
+
+  public function togglePublish($articleId)
+  {
+    try {
+      $stmt = $this->db->prepare("SELECT is_published FROM articles WHERE id = :id");
+      $stmt->bindValue(":id", $articleId, PDO::PARAM_INT);
+      $stmt->execute();
+      $article = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      if ($article) {
+        if ($article['is_published'] == 1) {
+          $newStatus = 0;
+        } else {
+          $newStatus = 1;
+        }
+        $updateStmt = $this->db->prepare("UPDATE articles SET is_published = :status WHERE id = :id");
+        $updateStmt->bindValue(':status', $newStatus, PDO::PARAM_INT);
+        $updateStmt->bindValue(':id', $articleId, PDO::PARAM_INT);
+        return $updateStmt->execute();
+      } else {
+        return false;
+      }
+
+    } catch(PDOException $e) {
+      echo "公開ステータスの切り替えに失敗しました" . $e->getMessage();
+      return false;
+    }
+  }
 }
