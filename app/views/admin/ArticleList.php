@@ -34,6 +34,7 @@
             <th>タイトル</th>
             <th>作成日</th>
             <th>更新日</th>
+            <th>公開ステータス</th>
             <th>編集</th>
             <th>削除</th>
           </tr>
@@ -45,6 +46,10 @@
               <td><?= htmlspecialchars($article['title']) ?></td>
               <td><?= htmlspecialchars($article['created_at']) ?></td>
               <td><?= htmlspecialchars($article['updated_at']) ?></td>
+              <td>
+                <?= htmlspecialchars($article['is_published'] == 1 ? '公開' : '非公開') ?>
+                <input type="checkbox" data-checkbox-id="<?= $article['id'] ?>" onchange="togglePublish(<?= htmlspecialchars($article['id']) ?>)" <?= $article['is_published'] == 1 ? "checked" : '' ?> >
+              </td>
               <td>
                 <form action="/pj_homepage/admin/articles/edit" method="GET">
                   <input type="hidden" name="id" value="<?= htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8'); ?>">
@@ -64,8 +69,9 @@
     </div>
   </main>
 
-  <?php //include '../includes/footer.php'; 
-  ?>
+  <footer>
+  <script src="/pj_homepage/assets/js/admin/toggle_publish.js"></script>
+  </footer>
 </body>
 
 </html>
