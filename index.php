@@ -40,5 +40,7 @@ else if (preg_match('/^\/pj_homepage\/admin\/articles/', $requestUri)) {
 }
 else {
   // ホームページ
-  require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/home/index.php';
+  require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/controllers/PublicArticleListController.php';
+  $controller = new PublicArticleListController();
+  $controller->listArticles();
 }
