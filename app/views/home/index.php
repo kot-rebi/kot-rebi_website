@@ -15,69 +15,29 @@
     <!-- メインコンテンツ -->
     <main>
       <div class="main__content">
-
+      <?php foreach ($articles as $article): ?>
         <article class="content-card">
           <div class="content-card__body">
             <img src="/pj_homepage/assets/image/img_ranking1.jpg" class="content-card__image">
             <div class="content--card__date-wrapper">
               <i class="fa-regular fa-clock conten-card__icon"></i>
-              <p class="content-card__date">2024.11.14</p>
+              <p class="content-card__date"><?= $article['updated_at'] ?></p>
             </div>
-            <p class="content--card__title">【PixiJS】deltaTimeの使い方について詳しく解説ああああああ</p>
+            <p class="content--card__title"><?= $article['title'] ?></p>
           </div>
         </article>
-
-        <article class="content-card">
-          <div class="content-card__body">
-            <img src="/pj_homepage/assets/image/img_ranking2.jpg" class="content-card__image">
-            <div class="content--card__date-wrapper">
-              <i class="fa-regular fa-clock conten-card__icon"></i>
-              <p class="content-card__date">2024.11.13</p>
-            </div>
-            <p class="content--card__title">ゲーム制作の技術記事を書いてみよう</p>
-          </div>
-        </article>
-
-        <article class="content-card">
-          <div class="content-card__body">
-            <img src="/pj_homepage/assets/image/img_ranking3.jpg" class="content-card__image">
-            <div class="content--card__date-wrapper">
-              <i class="fa-regular fa-clock conten-card__icon"></i>
-              <p class="content-card__date">2024.11.12</p>
-            </div>
-            <p class="content--card__title">【テスト】テストテストテストテストテストテストテストテストテストテスト</p>
-          </div>
-        </article>
-
-        <article class="content-card">
-          <div class="content-card__body">
-            <img src="/pj_homepage/assets/image/img_ranking4.jpg" class="content-card__image">
-            <div class="content--card__date-wrapper">
-              <i class="fa-regular fa-clock conten-card__icon"></i>
-              <p class="content-card__date">2024.11.11</p>
-            </div>
-            <p class="content--card__title">【テスト】テストテストテストテストテストテストテストテストテストテスト</>
-          </div>
-        </article>
-
-        <article class="content-card">
-          <div class="content-card__body">
-            <img src="/pj_homepage/assets/image/img_ranking5.jpg" class="content-card__image">
-            <div class="content--card__date-wrapper">
-              <i class="fa-regular fa-clock conten-card__icon"></i>
-              <p class="content-card__date">2024.11.10</p>
-            </div>
-            <p class="content--card__title">【テスト】テストテストテストテストテストテストテストテストテストテスト</p>
-          </div>
-        </article>
-
+        <?php endforeach; ?>
       </div>
+      <div class="pagination">
+          <a href="<?= $currentPage == 1 ? '#' : '?page=' . ($currentPage - 1) ?>" class="<?= $currentPage == 1 ? 'disabled' : '' ?>">前へ</a>
+          <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+            <a href="?page=<?= $i ?>" class="<?= $i == $currentPage ? 'active' : '' ?>"><?= $i ?></a>
+          <?php endfor; ?>
+          <a href="<?= $currentPage == $totalPages ? '#' : '?page=' . ($currentPage + 1) ?>" class="<?= $currentPage == $totalPages ? 'disabled' : '' ?>">次へ</a>
+        </div>
     </main>
-
     <?php include __DIR__ . '/../home/shared/sidebar.php'; ?>
   </div>
-
 <?php include __DIR__ .  '/../home/shared/footer.php' ?>
-
 </body>
 </html>
