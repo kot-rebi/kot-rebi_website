@@ -37,6 +37,20 @@ class ArticleModel
     }
   }
 
+  public function getPublishedArticles($limit, $offset)
+  {
+    try {
+      $stmt = $this->db->prepare("SELECT * FROM articles WHERE is_published = 1 ORDER BY updated_at DESC LIMIT :limit OFFSET :offset");
+      $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
+      $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      echo "データの取得に失敗しました: " . $e->getMessage();
+      return [];
+    }
+  }
+
   /**
    * 記事の総件数を取得する
    *
@@ -46,6 +60,19 @@ class ArticleModel
   {
     try {
       $stmt = $this->db->prepare("SELECT COUNT(*) AS total FROM articles");
+      $stmt->execute();
+      $result = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $result['total'];
+    } catch (PDOException $e) {
+      echo "記事の取得に失敗しました: " . $e->getMessage();
+      return 0;
+    }
+  }
+
+  public function getTotalPublishedArticles()
+  {
+    try {
+      $stmt = $this->db->prepare("SELECT COUNT(*) AS total FROM articles WHERE is_published = 1");
       $stmt->execute();
       $result = $stmt->fetch(PDO::FETCH_ASSOC);
       return $result['total'];
