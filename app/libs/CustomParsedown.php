@@ -12,6 +12,7 @@ class CustomParsedown extends Parsedown
     $html = $this->wrapParagraphs($html);
     $html = $this->wrapWithDiv($html);
     $html = $this->addClassToH2($html);
+    $html = $this->addClassToH3($html);
 
     return $html;
   }
@@ -39,6 +40,19 @@ class CustomParsedown extends Parsedown
   {
     $pattern = '/(<h2)([^>]*>)/';
     $replacement = '$1 class="underline-with-background"$2';
+    return preg_replace($pattern, $replacement, $html);
+  }
+
+  /**
+   * h3タグにクラスをつける
+   *
+   * @param string $html HTMLに変換された文字列
+   * @return void
+   */
+  private function addClassToH3($html)
+  {
+    $pattern = '/(<h3)([^>]*>)/';
+    $replacement = '$1 class="orange-underline-heading"$2';
     return preg_replace($pattern, $replacement, $html);
   }
 
