@@ -31,7 +31,7 @@ class PublicArticleController
       return;
     }
 
-    $article['content_html'] = $this->parsedown->text($article['content']); 
+    $article['content_html'] = $this->parsedown->text($article['content']);
 
     include $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/home/article.php';
   }
