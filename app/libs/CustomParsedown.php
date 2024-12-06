@@ -8,11 +8,12 @@ class CustomParsedown extends Parsedown
     // 親のメソッドでマークダウンをHTMLに変換
     $html = parent::text($text);
 
-    echo $html;
     $html = $this->wrapParagraphs($html);
-    $html = $this->wrapWithDiv($html);
+    $html = $this->wrapHeadingWithDiv($html);
+    $html = $this->wrapCodeWithDiv($html);
     $html = $this->addClassToH2($html);
     $html = $this->addClassToH3($html);
+    $html = $this->addClassToPre($html);
 
     return $html;
   }
@@ -23,10 +24,23 @@ class CustomParsedown extends Parsedown
    * @param string $html HTMLに変換された文字列
    * @return void
    */
-  private function wrapWithDiv($html)
+  private function wrapHeadingWithDiv($html)
   {
     $pattern = '/(<h[2-6][^>]*>.*?<\/h[2-6]>)(.*?)(?=<h[2-6]|$)/s';  // h2～h6タグが基準
     $replacement = '<div class="article__content">$1$2</div>';
+    return preg_replace($pattern, $replacement, $html);
+  }
+
+  /**
+   * <pre>～</pre>のコードブロック間を<div>で囲む
+   *
+   * @param string $html HTMLに変換された文字列
+   * @return void
+   */
+  private function wrapCodeWithDiv($html)
+  {
+    $pattern = '/(<pre[^>]*>.*?<\/pre>)/s';
+    $replacement = '<div class="code-block">$1</div>';
     return preg_replace($pattern, $replacement, $html);
   }
 
@@ -56,15 +70,34 @@ class CustomParsedown extends Parsedown
     return preg_replace($pattern, $replacement, $html);
   }
 
+  private function addClassToPre($html)
+  {
+    $pattern = '/(<pre)([^>]*>)/';
+    $replacement = '$1 class="line-numbers" data-copy="true"$2';
+    return preg_replace($pattern, $replacement, $html);
+  }
+
+  /**
+   * 段落内を<p>タグで囲む
+   *
+   * @param string $html
+   * @return void
+   */
   private function wrapParagraphs($html)
   {
     // 文の中身をマッチさせる
-    $html = preg_replace_callback('/([^\n\r]+(\n|\r\n)?)/', function ($matches) {
+    $html = preg_replace_callback('/([^\n\r]+(\n|\r\n)?)/', function ($matches) use (&$isInsidePre) {
       $line = trim($matches[0]);
 
       // 空行の場合は何も返さない
       if ($line === '') {
         return '';
+      }
+
+      // <pre>タグ内でのみ<p>タグはつけない
+      $preHandled = $this->handlePreTags($line, $isInsidePre);
+      if ($preHandled !== null) {
+        return $preHandled;
       }
 
       // 他のHTMLタグがある場合はそのまま返す
@@ -77,7 +110,7 @@ class CustomParsedown extends Parsedown
         return $line . "\n";
       }
 
-      // <p>タグが一切ついていないときは追加
+      // <p>タグが一切ついていないときは両方追加
       if (!$this->hasPTags($line)) {
         return '<p>' . trim($matches[1]) . '</p>' . "\n";
       }
@@ -87,7 +120,7 @@ class CustomParsedown extends Parsedown
         return '<p>' . trim($matches[1]);
       }
       
-      // </p>のみないときに追加
+      // </p>のみないときは追加
       if (!$this->hasClosingPTag($line)){
         return trim($matches[1]) . '</p>' . "\n";
       }
@@ -98,7 +131,6 @@ class CustomParsedown extends Parsedown
     return $html;
   }
 
-
   /**
    * 先頭に<p>タグ以外のタグがあるか判定
    *
@@ -108,6 +140,34 @@ class CustomParsedown extends Parsedown
   private function hasOtherTags($line) {
     // 先頭に<p>
     return substr($line, 0, 1) === '<' && substr($line, 1, 1) !== 'p';
+  }
+
+  /**
+   * <pre>タグ内部の処理
+   *
+   * @param string $line
+   * @param boolean $isInsidePre  <pre>タグ内部かどうか
+   * @return boolean
+   */
+  private function handlePreTags($line, &$isInsidePre)
+  {
+    // <pre>タグの開始を検知
+    if (strpos($line, '<pre') !== false) {
+      $isInsidePre = true;
+      return $line . "\n";
+    }
+
+    // <pre>タグの終了を検知
+    if (strpos($line, '</pre>') !== false) {
+      $isInsidePre = false;
+      return $line . "\n";
+    }
+
+    if ($isInsidePre) {
+      return $line . "\n";
+    }
+
+    return null;
   }
 
   /**
