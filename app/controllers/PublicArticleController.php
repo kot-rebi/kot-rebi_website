@@ -1,7 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/models/Database.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/models/ArticleModel.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/libs/CustomParsedown.php';
+require_once __DIR__ . '/../../config.php';
+require_once MODELS_PATH . 'Database.php';
+require MODELS_PATH .'ArticleModel.php';
+require LIBS_PATH . 'CustomParsedown.php';
 require 'vendor/autoload.php';
 
 class PublicArticleController 
@@ -33,6 +34,6 @@ class PublicArticleController
 
     $article['content_html'] = $this->parsedown->text($article['content']);
 
-    include $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/home/article.php';
+    include VIEWS_HOME_PATH . 'article.php';
   }
 }

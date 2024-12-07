@@ -1,8 +1,9 @@
 <?php
 session_start();
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/models/Database.php';
-require $_SERVER['DOCUMENT_ROOT'] .'/pj_homepage/app/models/ArticleModel.php';
+require_once __DIR__ . '/../../config.php';
+require_once MODELS_PATH . 'Database.php';
+require MODELS_PATH . 'ArticleModel.php';
 
 class DeleteArticleController
 {
@@ -19,11 +20,11 @@ class DeleteArticleController
     if ($this->validate($id))
     {
       $this->articleModel->deleteArticles($id);
-      header("Location: /pj_homepage/admin/articles");
+      header("Location: ") . ADMIN_ARTICLES_URL;
       exit;
     } else {
       $_SESSION['error_message'] = "無効な記事IDです";
-      header("Location: /pj_homepage/admin/articles");
+      header("Location: " . ADMIN_ARTICLES_URL);
     }
   }
 

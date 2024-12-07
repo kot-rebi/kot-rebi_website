@@ -1,6 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/models/Database.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/models/ArticleModel.php';
+require_once __DIR__ . '/../../config.php';
+require_once MODELS_PATH . 'Database.php';
+require MODELS_PATH .'ArticleModel.php';
 
 class PublicArticleListController
 {
@@ -32,6 +33,6 @@ class PublicArticleListController
     $totalArticles = $this->articleModel->getTotalPublishedArticles();
     $totalPages = ceil($totalArticles / $limit);
 
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/home/index.php';
+    require_once VIEWS_HOME_PATH . 'index.php';
   }
 }

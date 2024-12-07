@@ -1,5 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/controllers/BaseArticleController.php';
+require_once __DIR__ . '/../../config.php';
+require_once CONTROLLERS_PATH . 'BaseArticleController.php';
 
 class EditArticleController extends BaseArticleController
 {
@@ -39,7 +40,7 @@ class EditArticleController extends BaseArticleController
       ];
       extract($viewData);
 
-      include $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/admin/createArticle.php';
+      include VIEWS_ADMIN_PATH . 'createArticle.php';
     } else {
       header("Location: /error");
       exit;
@@ -60,7 +61,7 @@ class EditArticleController extends BaseArticleController
       if ($this->validateArticleSave($data)) {
         $this->articleModel->updateArticles($id, $data['title'], $data['content']);
         echo "記事を更新しました";
-        header("Location: /pj_homepage/admin/articles");
+        header("Location: " . ADMIN_ARTICLES_URL);
         exit;
       } else {
         echo "エラー： 記事の保存に失敗しました";
@@ -82,7 +83,7 @@ class EditArticleController extends BaseArticleController
   private function setArticleVariables($article)
   {
     $this->formTitle = '編集';
-    $this->formAction = '/pj_homepage/admin/articles/edit?id=' . $article['id'];
+    $this->formAction = ADMIN_ARTICLES_URL . '/edit?id=' . $article['id'];
     $this->articleTitle = $article['title'];
     $this->articleContent = $article['content'];
     $this->submitLabel = '更新';
