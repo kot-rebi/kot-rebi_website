@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja">
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/shared/head.php'; ?>
+<?php
+require_once __DIR__ . '/../../../config.php';
+include GLOBAL_SHARED_PATH . '/head.php';
+ ?>
 
 <body>
   <?php
-  require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/functions.php';
-  include $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/shared/header.php';
+  require_once FUNCTIONS_PATH;
+  include GLOBAL_SHARED_PATH . 'header.php';
 
   // エラーメッセージがあれば表示
   if (isset($_SESSION['error_message'])) {
@@ -16,7 +19,7 @@
 
   <main>
     <h2 class="admin-headnig">記事一覧</h2>
-    <a href="/pj_homepage/admin/articles/create">
+    <a href="<?= ARTICLE_CREATE_URL ?>">
       <button type="submit">新規作成</button>
     </a>
     <div class="pagination">
