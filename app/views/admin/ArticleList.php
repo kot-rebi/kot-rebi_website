@@ -19,7 +19,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
 
   <main>
     <h2 class="admin-headnig">記事一覧</h2>
-    <a href="<?= ARTICLE_CREATE_URL ?>">
+    <a href="<?= ADMIN_ARTICLES_CREATE_URL ?>">
       <button type="submit">新規作成</button>
     </a>
     <div class="pagination">
