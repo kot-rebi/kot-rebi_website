@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="ja">
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/shared/head.php'; ?>
+<?php 
+require_once __DIR__ . '/../../../config.php';
+include GLOBAL_SHARED_PATH . '/head.php';
+?>
 
 <body>
   <?php
-  require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/functions.php';
+  require_once FUNCTIONS_PATH;
   $headerTitleText = "管理画面";
-  include $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/shared/header.php';
+  include GLOBAL_SHARED_PATH . 'header.php';
   ?>
   <main>
     <div class="admin-create">
-      <?php include $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/admin/articleForm.php'; ?>
+      <?php include VIEWS_ADMIN_PATH . 'articleForm.php'; ?>
     </div>
   </main>
 
