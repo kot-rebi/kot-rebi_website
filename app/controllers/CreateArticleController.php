@@ -1,5 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/controllers/BaseArticleController.php';
+require_once __DIR__ . '/../../config.php';
+require_once CONTROLLERS_PATH . 'BaseArticleController.php';
 
 
 class CreateArticleController extends BaseArticleController
@@ -29,7 +30,7 @@ class CreateArticleController extends BaseArticleController
     ];
     extract($viewData);
     
-    include $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/admin/createArticle.php';
+    include VIEWS_ADMIN_PATH . 'createArticle.php';
   }
 
   private function insertArticle()
@@ -38,7 +39,7 @@ class CreateArticleController extends BaseArticleController
 
     if ($this->validateArticleSave($data)) {
       $this->articleModel->insertArticles($data['title'], $data['content']);
-      header("Location: /pj_homepage/admin/articles");
+      header("Location:" . ADMIN_ARTICLES_URL);
       exit;
     } else {
       echo "入力内容にエラーがありました";
@@ -53,7 +54,7 @@ class CreateArticleController extends BaseArticleController
   private function setArticleVariables()
   {
     $this->formTitle = '新規作成';
-    $this->formAction = '/pj_homepage/admin/articles/create';
+    $this->formAction = ADMIN_ARTICLES_CREATE_URL;
     $this->articleTitle = '';
     $this->articleContent = '';
     $this->submitLabel = '送信';

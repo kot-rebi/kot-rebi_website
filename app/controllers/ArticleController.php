@@ -1,6 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/models/Database.php';
-require $_SERVER['DOCUMENT_ROOT'] .'/pj_homepage/app/models/ArticleModel.php';
+require_once __DIR__ . '/../../config.php';
+require_once MODELS_PATH . 'Database.php';
+require MODELS_PATH .'ArticleModel.php';
 $headerTitleText = "管理画面";
 
 /**
@@ -43,6 +44,6 @@ class ArticleController
     $totalArticles = $this->articleModel->getTotalArticles();
     $totalPages = ceil($totalArticles / $limit);
 
-    include $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/admin/ArticleList.php';
+    include VIEWS_ADMIN_PATH . 'ArticleList.php';
   }
 }

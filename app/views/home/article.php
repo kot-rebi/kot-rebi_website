@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-<?php include __DIR__ . '/../shared/head.php'; ?>
+<?php
+require_once __DIR__ . '/../../../config.php';
+include GLOBAL_SHARED_PATH . '/head.php';
+?>
 
 <body>
   <?php
-  require_once __DIR__ . '/../../functions.php';
-  include __DIR__ . '/../shared/header.php'; 
+  require_once FUNCTIONS_PATH;
+  include GLOBAL_SHARED_PATH . 'header.php';
   ?>
   <div class="wrapper" id="container">
     <!-- コンテンツ -->
@@ -30,10 +33,10 @@
       </article>
 
     </main>
-    <?php include __DIR__ . '/../home/shared/sidebar.php'; ?>
+    <?php include VIEWS_HOME_SHARED_PATH . 'sidebar.php'; ?>
   </div>
 
-  <?php include __DIR__ .  '/../home/shared/footer.php' ?>
+  <?php include VIEWS_HOME_SHARED_PATH .  'footer.php' ?>
 
 </body>
 
