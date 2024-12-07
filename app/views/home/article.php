@@ -33,10 +33,10 @@ include GLOBAL_SHARED_PATH . '/head.php';
       </article>
 
     </main>
-    <?php include HOME_SHARED_PATH . 'sidebar.php'; ?>
+    <?php include VIEWS_HOME_SHARED_PATH . 'sidebar.php'; ?>
   </div>
 
-  <?php include HOME_SHARED_PATH .  'footer.php' ?>
+  <?php include VIEWS_HOME_SHARED_PATH .  'footer.php' ?>
 
 </body>
 

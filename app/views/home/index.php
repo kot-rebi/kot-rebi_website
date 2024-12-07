@@ -39,9 +39,9 @@ include GLOBAL_SHARED_PATH . '/head.php';
         <a href="<?= $currentPage == $totalPages ? '#' : '?page=' . ($currentPage + 1) ?>" class="<?= $currentPage == $totalPages ? 'disabled' : '' ?>">次へ</a>
       </div>
     </main>
-    <?php include HOME_SHARED_PATH . 'sidebar.php'; ?>
+    <?php include VIEWS_HOME_SHARED_PATH . 'sidebar.php'; ?>
   </div>
-  <?php include HOME_SHARED_PATH .  'footer.php' ?>
+  <?php include VIEWS_HOME_SHARED_PATH .  'footer.php' ?>
 </body>
 
 </html>
