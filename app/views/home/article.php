@@ -21,7 +21,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
             <h1 class="ariticle__title"><?= htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8') ?></h1>
             <div class="artical__date-wrapper">
               <i class="artical__icon fa-regular fa-clock"></i>
-              <p class="article__date">2024.11.14</p>
+              <p class="article__date"><?= $article['formatted_date'] ?></p>
             </div>
             <div class="article__thumbnail">
               <img src="/pj_homepage/assets/image/img_ranking1.jpg">
