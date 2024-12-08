@@ -24,7 +24,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
               <img src="/pj_homepage/assets/image/img_ranking1.jpg" class="content-card__image">
               <div class="content--card__date-wrapper">
                 <i class="fa-regular fa-clock conten-card__icon"></i>
-                <p class="content-card__date"><?= $article['updated_at'] ?></p>
+                <p class="content-card__date"><?= $article['formatted_date'] ?></p>
               </div>
               <p class="content--card__title"><?= $article['title'] ?></p>
             </div>
