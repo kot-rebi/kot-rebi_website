@@ -14,6 +14,7 @@ class ArticleModel
   public function __construct()
   {
     $this->db = Database::getInstance()->getConnection();
+    $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
   }
 
   /**
@@ -93,17 +94,46 @@ class ArticleModel
    *
    * @param string $title 記事のタイトル
    * @param string $content 記事の内容
-   * @return bool 成功したときはtrue、失敗したときはfalse
+   * @param array|null $thumbnailData サムネイル画像ファイル
+   * @return int|null 成功したときは記事ID、失敗したときはfalse
    */
-  public function insertArticles($title, $content)
+  public function insertArticles($title, $content, $thumbnailData)
   {
     try {
+      $this->db->beginTransaction();
+
+      // 記事の挿入
       $stmt = $this->db->prepare("INSERT INTO articles (title, content) VALUES (:title, :content)");
       $stmt->bindValue(":title", $title, PDO::PARAM_STR);
       $stmt->bindValue(":content", $content, PDO::PARAM_STR);
-      return $stmt->execute();
+      $stmt->execute();
+
+      $articleId = $this->db->lastInsertId();
+      if (!$articleId) {
+        throw new Exception("記事IDの取得に失敗しました");
+    }
+
+      // サムネイル画像はimagesテーブルに保存
+      if ($thumbnailData) {
+        $stmtImage = $this->db->prepare("
+        INSERT INTO images (article_id, file_name, file_path, alt_text, upload_date)
+        VALUES (:article_id, :file_name, :file_path, :alt_text, NOW())
+        ");
+        $stmtImage->bindValue(":article_id", $articleId, PDO::PARAM_INT);
+        $stmtImage->bindValue(":file_name", $thumbnailData['file_name'], PDO::PARAM_STR);
+        $stmtImage->bindValue(":file_path", $thumbnailData['file_path'], PDO::PARAM_STR);
+        $stmtImage->bindValue(":alt_text", $thumbnailData['alt_text'], PDO::PARAM_STR);
+        $stmtImage->execute();
+      }
+
+      $this->db->commit();
+      return $articleId;
     } catch (PDOException $e) {
+      $this->db->rollBack();
       echo "記事の挿入に失敗しました: " . $e->getMessage();
+      return false;
+    } catch (Exception $e) {
+      echo "エラー: " . $e->getMessage();
       return false;
     }
   }
