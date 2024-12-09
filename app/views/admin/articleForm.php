@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 新規作成/編集の共通フォーム
  * 
@@ -13,17 +14,26 @@
 <h2 class="admin-create__header">
   <?= htmlspecialchars($formTitle) ?>
 </h2>
-<form action="<?= htmlspecialchars($formAction) ?>" method="POST">
+
+<form action="<?= htmlspecialchars($formAction) ?>" method="POST" enctype="multipart/form-data">
   <?php if (isset($articleId)): ?>
     <input type="hidden" name="article_id" value="<?= htmlspecialchars($articleId) ?>">
   <?php endif; ?>
-<div class="admin-create__title">
-  <label for="title">タイトル</label>
-  <input type="text" name="title" id="title" value="<?= htmlspecialchars($articleTitle) ?>" placeholder="タイトルを入力してください">
-</div>
-<div class="admin-create__content">
-  <label for="article-content">記事本文</label>
-  <textarea name="content" id="article-content" rows="20" cols="50" placeholder="記事の本文を入力してください"><?= htmlspecialchars($articleContent) ?></textarea>
-</div>
+
+  <div class="admin-create__title">
+    <label for="title">タイトル</label>
+    <input type="text" name="title" id="title" value="<?= htmlspecialchars($articleTitle) ?>" placeholder="タイトルを入力してください">
+  </div>
+
+  <div class="admin-create__thumbnail">
+    <label for="thumbnail">サムネイル画像</label>
+    <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+  </div>
+
+  <div class="admin-create__content">
+    <label for="article-content">記事本文</label>
+    <textarea name="content" id="article-content" rows="20" cols="50" placeholder="記事の本文を入力してください"><?= htmlspecialchars($articleContent) ?></textarea>
+  </div>
+  
   <input type="submit" value="<?= htmlspecialchars($submitLabel) ?>">
 </form>
