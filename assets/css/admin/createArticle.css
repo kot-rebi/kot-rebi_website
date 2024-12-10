@@ -73,8 +73,11 @@
   margin: 10px 40px;
 }
 
-.admin-create__thumbnail img {
+.admin-create__thumbnailHidden {
   display: none;
+}
+
+.admin-create__thumbnail img {
   margin: 10px 40px;
   max-width: 400px;
   max-height: 400px;
