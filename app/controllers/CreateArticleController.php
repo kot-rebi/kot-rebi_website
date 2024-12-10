@@ -65,8 +65,15 @@ class CreateArticleController extends BaseArticleController
 
       // サムネイル画像のリネーム
       if ($thumbnailData && $articleId) {
-        $newFileName = IMAGE_UPLOADS_THUMBNAILS_PATH . 'thumbnail_' . $articleId . '.' . pathinfo($thumbnailData['file_name'], PATHINFO_EXTENSION);
-        rename($thumbnailData['tmp_path'], $newFileName);
+        $newFilePath = IMAGE_UPLOADS_THUMBNAILS_PATH . 'thumbnail_' . $articleId . '.' . pathinfo($thumbnailData['file_name'], PATHINFO_EXTENSION);
+        if (rename($thumbnailData['tmp_path'], $newFilePath)) {
+          $newFileName = basename($newFilePath);
+          $relativePath = '/assets/image/uploads/thumbnails/' . $newFileName;
+          $this->articleModel->updateThumbnailPath($articleId, $newFileName, $relativePath);
+        } else {
+          echo "サムネイル画像のリネームに失敗しました";
+          return;
+        }
       }
 
       header("Location:" . ADMIN_ARTICLES_URL);

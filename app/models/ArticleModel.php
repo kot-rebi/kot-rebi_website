@@ -14,7 +14,6 @@ class ArticleModel
   public function __construct()
   {
     $this->db = Database::getInstance()->getConnection();
-    $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
   }
 
   /**
@@ -99,6 +98,8 @@ class ArticleModel
    */
   public function insertArticles($title, $content, $thumbnailData)
   {
+    $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
+
     try {
       $this->db->beginTransaction();
 
@@ -127,12 +128,16 @@ class ArticleModel
       }
 
       $this->db->commit();
+
+      $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
       return $articleId;
     } catch (PDOException $e) {
       $this->db->rollBack();
+      $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
       echo "記事の挿入に失敗しました: " . $e->getMessage();
       return false;
     } catch (Exception $e) {
+      $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
       echo "エラー: " . $e->getMessage();
       return false;
     }
@@ -160,6 +165,21 @@ class ArticleModel
     }
   }
 
+  public function updateThumbnailPath($articleId, $newFileName, $newFilePath)
+  {
+    try {
+      $stmt = $this->db->prepare("UPDATE images SET file_name = :file_name, file_path = :file_path WHERE article_id = :article_id");
+      $stmt->bindValue(":file_name", $newFileName, PDO::PARAM_STR);
+      $stmt->bindValue(":file_path", $newFilePath, PDO::PARAM_STR);
+      $stmt->bindValue(":article_id", $articleId, PDO::PARAM_INT);
+
+      return $stmt->execute();
+    } catch (PDOException $e) {
+      echo "サムネイルパスの更新に失敗しました: " . $e->getMessage();
+      return false;
+    }
+  }
+
   /**
    * 記事を削除
    *
@@ -179,6 +199,28 @@ class ArticleModel
     }
   }
 
+  public function getAricleWithImagesById($id)
+  {
+    try {
+      // 記事情報の取得
+      $article = $this->getArticleById($id);
+
+      // 画像情報の取得
+      $images = $this->getArticleImagesById($id);
+
+      if ($article) {
+        $article['thumbnailPath'] = $images['file_path'];
+      }
+
+      var_dump($article);
+
+      return $article;
+    } catch (Exception $e) {
+      echo "データの取得に失敗しました: " . $e->getMessage();
+      return false;
+    }
+  }
+
   public function getArticleById($id)
   {
     try{
@@ -188,6 +230,19 @@ class ArticleModel
       return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e){
       echo "記事の取得に失敗しました" . $e->getMessage();
+      return false;
+    }
+  }
+
+  public function getArticleImagesById($id)
+  {
+    try {
+      $stmt = $this->db->prepare("SELECT * FROM images WHERE article_id = :id");
+      $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      echo "画像の取得に失敗しました: " . $e->getMessage();
       return false;
     }
   }

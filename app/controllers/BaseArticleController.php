@@ -16,6 +16,9 @@ abstract class BaseArticleController
   /** 記事タイトル @var string */
   protected $articleTitle;
 
+  /** 記事のサムネイルパス @var string */
+  protected $articleThumbnailPath;
+
   /** 記事内容 @var string */
   protected $articleContent;
 
