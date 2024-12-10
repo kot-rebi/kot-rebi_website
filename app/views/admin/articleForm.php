@@ -28,6 +28,7 @@
   <div class="admin-create__thumbnail">
     <label for="thumbnail">サムネイル画像</label>
     <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+    <img id="thumbnailPreview" src="#" alt="プレビュー画像">
   </div>
 
   <div class="admin-create__content">
