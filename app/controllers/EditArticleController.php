@@ -31,6 +31,7 @@ class EditArticleController extends BaseArticleController
 
       // ビューに渡す配列データ
       $viewData = [
+        'isEditMode' => $this->isEditMode,
         'formTitle' => $this->formTitle,
         'formAction' => $this->formAction,
         'articleTitle' => $this->articleTitle,
@@ -84,6 +85,7 @@ class EditArticleController extends BaseArticleController
    */
   private function setArticleVariables($article)
   {
+    $this->isEditMode = true;
     $this->formTitle = '編集';
     $this->formAction = ADMIN_ARTICLES_URL . '/edit?id=' . $article['id'];
     $this->articleTitle = $article['title'];

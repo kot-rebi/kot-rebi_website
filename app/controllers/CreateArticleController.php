@@ -19,9 +19,11 @@ class CreateArticleController extends BaseArticleController
   {
     $this->setArticleVariables();
     $viewData = [
+      'isEditMode' => $this->isEditMode,
       'formTitle' => $this->formTitle,
       'formAction' => $this->formAction,
       'articleTitle' => $this->articleTitle,
+      'articleThumbnailPath' => $this->articleThumbnailPath,
       'articleContent' => $this->articleContent,
       'submitLabel' => $this->submitLabel,
       'articleId' => $this->articleId
@@ -90,9 +92,11 @@ class CreateArticleController extends BaseArticleController
    */
   private function setArticleVariables()
   {
+    $this->isEditMode = false;
     $this->formTitle = '新規作成';
     $this->formAction = ADMIN_ARTICLES_CREATE_URL;
     $this->articleTitle = '';
+    $this->articleThumbnailPath = '';
     $this->articleContent = '';
     $this->submitLabel = '送信';
     $this->articleId = '';

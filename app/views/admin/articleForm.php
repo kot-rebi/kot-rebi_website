@@ -29,13 +29,18 @@
   <div class="admin-create__thumbnail">
     <label for="thumbnail">サムネイル画像</label>
     <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
-    <img id="thumbnailPreview" src="<?= '/pj_homepage' . htmlspecialchars($articleThumbnailPath) ?>" alt="プレビュー画像">
+
+    <!-- 現在のサムネイル -->
+    <img id="thumbnailPreview" class="<?= $isEditMode && !empty($articleThumbnailPath) ? '' : 'admin-create__thumbnailHidden' ?>" src="<?= '/pj_homepage' . htmlspecialchars($articleThumbnailPath) ?? '' ?>" alt="現在のサムネイル画像">
+
+    <!-- 新しいサムネイル -->
+    <img id="newThumbnailPreview" class="admin-create__thumbnailHidden" src="" alt="新しいプレビュー">
   </div>
 
   <div class="admin-create__content">
     <label for="article-content">記事本文</label>
     <textarea name="content" id="article-content" rows="20" cols="50" placeholder="記事の本文を入力してください"><?= htmlspecialchars($articleContent) ?></textarea>
   </div>
-  
+
   <input type="submit" value="<?= htmlspecialchars($submitLabel) ?>">
 </form>

@@ -7,6 +7,10 @@ abstract class BaseArticleController
 {
   protected $articleModel;
 
+
+  /** 編集画面かどうか @var bool */
+  protected $isEditMode;
+
   /** 編集画面のh2に表示する文字列 @var string */
   protected $formTitle;
 

@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const preview = document.getElementById('thumbnailPreview');
+  const currentThumbnail = document.getElementById('thumbnailPreview');
+  const newThumbnailPreview = document.getElementById('newThumbnailPreview');
 
-  if (preview.src !== "") {
-    preview.style.display = 'block';
+  // 現在のサムネイルが表示されているときは表示
+  if (currentThumbnail.src !== "" && !currentThumbnail.classList.contains('admin-create__thumbnailHidden')) {
+    currentThumbnail.classList.remove('admin-create__thumbnailHidden');
   }
 })
 
@@ -12,9 +14,8 @@ document.getElementById('thumbnail').addEventListener('change', function(event) 
   if (file) {
     const reader = new FileReader();
     reader.onload = function(e) {
-      const preview = document.getElementById('thumbnailPreview');
-      preview.src = e.target.result;
-      preview.style.display = 'block';
+      newThumbnailPreview.src = e.target.result;
+      newThumbnailPreview.classList.remove('admin-create__thumbnailHidden');
     };
     reader.readAsDataURL(file);
   }
