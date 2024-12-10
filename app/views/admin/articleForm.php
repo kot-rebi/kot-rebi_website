@@ -6,6 +6,7 @@
  * @param string $formTitle フォームの表示タイトル
  * @param string $formAction フォームの送信先URL
  * @param string $articleTitle 記事のタイトル
+ * @param string $articleThumbnailPath 記事のサムネイルパス
  * @param string $articleContent 記事の本文
  * @param string $submitLabel ボタンのラベル
  * @param int|null $articleId 記事ID（編集時のみ使用する）
@@ -28,7 +29,7 @@
   <div class="admin-create__thumbnail">
     <label for="thumbnail">サムネイル画像</label>
     <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
-    <img id="thumbnailPreview" src="#" alt="プレビュー画像">
+    <img id="thumbnailPreview" src="<?= '/pj_homepage' . htmlspecialchars($articleThumbnailPath) ?>" alt="プレビュー画像">
   </div>
 
   <div class="admin-create__content">
