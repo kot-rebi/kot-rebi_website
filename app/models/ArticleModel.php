@@ -151,16 +151,60 @@ class ArticleModel
    * @param string $content 更新後の内容
    * @return bool 成功したときはtrue、失敗したときはfalse
    */
-  public function updateArticles($id, $title, $content)
+  public function updateArticles($id, $title, $content, $thumbnailData = null)
   {
+    $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
+
     try {
-      $stmt = $this->db->prepare("UPDATE articles SET title = :title, content = :content, updated_at = NOW() WHERE id = :id");
+      $this->db->beginTransaction();
+
+      // 記事の更新
+      $stmt = $this->db->prepare("
+        UPDATE articles
+        SET title = :title, content = :content, updated_at = NOW()
+        WHERE id = :id
+      ");
       $stmt->bindValue(":title", $title, PDO::PARAM_STR);
       $stmt->bindValue(":content", $content, PDO::PARAM_STR);
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
-      return $stmt->execute();
+      if (!$stmt->execute()) {
+        throw new Exception("記事の更新に失敗しました");
+      }
+
+      // サムネイル画像の更新
+      if ($thumbnailData) {
+        // 新しいサムネイルを挿入
+        $stmtImage = $this->db->prepare("
+          INSERT INTO images (article_id, file_name, file_path, alt_text, upload_date)
+          VALUES (:article_id, :file_name, :file_path, :alt_text, NOW())
+        ");
+        $stmtImage->bindValue(":article_id", $id, PDO::PARAM_INT);
+        $stmtImage->bindValue(":file_name", $thumbnailData['file_name'], PDO::PARAM_STR);
+        $stmtImage->bindValue(":file_path", $thumbnailData['file_path'], PDO::PARAM_STR);
+        $stmtImage->bindValue(":alt_text", $thumbnailData['alt_text'], PDO::PARAM_STR);
+        if (!$stmtImage->execute()) {
+          throw new Exception("サムネイルの挿入に失敗しました");
+        }
+
+        // 古い画像を削除
+        if (!$this->deleteImage($id)) {
+          throw new Exception("古いサムネイル画像の削除に失敗しました");
+        }
+      }
+
+      $this->db->commit();
+      $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
+      
+      echo "記事の更新が成功しました";
+      return true;
     } catch (PDOException $e) {
+      $this->db->rollBack();
+      $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
       echo "記事の更新に失敗しました: " . $e->getMessage();
+      return false;
+    } catch (Exception $e) {
+      $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
+      echo "エラー: " . $e->getMessage();
       return false;
     }
   }
@@ -195,6 +239,50 @@ class ArticleModel
       return $stmt->execute();
     } catch (PDOException $e) {
       echo "記事の削除に失敗しました" . $e->getMessage();
+      return false;
+    }
+  }
+
+  public function deleteImage($id) {
+    try {
+      // 削除対象のファイル名を取得
+      $stmt = $this->db->prepare("
+        SELECT file_name
+        FROM images
+        WHERE article_id = :article_id
+        ORDER BY upload_date ASC
+        LIMIT 1
+      ");
+      $stmt->bindValue(":article_id", $id, PDO::PARAM_INT);
+      $stmt->execute();
+      $file = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      if ($file && isset($file['file_name'])) {
+        $filePath = IMAGE_UPLOADS_THUMBNAILS_PATH . $file['file_name'];
+
+        // データベースのレコードを削除
+        $stmtDelete = $this->db->prepare("
+          DELETE FROM images
+          WHERE article_id = :article_id AND file_name = :file_name
+        ");
+        $stmtDelete->bindValue(":article_id", $id, PDO::PARAM_INT);
+        $stmtDelete->bindValue(":file_name", $file['file_name'], PDO::PARAM_STR);
+        $stmtDelete->execute();
+
+        // ファイルの削除
+        if (file_exists($filePath)) {
+          unlink($filePath);
+          echo "filePath: " . $filePath . "\n";
+          echo "古いサムネイルを削除しました";
+        } else {
+          echo "ファイルが見つかりません: " . $filePath;
+        }
+      } else {
+        echo "削除対象のサムネイルが見つかりません";
+      }
+      return true;
+    } catch (PDOException $e) {
+      echo "画像の削除に失敗しました" . $e->getMessage();
       return false;
     }
   }
@@ -237,7 +325,7 @@ class ArticleModel
   public function getArticleImagesById($id)
   {
     try {
-      $stmt = $this->db->prepare("SELECT * FROM images WHERE article_id = :id");
+      $stmt = $this->db->prepare("SELECT file_name, file_path FROM images WHERE article_id = :id");
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
       $stmt->execute();
       return $stmt->fetch(PDO::FETCH_ASSOC);
