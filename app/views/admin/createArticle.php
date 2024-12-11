@@ -20,6 +20,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
   <footer>
     <script src="/pj_homepage/assets/js/admin/textarea-auto-resize.js"></script>
     <script src="/pj_homepage/assets/js/admin/input-label-interaction.js"></script>
+    <script src="/pj_homepage/assets/js/admin/imagePreview.js"></script>
   </footer>
 </body>
 
