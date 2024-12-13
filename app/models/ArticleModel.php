@@ -94,9 +94,10 @@ class ArticleModel
    * @param string $title 記事のタイトル
    * @param string $content 記事の内容
    * @param array|null $thumbnailData サムネイル画像ファイル
+   * @param array|null $imageData 記事の画像ファイル
    * @return int|null 成功したときは記事ID、失敗したときはfalse
    */
-  public function insertArticles($title, $content, $thumbnailData)
+  public function insertArticles($title, $content, $thumbnailData, $imageData)
   {
     $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
 
@@ -127,9 +128,24 @@ class ArticleModel
         $stmtImage->execute();
       }
 
-      $this->db->commit();
+      // 記事の画像を挿入
+      if ($imageData) {
+        $stmtUploadedImages = $this->db->prepare("
+        INSERT INTO uploaded_images (article_id, file_url, alt_text, uploaded_at)
+        VALUES (:article_id, :file_url, :alt_text, NOW())
+        ");
 
+        foreach ($imageData as $image) {
+          $stmtUploadedImages->bindValue(":article_id", $articleId, PDO::PARAM_INT);
+          $stmtUploadedImages->bindValue(":file_url", $image['file_path'], PDO::PARAM_STR);
+          $stmtUploadedImages->bindValue(":alt_text", $image['alt_text'], PDO::PARAM_STR);
+          $stmtUploadedImages->execute();
+        }
+      }
+
+      $this->db->commit();
       $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
+      
       return $articleId;
     } catch (PDOException $e) {
       $this->db->rollBack();
@@ -217,6 +233,21 @@ class ArticleModel
       $stmt->bindValue(":file_path", $newFilePath, PDO::PARAM_STR);
       $stmt->bindValue(":article_id", $articleId, PDO::PARAM_INT);
 
+      return $stmt->execute();
+    } catch (PDOException $e) {
+      echo "サムネイルパスの更新に失敗しました: " . $e->getMessage();
+      return false;
+    }
+  }
+
+  public function updateArticleImagePath($articleId, $newFileUrl)
+  {
+    try {
+      $stmt = $this->db->prepare("
+        UPDATE uploaded_images
+        SET file_url = :file_url WHERE article_id = :article_id");
+      $stmt->bindValue(":file_url", $newFileUrl, PDO::PARAM_STR);
+      $stmt->bindValue(":article_id", $articleId, PDO::PARAM_INT);
       return $stmt->execute();
     } catch (PDOException $e) {
       echo "サムネイルパスの更新に失敗しました: " . $e->getMessage();

@@ -37,6 +37,17 @@
     <img id="newThumbnailPreview" class="admin-create__thumbnailHidden" src="" alt="新しいプレビュー">
   </div>
 
+  <div class="admin-create__images">
+    <label>画像と説明</label>
+    <div id="image-input-container">
+      <div class="image-input-set">
+        <input type="file" id="image" name="images[]" accept="image/*" required>
+        <input type="text" id="alt_text" name="alt_texts[]" placeholder="画像の説明を入力">
+      </div>
+    </div>
+    <button type="button" id="add-image-button">+ 画像を追加</button>
+  </div>
+
   <div class="admin-create__content">
     <label for="article-content">記事本文</label>
     <textarea name="content" id="article-content" rows="20" cols="50" placeholder="記事の本文を入力してください"><?= htmlspecialchars($articleContent) ?></textarea>
