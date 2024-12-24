@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
   const currentThumbnail = document.getElementById('thumbnailPreview');
-  const newThumbnailPreview = document.getElementById('newThumbnailPreview');
 
   // 現在のサムネイルが表示されているときは表示
   if (currentThumbnail.src !== "" && !currentThumbnail.classList.contains('admin-create__thumbnailHidden')) {

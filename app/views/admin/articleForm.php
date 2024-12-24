@@ -38,14 +38,32 @@
   </div>
 
   <div class="admin-create__images">
-    <label>画像と説明</label>
-    <div id="image-input-container">
-      <div class="image-input-set">
-        <input type="file" id="image" name="images[]" accept="image/*" required>
-        <input type="text" id="alt_text" name="alt_texts[]" placeholder="画像の説明を入力">
+    <label class="admin-create__label">画像と説明</label>
+    <?php if ($isEditMode && !empty($articleImagesPath)): ?>
+      <div class="inserted-image-box-container">
+        <label>【挿入済み】</label>
+        <div class="inserted-image-box">
+          <?php for ($i = 0; $i < count($articleImagesPath); $i++): ?>
+            <div class="inserted-image-set">
+              <img src="<?= '/pj_homepage' .  htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
+              <p>説明テキスト</p>
+              <p><?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?></p>
+            </div>
+          <?php endfor; ?>
+        </div>
       </div>
-    </div>
-    <button type="button" id="add-image-button">+ 画像を追加</button>
+    <?php endif; ?>
+
+    <div class="not-inserted-image-set">
+      <label>【未挿入】</label>
+      <div id="image-input-container">
+        <div class="image-input-set">
+          <input type="file" id="image" name="images[]" accept="image/*" required>
+          <input type="text" id="alt_text" name="alt_texts[]" placeholder="画像の説明を入力">
+        </div>
+      </div>
+        <button type="button" id="add-image-button">+ 画像を追加</button>
+      </div>
   </div>
 
   <div class="admin-create__content">

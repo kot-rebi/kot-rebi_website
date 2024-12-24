@@ -80,6 +80,8 @@ class CreateArticleController extends BaseArticleController
     // 記事挿入処理
     if ($this->validateArticleSave($data)) {
       $articleId = $this->articleModel->insertArticles($data['title'], $data['content'], $thumbnailData, $imageData);
+      var_dump("記事を挿入しました");
+      var_dump($imageData);
       echo $articleId;
       if (!$articleId) {
         echo "記事の挿入に失敗しました";
@@ -98,16 +100,16 @@ class CreateArticleController extends BaseArticleController
           return;
         }
       }
-
       // 記事画像のリネーム
       foreach ($imageData as $index => $image) {
         $newImageFileName = 'image_' . $articleId . ($index != null ? '_'. $index : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
         $newImageFilePath = IMAGE_UPLOADS_ARTICLES_PATH . $newImageFileName;
 
         if (rename($image['tmp_path'], $newImageFilePath)) {
-          $image['file_name'] = $newFileName;
-          $image['file_url'] = '/assets/image/uploads/' . $newImageFileName;
-          $this->articleModel->updateArticleImagePath($articleId, $image['file_url']);
+          $image['file_name'] = $newImageFileName;
+          $image['file_url'] = '/assets/image/uploads/articles/' . $newImageFileName;
+
+          $this->articleModel->updateArticleImagePath($image['id'], $image['file_url']);
         } else {
           echo "画像のリネームに失敗しました";
           return;

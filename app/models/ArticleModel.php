@@ -97,7 +97,7 @@ class ArticleModel
    * @param array|null $imageData 記事の画像ファイル
    * @return int|null 成功したときは記事ID、失敗したときはfalse
    */
-  public function insertArticles($title, $content, $thumbnailData, $imageData)
+  public function insertArticles($title, $content, $thumbnailData, &$imageData)
   {
     $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
 
@@ -128,18 +128,20 @@ class ArticleModel
         $stmtImage->execute();
       }
 
-      // 記事の画像を挿入
+      // 記事の画像を挿入し、挿入後のIDを取得
       if ($imageData) {
         $stmtUploadedImages = $this->db->prepare("
         INSERT INTO uploaded_images (article_id, file_url, alt_text, uploaded_at)
         VALUES (:article_id, :file_url, :alt_text, NOW())
         ");
 
-        foreach ($imageData as $image) {
+        foreach ($imageData as $index => &$image) {
           $stmtUploadedImages->bindValue(":article_id", $articleId, PDO::PARAM_INT);
           $stmtUploadedImages->bindValue(":file_url", $image['file_path'], PDO::PARAM_STR);
           $stmtUploadedImages->bindValue(":alt_text", $image['alt_text'], PDO::PARAM_STR);
           $stmtUploadedImages->execute();
+
+          $imageData[$index]['id'] = $this->db->lastInsertId();
         }
       }
 
@@ -240,14 +242,14 @@ class ArticleModel
     }
   }
 
-  public function updateArticleImagePath($articleId, $newFileUrl)
+  public function updateArticleImagePath($id, $newFileUrl)
   {
     try {
       $stmt = $this->db->prepare("
         UPDATE uploaded_images
-        SET file_url = :file_url WHERE article_id = :article_id");
+        SET file_url = :file_url WHERE id = :id");
       $stmt->bindValue(":file_url", $newFileUrl, PDO::PARAM_STR);
-      $stmt->bindValue(":article_id", $articleId, PDO::PARAM_INT);
+      $stmt->bindValue(":id", $id, PDO::PARAM_INT);
       return $stmt->execute();
     } catch (PDOException $e) {
       echo "サムネイルパスの更新に失敗しました: " . $e->getMessage();
@@ -325,13 +327,18 @@ class ArticleModel
       $article = $this->getArticleById($id);
 
       // 画像情報の取得
-      $images = $this->getArticleImagesById($id);
-
+      $thumbnail = $this->getThumbnailById($id);
       if ($article) {
-        $article['thumbnailPath'] = $images['file_path'];
+        $article['thumbnailPath'] = $thumbnail['file_path'];
       }
 
-      var_dump($article);
+      // 記事の画像の取得
+      $articleImagesPath = $this->getArticleImagesById($id);
+      if ($articleImagesPath) {
+        $article['articleImagesPath'] = $articleImagesPath;
+      }
+
+      echo var_dump($article);
 
       return $article;
     } catch (Exception $e) {
@@ -353,13 +360,26 @@ class ArticleModel
     }
   }
 
-  public function getArticleImagesById($id)
+  public function getThumbnailById($id)
   {
     try {
       $stmt = $this->db->prepare("SELECT file_name, file_path FROM images WHERE article_id = :id");
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
       $stmt->execute();
       return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      echo "画像の取得に失敗しました: " . $e->getMessage();
+      return false;
+    }
+  }
+
+  public function getArticleImagesById($id)
+  {
+    try {
+      $stmt = $this->db->prepare("SELECT file_url, alt_text FROM uploaded_images WHERE article_id = :id");
+      $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
       echo "画像の取得に失敗しました: " . $e->getMessage();
       return false;

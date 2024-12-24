@@ -35,6 +35,7 @@ class EditArticleController extends BaseArticleController
         'articleTitle' => $this->articleTitle,
         'articleThumbnailPath' => $this->articleThumbnailPath,
         'articleContent' => $this->articleContent,
+        'articleImagesPath' => $this->articleImagesPath,
         'submitLabel' => $this->submitLabel,
         'articleId' => $this->articleId
       ];
@@ -123,6 +124,11 @@ class EditArticleController extends BaseArticleController
       $this->articleThumbnailPath = $article['thumbnailPath'];
     }
     $this->articleContent = $article['content'];
+    if ($article['articleImagesPath'] === false) {
+      $this->articleImagesPath = '';
+    } else {
+      $this->articleImagesPath = $article['articleImagesPath'];
+    }
     $this->submitLabel = '更新';
     $this->articleId = $article['id'];
   }
