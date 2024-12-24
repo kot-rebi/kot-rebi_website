@@ -26,6 +26,9 @@ abstract class BaseArticleController
   /** 記事内容 @var string */
   protected $articleContent;
 
+  /** 記事挿入画像 @var string */
+  protected $articleImagesPath;
+
   /** 決定ボタンの文字列 @var string */
   protected $submitLabel;
 
