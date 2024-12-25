@@ -169,7 +169,7 @@ class ArticleModel
    * @param string $content 更新後の内容
    * @return bool 成功したときはtrue、失敗したときはfalse
    */
-  public function updateArticles($id, $title, $content, $thumbnailData = null)
+  public function updateArticles($id, $title, $content, $thumbnailData = null, &$imageData)
   {
     $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
 
@@ -207,6 +207,23 @@ class ArticleModel
         // 古い画像を削除
         if (!$this->deleteImage($id)) {
           throw new Exception("古いサムネイル画像の削除に失敗しました");
+        }
+      }
+
+      // 記事の画像を挿入し、挿入後のIDを取得
+      if ($imageData) {
+        $stmtUploadedImages = $this->db->prepare("
+        INSERT INTO uploaded_images (article_id, file_url, alt_text, uploaded_at)
+        VALUES (:article_id, :file_url, :alt_text, NOW())
+        ");
+
+        foreach ($imageData as $index => &$image) {
+          $stmtUploadedImages->bindValue(":article_id", $id, PDO::PARAM_INT);
+          $stmtUploadedImages->bindValue(":file_url", $image['file_path'], PDO::PARAM_STR);
+          $stmtUploadedImages->bindValue(":alt_text", $image['alt_text'], PDO::PARAM_STR);
+          $stmtUploadedImages->execute();
+
+          $imageData[$index]['id'] = $this->db->lastInsertId();
         }
       }
 
@@ -382,6 +399,19 @@ class ArticleModel
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
       echo "画像の取得に失敗しました: " . $e->getMessage();
+      return false;
+    }
+  }
+
+  public function getArticleImageCount($id)
+  {
+    try {
+      $stmt = $this->db->prepare("SELECT COUNT(*) AS image_count FROM uploaded_images WHERE article_id = :article_id");
+      $stmt->bindValue(":article_id", $id, PDO::PARAM_INT);
+      $stmt->execute();
+      $result = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $result ? (int)$result['image_count'] : 0;
+    } catch (PDOException $e) {
       return false;
     }
   }
