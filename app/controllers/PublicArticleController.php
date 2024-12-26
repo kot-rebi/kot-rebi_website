@@ -20,7 +20,7 @@ class PublicArticleController
   public function show()
   {
     // TODO: IDは仮（記事選択画面が完成したら動的に取得
-    $articleId = 1;
+    $articleId = 76;
     $article = $this->articleModel->getArticleById($articleId);
 
     // 記事が見つからないとき
