@@ -46,7 +46,9 @@
           <?php for ($i = 0; $i < count($articleImagesPath); $i++): ?>
             <div class="inserted-image-set">
               <img src="<?= '/pj_homepage' .  htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
-              <p>説明テキスト</p>
+              <p>URL</p>
+              <p><?= '/pj_homepage' . htmlspecialchars($articleImagesPath[$i]['file_url']) ?></p>
+              <p>代替テキスト</p>
               <p><?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?></p>
             </div>
           <?php endfor; ?>
