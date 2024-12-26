@@ -113,7 +113,7 @@ class ArticleModel
       $articleId = $this->db->lastInsertId();
       if (!$articleId) {
         throw new Exception("記事IDの取得に失敗しました");
-    }
+      }
 
       // サムネイル画像はimagesテーブルに保存
       if ($thumbnailData) {
@@ -147,7 +147,7 @@ class ArticleModel
 
       $this->db->commit();
       $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
-      
+
       return $articleId;
     } catch (PDOException $e) {
       $this->db->rollBack();
@@ -205,7 +205,7 @@ class ArticleModel
         }
 
         // 古い画像を削除
-        if (!$this->deleteImage($id)) {
+        if (!$this->deleteThumbnail($id)) {
           throw new Exception("古いサムネイル画像の削除に失敗しました");
         }
       }
@@ -229,7 +229,7 @@ class ArticleModel
 
       $this->db->commit();
       $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
-      
+
       echo "記事の更新が成功しました";
       return true;
     } catch (PDOException $e) {
@@ -274,6 +274,28 @@ class ArticleModel
     }
   }
 
+  public function deleteArticleProcess($id)
+  {
+    $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
+
+    try {
+      $this->db->beginTransaction();
+
+      $this->deleteArticleImagesAll($id);
+      $this->deleteThumbnail($id);
+      $this->deleteArticles($id);
+
+      $this->db->commit();
+      return true;
+    } catch (Exception $e) {
+      $this->db->rollBack();
+      error_log("記事削除処理中にエラーが発生しました: ", $e->getMessage());
+      return false;
+    } finally {
+      $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
+    }
+  }
+
   /**
    * 記事を削除
    *
@@ -293,7 +315,8 @@ class ArticleModel
     }
   }
 
-  public function deleteImage($id) {
+  public function deleteThumbnail($id)
+  {
     try {
       // 削除対象のファイル名を取得
       $stmt = $this->db->prepare("
@@ -337,6 +360,42 @@ class ArticleModel
     }
   }
 
+  public function deleteArticleImagesAll($id)
+  {
+    try {
+      // 削除対象のファイルパスを取得
+      $stmt = $this->db->prepare("
+        SELECT file_url
+        FROM uploaded_images
+        WHERE article_id = :article_id
+      ");
+      $stmt->bindValue(":article_id", $id, PDO::PARAM_INT);
+      $stmt->execute();
+      $files = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      // ファイルシステムから削除
+      foreach($files as $file) {
+        $filePath =  rtrim(ROOT_PATH, '/') . '/' . ltrim($file['file_url'], '/');
+
+        if (file_exists($filePath)) {
+          if(unlink($filePath)) {
+            echo "記事に紐付いている画像を削除しました: " . $filePath . "\n";
+          }
+        } else {
+          echo "ファイルが見つかりません: " . $filePath . "\n";
+        }
+      }
+
+      // データベースのレコードを削除
+      $stmt = $this->db->prepare("DELETE FROM uploaded_images WHERE article_id = :article_id");
+      $stmt->bindValue(":article_id", $id, PDO::PARAM_INT);
+      return $stmt->execute();
+    } catch (PDOException $e) {
+      echo "画像の削除に失敗しました" . $e->getMessage();
+      return false;
+    }
+  }
+
   public function getAricleWithImagesById($id)
   {
     try {
@@ -366,12 +425,12 @@ class ArticleModel
 
   public function getArticleById($id)
   {
-    try{
+    try {
       $stmt = $this->db->prepare("SELECT id, title, content, DATE(updated_at) AS formatted_date FROM articles WHERE id = :id");
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
       $stmt->execute();
       return $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e){
+    } catch (PDOException $e) {
       echo "記事の取得に失敗しました" . $e->getMessage();
       return false;
     }
@@ -437,8 +496,7 @@ class ArticleModel
       } else {
         return false;
       }
-
-    } catch(PDOException $e) {
+    } catch (PDOException $e) {
       echo "公開ステータスの切り替えに失敗しました" . $e->getMessage();
       return false;
     }
