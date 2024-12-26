@@ -26,6 +26,9 @@ abstract class BaseArticleController
   /** 記事内容 @var string */
   protected $articleContent;
 
+  /** 記事挿入画像 @var string */
+  protected $articleImagesPath;
+
   /** 決定ボタンの文字列 @var string */
   protected $submitLabel;
 
@@ -98,7 +101,7 @@ abstract class BaseArticleController
       return $validationResult;
     }
 
-    // 仮のファイル名生成（記事IDが内場合は一時的にユニークIDを使用）
+    // 仮のファイル名生成（記事IDがない場合は一時的にユニークIDを使用）
     $uploadDirectory = IMAGE_UPLOADS_THUMBNAILS_PATH;
     $fileName = $articleId
     ? 'thumbnail_' . $articleId . '.' . pathinfo($file['name'], PATHINFO_EXTENSION)
@@ -226,5 +229,28 @@ abstract class BaseArticleController
     }
 
     return true;
+  }
+
+  
+  protected function uploadImage($file, $articleId = null, $index)
+  {
+    $uploadDir = IMAGE_UPLOADS_ARTICLES_PATH;
+    
+    $fileName = $articleId
+    ? 'image_' . $articleId . ($index != null ? '_' . $index : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION)
+    : 'temp_' . uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+
+    $filePath = $uploadDir . $fileName;
+
+    $compressedPath = $this->compressImage($file['tmp_name'], $filePath, $file['type']);
+
+    if ($compressedPath) {
+      return [
+        'tmp_path' => $filePath,
+        'url_path' => '/assets/image/uploads/articles/' . $fileName,
+      ];
+    }
+
+    return null;
   }
 }

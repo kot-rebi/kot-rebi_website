@@ -17,14 +17,23 @@ class DeleteArticleController
   public function handleRequest()
   {
     $id = $this->getArticleID();
+
     if ($this->validate($id))
     {
-      $this->articleModel->deleteArticles($id);
-      header("Location: ") . ADMIN_ARTICLES_URL;
-      exit;
+      if ($this->articleModel->deleteArticleProcess($id)) {
+        // 削除成功
+        header("Location: ") . ADMIN_ARTICLES_URL;
+        exit;
+      } else {
+        // 削除失敗
+        $_SESSION['error_message'] = "記事の削除に失敗しました";
+        header("Location: ") . ADMIN_ARTICLES_URL;
+        exit;
+      }
     } else {
       $_SESSION['error_message'] = "無効な記事IDです";
       header("Location: " . ADMIN_ARTICLES_URL);
+      exit;
     }
   }
 

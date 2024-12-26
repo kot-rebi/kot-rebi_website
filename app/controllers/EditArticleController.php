@@ -35,6 +35,7 @@ class EditArticleController extends BaseArticleController
         'articleTitle' => $this->articleTitle,
         'articleThumbnailPath' => $this->articleThumbnailPath,
         'articleContent' => $this->articleContent,
+        'articleImagesPath' => $this->articleImagesPath,
         'submitLabel' => $this->submitLabel,
         'articleId' => $this->articleId
       ];
@@ -58,6 +59,7 @@ class EditArticleController extends BaseArticleController
     $data = $this->getInputData();
 
     $thumbnailData = null;
+    $imageData = [];
 
     // サムネイル画像の仮保存
     if (!empty($_FILES['thumbnail']['tmp_name'])) {
@@ -72,10 +74,35 @@ class EditArticleController extends BaseArticleController
       }
     }
 
+    if (!empty($_FILES['images']['name'][0])) {
+      foreach ($_FILES['images']['name'] as $index => $imageName) {
+        $file = [
+          'name' => $_FILES['images']['name'][$index],
+          'tmp_name' => $_FILES['images']['tmp_name'][$index],
+          'type' => $_FILES['images']['type'][$index],
+          'size' => $_FILES['images']['size'][$index],
+          'error' => $_FILES['images']['error'][$index],
+        ];
+
+        $imageInfo = $this->uploadImage($file, null, $index);
+        $imageData[] = [
+          'tmp_path' => $imageInfo['tmp_path'],
+          'file_name' => basename($imageInfo['url_path']),
+          'file_path' => $imageInfo['url_path'],
+          'alt_text' => $data['title'],
+        ];
+      }
+    }
+
+    // 既存画像の枚数を取得
+    // 更新前の枚数に続いて連番でリネームするため、ここで取得しておく
+    $existingImageCount = $this->articleModel->getArticleImageCount($id);
+    echo $existingImageCount;
+
     if ($this->validateArticleId($id)) {
       if ($this->validateArticleSave($data)) {
         // 記事の更新
-        $this->articleModel->updateArticles($id, $data['title'], $data['content'], $thumbnailData);
+        $this->articleModel->updateArticles($id, $data['title'], $data['content'], $thumbnailData, $imageData);
 
         echo "記事を更新しました";
 
@@ -91,8 +118,35 @@ class EditArticleController extends BaseArticleController
             return;
           }
         }
-        header("Location:" . ADMIN_ARTICLES_URL);
-        exit;
+
+        echo "\n" . PHP_EOL;
+        var_dump($imageData);
+
+        // 記事画像のリネーム
+        foreach ($imageData as $index => $image) {
+          $imageNumber = $existingImageCount + $index;
+          $newImageFileName = 'image_' . $id . ($existingImageCount != 0 ? '_' . $imageNumber : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+          $newImageFilePath = IMAGE_UPLOADS_ARTICLES_PATH . $newImageFileName;
+
+          echo 'New FILE NAME: ' . PHP_EOL;
+          echo $imageNumber;
+          echo $newImageFileName;
+          echo $newImageFilePath;
+
+
+          if (rename($image['tmp_path'], $newImageFilePath)) {
+            $image['file_name'] = $newImageFileName;
+            $image['file_url'] = '/assets/image/uploads/articles/' . $newImageFileName;
+
+            $this->articleModel->updateArticleImagePath($image['id'], $image['file_url']);
+          } else {
+            echo "画像のリネームに失敗しました";
+            return;
+          }
+        }
+
+        // header("Location:" . ADMIN_ARTICLES_URL);
+        // exit;
       } else {
         echo "エラー: 記事の保存に失敗しました";
       }
@@ -123,6 +177,11 @@ class EditArticleController extends BaseArticleController
       $this->articleThumbnailPath = $article['thumbnailPath'];
     }
     $this->articleContent = $article['content'];
+    if ($article['articleImagesPath'] === false) {
+      $this->articleImagesPath = '';
+    } else {
+      $this->articleImagesPath = $article['articleImagesPath'];
+    }
     $this->submitLabel = '更新';
     $this->articleId = $article['id'];
   }

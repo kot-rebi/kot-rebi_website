@@ -37,6 +37,37 @@
     <img id="newThumbnailPreview" class="admin-create__thumbnailHidden" src="" alt="新しいプレビュー">
   </div>
 
+  <div class="admin-create__images">
+    <label class="admin-create__label">画像と説明</label>
+    <?php if ($isEditMode && !empty($articleImagesPath)): ?>
+      <div class="inserted-image-box-container">
+        <label>【挿入済み】</label>
+        <div class="inserted-image-box">
+          <?php for ($i = 0; $i < count($articleImagesPath); $i++): ?>
+            <div class="inserted-image-set">
+              <img src="<?= '/pj_homepage' .  htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
+              <p>URL</p>
+              <p><?= '/pj_homepage' . htmlspecialchars($articleImagesPath[$i]['file_url']) ?></p>
+              <p>代替テキスト</p>
+              <p><?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?></p>
+            </div>
+          <?php endfor; ?>
+        </div>
+      </div>
+    <?php endif; ?>
+
+    <div class="not-inserted-image-set">
+      <label>【未挿入】</label>
+      <div id="image-input-container">
+        <div class="image-input-set">
+          <input type="file" id="image" name="images[]" accept="image/*" required>
+          <input type="text" id="alt_text" name="alt_texts[]" placeholder="画像の説明を入力">
+        </div>
+      </div>
+        <button type="button" id="add-image-button">+ 画像を追加</button>
+      </div>
+  </div>
+
   <div class="admin-create__content">
     <label for="article-content">記事本文</label>
     <textarea name="content" id="article-content" rows="20" cols="50" placeholder="記事の本文を入力してください"><?= htmlspecialchars($articleContent) ?></textarea>
