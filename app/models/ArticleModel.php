@@ -501,4 +501,43 @@ class ArticleModel
       return false;
     }
   }
+
+  public function updatePublishDate($articleId, $scheduledPublishDate)
+  {
+    try {
+      $stmt = $this->db->prepare("UPDATE articles SET scheduled_publish_date = :scheduledPublishDate WHERE id = :id");
+      $stmt->bindValue('scheduledPublishDate', $scheduledPublishDate, PDO::PARAM_STR);
+      $stmt->bindValue('id', $articleId, PDO::PARAM_INT);
+      $stmt->execute();
+      return true;
+    } catch (PDOException $e) {
+      error_log("Error updating publish date: " . $e->getMessage());
+      return false;
+    }
+  }
+
+  public function publishArticle($articleId)
+  {
+    try {
+      $stmt = $this->db->prepare("UPDATE articles SET is_published = 1 WHERE id = :id");
+      $stmt->bindValue(':id', $articleId, PDO::PARAM_INT);
+      return $stmt->execute();
+    } catch (PDOException $e) {
+      error_log("Error publishing articles: " . $e->getMessage());
+      return false;
+    }
+  }
+
+  public function getScheduleArticlesForPublishing($currentDateTime)
+  {
+    try {
+      $stmt = $this->db->prepare("SELECT * FROM articles WHERE scheduled_publish_date <= :currentDateTime AND is_published = 0");
+      $stmt->bindValue(':currentDateTime', $currentDateTime, PDO::PARAM_STR);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      error_log("Error fetching schedulued articles: " . $e->getMessage());
+      return [];
+    }
+  }
 }

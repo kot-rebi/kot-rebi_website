@@ -31,6 +31,12 @@ else if (preg_match('/^\/pj_homepage\/admin\/articles\/edit/', $requestUri)) {
   $controller = new EditArticleController();
   $controller->handleRequest();
 }
+else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $requestUri ==='/pj_homepage/admin/articles/update_publish_date') {
+  // 公開日時の設定
+  require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/controllers/UpdatePublishDateController.php';
+  $controller = new UpdatePublishDateController();
+  $controller->handleRequest();
+}
 else if (preg_match('/^\/pj_homepage\/admin\/articles/', $requestUri)) {
   // 記事一覧の表示
   require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/controllers/ArticleController.php';
