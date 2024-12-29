@@ -3,7 +3,7 @@
 <?php
 require_once __DIR__ . '/../../../config.php';
 include GLOBAL_SHARED_PATH . '/head.php';
- ?>
+?>
 
 <body>
   <?php
@@ -40,6 +40,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
             <th>公開ステータス</th>
             <th>編集</th>
             <th>削除</th>
+            <th>公開日</th>
           </tr>
         </thead>
         <tbody>
@@ -51,7 +52,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
               <td><?= htmlspecialchars($article['updated_at']) ?></td>
               <td>
                 <?= htmlspecialchars($article['is_published'] == 1 ? '公開' : '非公開') ?>
-                <input type="checkbox" data-checkbox-id="<?= $article['id'] ?>" onchange="togglePublish(<?= htmlspecialchars($article['id']) ?>)" <?= $article['is_published'] == 1 ? "checked" : '' ?> >
+                <input type="checkbox" data-checkbox-id="<?= $article['id'] ?>" onchange="togglePublish(<?= htmlspecialchars($article['id']) ?>)" <?= $article['is_published'] == 1 ? "checked" : '' ?>>
               </td>
               <td>
                 <form action="/pj_homepage/admin/articles/edit" method="GET">
@@ -65,6 +66,13 @@ include GLOBAL_SHARED_PATH . '/head.php';
                   <button type="submit">削除</button>
                 </form>
               </td>
+              <td>
+                <form method="POST" action="/pj_homepage/admin/articles/update_publish_date">
+                  <input type="datetime-local" id="publish-datetime" name="scheduled_publish_date">
+                  <input type="hidden" name="article_id" value="<?= htmlentities($article['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                  <button type="submit">設定</button>
+                </form>
+              </td>
             </tr>
           <?php endforeach; ?>
         </tbody>
@@ -73,7 +81,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
   </main>
 
   <footer>
-  <script src="/pj_homepage/assets/js/admin/toggle_publish.js"></script>
+    <script src="/pj_homepage/assets/js/admin/toggle_publish.js"></script>
   </footer>
 </body>
 
