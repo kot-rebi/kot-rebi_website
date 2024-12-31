@@ -41,10 +41,15 @@ class ArticleModel
   {
     try {
       $stmt = $this->db->prepare("
-      SELECT id, title, DATE(updated_at) AS formatted_date
-      FROM articles 
-      WHERE is_published = 1
-      ORDER BY updated_at DESC
+      SELECT 
+        a.id, 
+        a.title, 
+        DATE(a.updated_at) AS formatted_date,
+        i.file_path AS thumbnail_path
+      FROM articles a
+      LEFT JOIN images i ON a.id = i.article_id
+      WHERE a.is_published = 1
+      ORDER BY a.updated_at DESC
       LIMIT :limit OFFSET :offset
       ");
       $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
