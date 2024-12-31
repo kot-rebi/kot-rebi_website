@@ -19,16 +19,18 @@ include GLOBAL_SHARED_PATH . '/head.php';
     <main>
       <div class="main__content">
         <?php foreach ($articles as $article): ?>
-          <article class="content-card">
-            <div class="content-card__body">
-              <img src="/pj_homepage/assets/image/img_ranking1.jpg" class="content-card__image">
-              <div class="content--card__date-wrapper">
-                <i class="fa-regular fa-clock conten-card__icon"></i>
-                <p class="content-card__date"><?= $article['formatted_date'] ?></p>
+          <a href="/pj_homepage/articles/<?= htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8') ?>">
+            <article class="content-card">
+              <div class="content-card__body">
+                <img src="<?= isset($article['thumbnail_path']) ? '/pj_homepage' . htmlspecialchars($article['thumbnail_path'], ENT_QUOTES, 'UTF-8') : '' ?>" class="content-card__image">
+                <div class="content--card__date-wrapper">
+                  <i class="fa-regular fa-clock conten-card__icon"></i>
+                  <p class="content-card__date"><?= $article['formatted_date'] ?></p>
+                </div>
+                <p class="content--card__title"><?= $article['title'] ?></p>
               </div>
-              <p class="content--card__title"><?= $article['title'] ?></p>
-            </div>
-          </article>
+            </article>
+          </a>
         <?php endforeach; ?>
       </div>
       <div class="pagination">

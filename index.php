@@ -6,11 +6,14 @@ echo $parsedown->text('# HelloComposer');
 
 $requestUri = $_SERVER['REQUEST_URI'];
 
-if (preg_match('/^\/pj_homepage\/articles\/1$/', $requestUri)){
+if (preg_match('/^\/pj_homepage\/articles\/(\d+)$/', $requestUri, $matches)){
   // 記事内容を表示
+  // 動的な記事IDを取得する
   require_once $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/controllers/PublicArticleController.php';
   $controller = new PublicArticleController();
-  $controller->show();
+
+  $articleId = intval($matches[1]);
+  $controller->show($articleId);
 
 } else if (preg_match('/^\/pj_homepage\/admin\/articles\/create/', $requestUri)) {
   // 新規投稿画面の表示

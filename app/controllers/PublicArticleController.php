@@ -17,10 +17,17 @@ class PublicArticleController
     $this->parsedown->setSafeMode(true);
   }
 
-  public function show()
+  public function show($articleId)
   {
-    // TODO: IDは仮（記事選択画面が完成したら動的に取得
-    $articleId = 76;
+
+    // 記事IDが指定されていない場合や不正な場合
+    if (!$articleId) {
+      http_response_code(400);
+      echo "不正なリクエストです";
+      return;
+    }
+
+    // 記事の取得
     $article = $this->articleModel->getArticleById($articleId);
 
     // 記事が見つからないとき
