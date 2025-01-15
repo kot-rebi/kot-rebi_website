@@ -68,7 +68,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
                 </form>
               </td>
               <td>
-                <form action="/pj_homepage/admin/articles/delete" method="POST">
+                <form action="/pj_homepage/admin/articles/delete" method="POST" onsubmit="return confirmDeleteButton()">
                   <input type="hidden" name="article_id" value="<?php echo htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8'); ?>">
                   <button type="submit" class="admin-delete-btn">削除</button>
                 </form>
@@ -100,6 +100,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
   <footer>
     <script src="/pj_homepage/assets/js/admin/toggle_publish.js"></script>
     <script src="/pj_homepage/assets/js/admin/scheduled-publish-editor.js"></script>
+    <script src="/pj_homepage/assets/js/admin/deleteButton.js"></script>
   </footer>
 </body>
 
