@@ -60,7 +60,7 @@
       <label>【未挿入】</label>
       <div id="image-input-container">
         <div class="image-input-set">
-          <input type="file" id="image" name="images[]" accept="image/*" required>
+          <input type="file" id="image" name="images[]" accept="image/*">
           <input type="text" id="alt_text" name="alt_texts[]" placeholder="画像の説明を入力">
         </div>
       </div>
