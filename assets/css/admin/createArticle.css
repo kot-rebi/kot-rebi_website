@@ -129,9 +129,73 @@
   /* border: 2px solid red; */
 }
 
-.admin-create__images .inserted-image-set {
-  /* border: 3px solid fuchsia; */
+/* =======================================
+    削除ボタン
+    ======================================= */
+
+/* チェックボックス全体 */
+.admin-create__images .delete-button{
+  appearance: none;
+  position: relative;
+  cursor: pointer;
+  width: 60px;
+  height: 40px;
+  border: 2px solid #f44336;
+  border-radius: 8px;
+  background-color: #ffe0e0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+  text-align: center;
+  line-height: 38px;
+  transition: all 0.3s ease;
 }
+
+.admin-create__images .delete-button-label {
+  display: inline-block;
+  width: 60px;
+  height: 40px;
+  line-height: 40px;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* チェックボックス内のテキスト表示 */
+.admin-create__images .delete-button::before {
+  content: "削除";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ホバー時 */
+.admin-create__images .delete-button:hover {
+  background-color: #ffe5e5;
+  color: #ff5757;
+  border-color: #ff5757;
+}
+
+/* チェックされた状態 */
+.admin-create__images .delete-button:checked {
+  background-color: #ff5757;
+  color: white;
+  border-color: #cc0000;
+}
+
+.admin-create__images .delete-button:checked::before {
+  color: white;
+}
+
+.admin-create__images .delete-button:focus {
+  outline: 2px solid #ff5757;
+}
+
 
 .admin-create__images .image-input-set {
   margin-bottom: 5px;
