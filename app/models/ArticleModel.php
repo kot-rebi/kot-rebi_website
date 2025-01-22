@@ -524,6 +524,50 @@ class ArticleModel
     }
   }
 
+  /**
+   * 記事画像のファイル名から連番の次の番号を取得
+   *
+   * @param [type] $id
+   * @return void
+   */
+  public function getUploadedImageNextNumber($article_id): int
+  {
+    $number = 1;
+    // DBから記事番号の中でIDが一番高いレコードのfile_urlを取得
+    try {
+      $stmt = $this->db->prepare("
+      SELECT file_url
+      FROM uploaded_images
+      WHERE article_id = :article_id
+      ORDER BY id DESC
+      LIMIT 1
+      ");
+      $stmt->bindValue(":article_id", $article_id, PDO::PARAM_INT);
+      $stmt->execute();
+      $result = $stmt->fetch(PDO::FETCH_ASSOC);
+      echo "result: " . var_dump($result) . PHP_EOL;
+
+      // file_urlの文字列から最初の画像番号と、連番の両方を取り出す
+      // 削除した画像があってもその番号は埋めずに、合計何枚目かを元に連番にするため
+      if ($result && isset($result['file_url'])) {
+        $pattern = "/image_([0-9]+)(_([0-9]+))?\./";
+        if (preg_match($pattern, $result['file_url'], $matches)) {
+          // 連番部分が存在すれば+1、なければ1を返す
+          if (isset($matches[3]) && $matches[3] !== "") {
+            $number = $matches[3] + 1;
+          } else {
+            $number = 1;
+          }
+        }
+      }
+      return $number ?? -1;
+    } catch (PDOException $e) {
+      echo "エラーが発生しました: " . $e;
+      return -1;
+    }
+    return $number ?? -1;
+  }
+
   public function togglePublish($articleId)
   {
     try {
