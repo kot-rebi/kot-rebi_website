@@ -379,11 +379,11 @@ class ArticleModel
       $files = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
       // ファイルシステムから削除
-      foreach($files as $file) {
+      foreach ($files as $file) {
         $filePath =  rtrim(ROOT_PATH, '/') . '/' . ltrim($file['file_url'], '/');
 
         if (file_exists($filePath)) {
-          if(unlink($filePath)) {
+          if (unlink($filePath)) {
             echo "記事に紐付いている画像を削除しました: " . $filePath . "\n";
           }
         } else {
@@ -398,6 +398,50 @@ class ArticleModel
     } catch (PDOException $e) {
       echo "画像の削除に失敗しました" . $e->getMessage();
       return false;
+    }
+  }
+
+  /**
+   * 記事更新時の画像削除
+   *
+   * @param int $id  記事番号
+   * @param array $deleteImages
+   * @return void
+   */
+  public function deleteArticleImage($id, $deleteImages)
+  {
+    $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
+    try {
+      $this->db->beginTransaction();
+
+      // DBの記事番号とファイルパスが一致するレコードが存在するときに削除
+      // データベースのレコードを削除
+      foreach ($deleteImages as $deleteImage) {
+        $stmt = $this->db->prepare("DELETE FROM uploaded_images WHERE article_id = :article_id AND file_url = :file_url");
+        $stmt->bindValue(":article_id", $id, PDO::PARAM_INT);
+        $stmt->bindValue(":file_url", $deleteImage, PDO::PARAM_STR);
+        $stmt->execute();
+
+        // ファイルシステムから削除
+        $filePath =  rtrim(ROOT_PATH, '/') . '/' . ltrim($deleteImage, '/');
+        if (file_exists($filePath)) {
+          if (unlink($filePath)) {
+            echo "記事に紐付いている画像を削除しました: " . $filePath . "\n";
+          }
+        } else {
+          echo "ファイルが見つかりません: " . $filePath . "\n";
+        }
+      }
+
+      $this->db->commit();
+    } catch (PDOException $e) {
+      echo "データベースのエラー: " . $e->getMessage();
+      $this->db->rollBack();
+    } catch (Exception $e) {
+      echo "画像の削除に失敗しました: " . $e->getMessage();
+      $this->db->rollBack();
+    } finally {
+      $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
     }
   }
 

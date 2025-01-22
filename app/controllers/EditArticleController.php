@@ -58,6 +58,11 @@ class EditArticleController extends BaseArticleController
     $id = $this->getArticleID();
     $data = $this->getInputData();
 
+    if (isset($_POST['delete_images'])) {
+      $deleteImages = $_POST['delete_images'];
+      $this->articleModel->deleteArticleImage($id, $deleteImages);
+    }
+
     $thumbnailData = null;
     $imageData = [];
 
