@@ -48,9 +48,13 @@
 
               <img src="<?= '/pj_homepage' .  htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
               <p>URL</p>
-              <p><?= '/pj_homepage' . htmlspecialchars($articleImagesPath[$i]['file_url']) ?></p>
+              <p id="url-<?= $i ?>"><?= '/pj_homepage' . htmlspecialchars($articleImagesPath[$i]['file_url']) ?></p>
+              <button type="button" class="copy-button" data-target="url-<?= $i ?>">コピー</button>
+
               <p>代替テキスト</p>
-              <p><?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?></p>
+              <p id="alt-<= $i ?>"><?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?></p>
+              <button type="button" class="copy-button" data-target="alt-<? $i ?>">コピー</button>
+              
               <label class="delete-button-label">
                 <input type="checkbox" class="delete-button" name="delete_images[]" value="<?= htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
               </label>

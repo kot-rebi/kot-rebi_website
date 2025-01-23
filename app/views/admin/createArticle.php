@@ -22,6 +22,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
     <script src="/pj_homepage/assets/js/admin/input-label-interaction.js"></script>
     <script src="/pj_homepage/assets/js/admin/imagePreview.js"></script>
     <script src="/pj_homepage/assets/js/admin/addArticleImages.js"></script>
+    <script src="/pj_homepage/assets/js/admin/copy-to-clipboard.js"></script>
   </footer>
 </body>
 
