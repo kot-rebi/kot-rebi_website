@@ -48,13 +48,19 @@
 
               <img src="<?= '/pj_homepage' .  htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
               <p>URL</p>
-              <p id="url-<?= $i ?>"><?= '/pj_homepage' . htmlspecialchars($articleImagesPath[$i]['file_url']) ?></p>
-              <button type="button" class="copy-button" data-target="url-<?= $i ?>">コピー</button>
+              <div class="url-container">
+                <span class="url-text" id="url-<?= $i ?>" title="<?= '/pj_homepage' . htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
+                  <?= '/pj_homepage' . htmlspecialchars($articleImagesPath[$i]['file_url']) ?>
+                </span>
+                <button type="button" class="copy-button" data-target="url-<?= $i ?>"><i class="fa-regular fa-copy"></i></button>
+              </div>
 
-              <p>代替テキスト</p>
-              <p id="alt-<= $i ?>"><?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?></p>
-              <button type="button" class="copy-button" data-target="alt-<? $i ?>">コピー</button>
-              
+              <p>altテキスト</p>
+              <div class="alt-container">
+                <p id="alt-<= $i ?>" class="alt-text"><?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?></p>
+                <button type="button" class="copy-button" data-target="alt-<? $i ?>"><i class="fa-regular fa-copy"></i></button>
+              </div>
+
               <label class="delete-button-label">
                 <input type="checkbox" class="delete-button" name="delete_images[]" value="<?= htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
               </label>
@@ -68,8 +74,9 @@
       <label>【未挿入】</label>
       <div id="image-input-container">
         <div class="image-input-set">
+          <label for="image" class="custom-file-label">画像を選択</label>
           <input type="file" id="image" name="images[]" accept="image/*">
-          <input type="text" id="alt_text" name="alt_texts[]" placeholder="画像の説明を入力">
+          <input type="text" id="alt_text" name="alt_texts[]" placeholder="altテキスト">
         </div>
       </div>
       <button type="button" id="add-image-button">+ 画像を追加</button>

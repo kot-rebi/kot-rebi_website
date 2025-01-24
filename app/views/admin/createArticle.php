@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+s<!DOCTYPE html>
 <html lang="ja">
 <?php 
 require_once __DIR__ . '/../../../config.php';
@@ -23,6 +23,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
     <script src="/pj_homepage/assets/js/admin/imagePreview.js"></script>
     <script src="/pj_homepage/assets/js/admin/addArticleImages.js"></script>
     <script src="/pj_homepage/assets/js/admin/copy-to-clipboard.js"></script>
+    <script src="/pj_homepage/assets/js/admin/fileLabelUpdater.js"></script>
   </footer>
 </body>
 
