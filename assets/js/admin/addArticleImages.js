@@ -7,9 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const newInputSet = document.createElement('div');
     newInputSet.classList.add('image-input-set');
 
+    // ラベル
+    const customFileLabel = document.createElement('label');
+    customFileLabel.htmlFor = 'image'
+    customFileLabel.classList.add('custom-file-label');
+    customFileLabel.textContent = "画像を選択";
+
     // 画像
     const imageInput = document.createElement('input');
     imageInput.type = 'file';
+    imageInput.id = 'image';
     imageInput.name = 'images[]';
     imageInput.accept = 'image/*';
     imageInput.required = true;
@@ -17,8 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 説明
     const altTextInput = document.createElement('input');
     altTextInput.type = 'text';
+    altTextInput.id =  'alt_text';
     altTextInput.name = 'alt_texts[]';
-    altTextInput.placeholder = '画像の説明を入力';
+    altTextInput.placeholder = 'altテキスト';
 
     // 削除
     const removeButton = document.createElement('button');
@@ -29,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 作成したセットを追加
+    newInputSet.appendChild(customFileLabel);
     newInputSet.appendChild(imageInput);
     newInputSet.appendChild(altTextInput);
     newInputSet.appendChild(removeButton);
