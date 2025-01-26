@@ -1,4 +1,4 @@
-s<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <?php 
 require_once __DIR__ . '/../../../config.php';
