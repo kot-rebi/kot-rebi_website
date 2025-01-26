@@ -101,14 +101,20 @@
   /* border: 2px solid navy; */
 }
 
+/* =======================================
+  画像ブロックの外側
+======================================= */
 .admin-create__images .inserted-image-box {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin: 10px 40px;
-  /* border: 4px solid indigo; */
+  border-radius: 8px;
 }
 
 .inserted-image-box-container {
   margin: 40px 0px;
+  /* border: solid 3px palevioletred; */
 }
 
 .inserted-image-box-container label{
@@ -119,25 +125,170 @@
   /* border: 2px solid navy; */
 }
 
-.admin-create__images .inserted-image-set label {
-  margin: 10px 40px;
-  /* border: 2px solid red; */
+/* =======================================
+  画像セットのブロック
+======================================= */
+.inserted-image-set {
+  width: calc(33.3% - 10px);
+  box-sizing: border-box;
+  text-align: center;
+  padding: 10px;
+  border: solid 1px #A0522D;
+  border-radius: 8px;
+  background-color: #fcf4e7;
 }
 
+/* 画像 */
+.admin-create__images .inserted-image-set img {
+  display: block;
+  object-fit: contain;
+  margin: 0 auto;
+  max-width: 100%;
+  max-height: 150px;
+}
+
+/* URL部分 */
+.admin-create__images .url-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.admin-create__images .url-text {
+  display: inline-block;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* コピーボタン */
+.admin-create__images .copy-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 8px;
+  background-color: #f3d0c1;
+  border: 2px solid #d17d58;
+  color: #555;
+  transition: all 0.3s ease;
+}
+
+.admin-create__images .copy-button:hover {
+  background-color: #e2b29d;
+  border-color: #bc7a52;
+  transform: scale(1.05);
+}
+
+/* alt部分のコピーボタン */
+.admin-create__images .alt-container .copy-button {
+  background-color: #f8c8a1;
+  border: 2px solid #f0a56d;
+}
+
+.admin-create__images .alt-container .copy-button:hover {
+  background-color: #f6b680;
+  border-color: #e48958;
+}
+
+/* altテキストの配置 */
+.admin-create__images .alt-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin: 10px auto;
+  max-width: 500px;
+  /* border: 1px solid darkblue; */
+}
+
+/* altテキスト */
+.admin-create__images .alt-text {
+  display: inline-block;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 挿入済み画像セットの説明文 */
 .admin-create__images .inserted-image-set p {
   margin: 10px 40px;
   /* border: 2px solid red; */
 }
 
-.admin-create__images .inserted-image-set {
-  /* border: 3px solid fuchsia; */
+/* 削除ボタン */
+/* チェックボックス全体 */
+.admin-create__images .delete-button{
+  appearance: none;
+  position: relative;
+  cursor: pointer;
+  width: 60px;
+  height: 40px;
+  border: 2px solid #f44336;
+  border-radius: 8px;
+  background-color: #ffe0e0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+  text-align: center;
+  line-height: 38px;
+  transition: all 0.3s ease;
 }
 
-.admin-create__images .image-input-set {
-  margin-bottom: 5px;
-  margin-bottom: 5px;
-  /* border: 3px solid greenyellow; */
+.admin-create__images .delete-button-label {
+  display: inline-block;
+  width: 60px;
+  height: 40px;
+  line-height: 40px;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
 }
+
+/* チェックボックス内のテキスト表示 */
+.admin-create__images .delete-button::before {
+  content: "削除";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ホバー時 */
+.admin-create__images .delete-button:hover {
+  background-color: #ffe5e5;
+  color: #ff5757;
+  border-color: #ff5757;
+  transform: scale(1.05);
+}
+
+/* チェックされた状態 */
+.admin-create__images .delete-button:checked {
+  background-color: #ff5757;
+  color: white;
+  border-color: #cc0000;
+}
+
+.admin-create__images .delete-button:checked::before {
+  color: white;
+}
+
+.admin-create__images .delete-button:focus {
+  outline: 2px solid #ff5757;
+}
+
+
 
 .admin-create__images img {
   margin: 10px 40px;
@@ -148,28 +299,137 @@
   border-radius: 5px;
 }
 
+/* =======================================
+  未挿入画像セット
+======================================= */
 .not-inserted-image-set {
   margin: 40px 40px 10px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fde5d6;
 }
 
-.not-inserted-image-set label {
+.not-inserted-image-set .image-input-set {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+/* ラベル */
+.not-inserted-image-set .image-input-set label {
   display: block;
+  flex: 1;
   font-size: 1.2rem;
   font-weight: 500;
-  /* border: 2px solid navy; */
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  color: #333;
 }
 
-.not-inserted-image-set input {
-  margin-bottom: 10px;
+/* デフォルトのfile部分は非表示にする */
+/* .not-inserted-image-set .image-input-set input[type="file"] {
+  display: none;
+} */
+
+/* image-input-setのflexは1:2 */
+.image-input-set input[type="file"],
+.image-input-set input[type="text"] {
+  flex: 2; 
 }
 
-.not-inserted-image-set button {
+/* 入力フィールド */
+.not-inserted-image-set .image-input-set input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #555;
+  background-color: #fff;
+  border: 2px solid #ddd;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 画像説明入力 */
+.not-inserted-image-set .image-input-set input[type="text"] {
+  font-size: 1rem;
+  color: #555;
+  background-color: #fff;
+  border: 2px solid #ddd;
+}
+
+.not-inserted-image-set .image-input-set input[type="text"]:focus {
+  border-color: #d17d58;
+  box-shadow: 0 0 5px rgba(209, 125, 88, 0.3);
+}
+
+/* 追加ボタン */
+.not-inserted-image-set #add-image-button {
+  display: inline-block;
   margin-top: 10px;
   margin-bottom: 10px;
-
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #555;
+  border: 2px solid #d17d58;
+  background-color: #f3d0c1;
+  transition: all 0.3s ease;
 }
 
+.not-inserted-image-set #add-image-button:hover {
+  background-color: #e2b29d;
+  border-color: #bc7a52;
+  transform: scale(1.05);
+}
+
+.not-inserted-image-set .imageset-delete-button {
+  padding: 5px 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  background-color: #e74c3c;
+  transition: background-color 0.3s ease;
+}
+
+.not-inserted-image-set .imageset-delete-button:hover {
+  background-color: #c0392b;
+}
+
+.not-inserted-image-set .imageset-delete-button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(231, 76, 60, 0.7);
+}
+
+/* カスタムラベル */
+/* .not-inserted-image-set .image-input-set label.custom-file-label {
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #f3d0c1;
+  border: 2px solid #d17d58;
+  color: #555;
+  transition: all 0.3s ease;
+} */
+
+/* .not-inserted-image-set .image-input-set label.custom-file-label:hover {
+  background-color: #e2b29d;
+  border-color: #bc7a52;
+} */
+
+/* .not-inserted-image-set .image-input-set label.custom-file-label:active {
+  transform: scale(0.98);
+} */
 
 /* =======================================
   記事本文
@@ -221,4 +481,53 @@
 
 .admin-create__content textarea::placeholder {
   opacity: 0.7;
+}
+
+/* =======================================
+  更新ボタン
+======================================= */
+input[type="submit"] {
+  display: block;
+  margin: 0 auto 60px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #fff;
+  background-color: #d17d58;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+input[type="submit"]:hover {
+  background-color: #bc6a48;
+  transform: scale(1.05);
+}
+
+input[type="submit"]:active {
+  background-color: #9f5535;
+  transform: scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 600px) {
+  .inserted-image-set {
+    width: calc(100% - 10px);
+  }
+
+  .not-inserted-image-set {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  label.custom-file-label {
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  }
+
+  #add-image-button {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
 }

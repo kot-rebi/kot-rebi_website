@@ -58,6 +58,11 @@ class EditArticleController extends BaseArticleController
     $id = $this->getArticleID();
     $data = $this->getInputData();
 
+    if (isset($_POST['delete_images'])) {
+      $deleteImages = $_POST['delete_images'];
+      $this->articleModel->deleteArticleImage($id, $deleteImages);
+    }
+
     $thumbnailData = null;
     $imageData = [];
 
@@ -94,10 +99,15 @@ class EditArticleController extends BaseArticleController
       }
     }
 
-    // 既存画像の枚数を取得
-    // 更新前の枚数に続いて連番でリネームするため、ここで取得しておく
-    $existingImageCount = $this->articleModel->getArticleImageCount($id);
-    echo $existingImageCount;
+        // 既存画像の枚数を取得
+        // 更新前の枚数に続いて連番でリネームするため、最後に追加された画像の末尾番号を取得
+        /** @var int $existingImageCount */
+        $existingImageCount = $this->articleModel->getUploadedImageNextNumber($id);
+        echo "existingImageCount = " . $existingImageCount;
+        if ($existingImageCount === -1) {
+          echo "画像の番号のリネームに失敗しました";
+          return;
+        }
 
     if ($this->validateArticleId($id)) {
       if ($this->validateArticleSave($data)) {
@@ -122,8 +132,10 @@ class EditArticleController extends BaseArticleController
         echo "\n" . PHP_EOL;
         var_dump($imageData);
 
+
         // 記事画像のリネーム
         foreach ($imageData as $index => $image) {
+          echo "foreachの中: " . $existingImageCount;
           $imageNumber = $existingImageCount + $index;
           $newImageFileName = 'image_' . $id . ($existingImageCount != 0 ? '_' . $imageNumber : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
           $newImageFilePath = IMAGE_UPLOADS_ARTICLES_PATH . $newImageFileName;

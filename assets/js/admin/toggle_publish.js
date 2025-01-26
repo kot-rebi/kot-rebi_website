@@ -23,4 +23,4 @@ function togglePublish(articleId) {
     checkbox.checked = !checkedStatus;
     return;
   }
-}``
+}

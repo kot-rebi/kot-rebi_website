@@ -28,7 +28,8 @@
 
   <div class="admin-create__thumbnail">
     <label for="thumbnail">サムネイル画像</label>
-    <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+    <label for="thumbnail" class="file-input-label">サムネイル画像を選択</label>
+    <input type="file" id="thumbnail" name="thumbnail" class="hidden-file-input" accept="image/*">
 
     <!-- 現在のサムネイル -->
     <img id="thumbnailPreview" class="<?= $isEditMode && !empty($articleThumbnailPath) ? '' : 'admin-create__thumbnailHidden' ?>" src="<?= '/pj_homepage' . htmlspecialchars($articleThumbnailPath) ?? '' ?>" alt="現在のサムネイル画像">
@@ -45,11 +46,25 @@
         <div class="inserted-image-box">
           <?php for ($i = 0; $i < count($articleImagesPath); $i++): ?>
             <div class="inserted-image-set">
+
               <img src="<?= '/pj_homepage' .  htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
               <p>URL</p>
-              <p><?= '/pj_homepage' . htmlspecialchars($articleImagesPath[$i]['file_url']) ?></p>
-              <p>代替テキスト</p>
-              <p><?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?></p>
+              <div class="url-container">
+                <span class="url-text" id="url-<?= $i ?>" title="<?= '/pj_homepage' . htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
+                  <?= '/pj_homepage' . htmlspecialchars($articleImagesPath[$i]['file_url']) ?>
+                </span>
+                <button type="button" class="copy-button" data-target="url-<?= $i ?>"><i class="fa-regular fa-copy"></i></button>
+              </div>
+
+              <p>altテキスト</p>
+              <div class="alt-container">
+                <p id="alt-<= $i ?>" class="alt-text"><?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?></p>
+                <button type="button" class="copy-button" data-target="alt-<? $i ?>"><i class="fa-regular fa-copy"></i></button>
+              </div>
+
+              <label class="delete-button-label">
+                <input type="checkbox" class="delete-button" name="delete_images[]" value="<?= htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
+              </label>
             </div>
           <?php endfor; ?>
         </div>
@@ -60,12 +75,13 @@
       <label>【未挿入】</label>
       <div id="image-input-container">
         <div class="image-input-set">
-          <input type="file" id="image" name="images[]" accept="image/*" required>
-          <input type="text" id="alt_text" name="alt_texts[]" placeholder="画像の説明を入力">
+          <label for="image" class="file-input-label">画像を選択</label>
+          <input type="file" id="image" class="hidden-file-input" name="images[]" accept="image/*">
+          <input type="text" id="alt_text" name="alt_texts[]" placeholder="altテキスト">
         </div>
       </div>
-        <button type="button" id="add-image-button">+ 画像を追加</button>
-      </div>
+      <button type="button" id="add-image-button">+ 画像を追加</button>
+    </div>
   </div>
 
   <div class="admin-create__content">
