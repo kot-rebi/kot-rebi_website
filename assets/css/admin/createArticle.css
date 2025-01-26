@@ -463,6 +463,35 @@
   opacity: 0.7;
 }
 
+/* =======================================
+  更新ボタン
+======================================= */
+input[type="submit"] {
+  display: block;
+  margin: 0 auto 60px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #fff;
+  background-color: #d17d58;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+input[type="submit"]:hover {
+  background-color: #bc6a48;
+  transform: scale(1.05);
+}
+
+input[type="submit"]:active {
+  background-color: #9f5535;
+  transform: scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
 @media (max-width: 600px) {
   .inserted-image-set {
     width: calc(100% - 10px);
