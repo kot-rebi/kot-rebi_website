@@ -328,9 +328,9 @@
 }
 
 /* デフォルトのfile部分は非表示にする */
-.not-inserted-image-set .image-input-set input[type="file"] {
+/* .not-inserted-image-set .image-input-set input[type="file"] {
   display: none;
-}
+} */
 
 /* image-input-setのflexは1:2 */
 .image-input-set input[type="file"],
@@ -386,8 +386,28 @@
   transform: scale(1.05);
 }
 
+.not-inserted-image-set .imageset-delete-button {
+  padding: 5px 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  background-color: #e74c3c;
+  transition: background-color 0.3s ease;
+}
+
+.not-inserted-image-set .imageset-delete-button:hover {
+  background-color: #c0392b;
+}
+
+.not-inserted-image-set .imageset-delete-button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(231, 76, 60, 0.7);
+}
+
 /* カスタムラベル */
-.not-inserted-image-set .image-input-set label.custom-file-label {
+/* .not-inserted-image-set .image-input-set label.custom-file-label {
   display: inline-block;
   width: 100%;
   padding: 10px;
@@ -400,16 +420,16 @@
   border: 2px solid #d17d58;
   color: #555;
   transition: all 0.3s ease;
-}
+} */
 
-.not-inserted-image-set .image-input-set label.custom-file-label:hover {
+/* .not-inserted-image-set .image-input-set label.custom-file-label:hover {
   background-color: #e2b29d;
   border-color: #bc7a52;
-}
+} */
 
-.not-inserted-image-set .image-input-set label.custom-file-label:active {
+/* .not-inserted-image-set .image-input-set label.custom-file-label:active {
   transform: scale(0.98);
-}
+} */
 
 /* =======================================
   記事本文
