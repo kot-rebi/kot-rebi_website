@@ -1,9 +1,6 @@
 <?php
 require 'vendor/autoload.php';
 
-$parsedown = new Parsedown();
-echo $parsedown->text('# HelloComposer');
-
 $requestUri = $_SERVER['REQUEST_URI'];
 
 if (preg_match('/^\/pj_homepage\/articles\/(\d+)$/', $requestUri, $matches)){

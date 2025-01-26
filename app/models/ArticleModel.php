@@ -463,7 +463,7 @@ class ArticleModel
         $article['articleImagesPath'] = $articleImagesPath;
       }
 
-      echo var_dump($article);
+      // echo var_dump($article);
 
       return $article;
     } catch (Exception $e) {
