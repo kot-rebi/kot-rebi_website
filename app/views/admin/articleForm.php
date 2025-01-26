@@ -28,7 +28,8 @@
 
   <div class="admin-create__thumbnail">
     <label for="thumbnail">サムネイル画像</label>
-    <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+    <label for="thumbnail" class="file-input-label">サムネイル画像を選択</label>
+    <input type="file" id="thumbnail" name="thumbnail" class="hidden-file-input" accept="image/*">
 
     <!-- 現在のサムネイル -->
     <img id="thumbnailPreview" class="<?= $isEditMode && !empty($articleThumbnailPath) ? '' : 'admin-create__thumbnailHidden' ?>" src="<?= '/pj_homepage' . htmlspecialchars($articleThumbnailPath) ?? '' ?>" alt="現在のサムネイル画像">
@@ -74,8 +75,8 @@
       <label>【未挿入】</label>
       <div id="image-input-container">
         <div class="image-input-set">
-          <label for="image" class="custom-file-label">画像を選択</label>
-          <input type="file" id="image" name="images[]" accept="image/*">
+          <label for="image" class="file-input-label">画像を選択</label>
+          <input type="file" id="image" class="hidden-file-input" name="images[]" accept="image/*">
           <input type="text" id="alt_text" name="alt_texts[]" placeholder="altテキスト">
         </div>
       </div>

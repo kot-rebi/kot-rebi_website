@@ -10,12 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ラベル
     const customFileLabel = document.createElement('label');
     customFileLabel.htmlFor = 'image'
-    customFileLabel.classList.add('custom-file-label');
+    customFileLabel.classList.add('file-input-label');
     customFileLabel.textContent = "画像を選択";
 
     // 画像
     const imageInput = document.createElement('input');
     imageInput.type = 'file';
+    imageInput.classList.add('hidden-file-input');
     imageInput.id = 'image';
     imageInput.name = 'images[]';
     imageInput.accept = 'image/*';
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const removeButton = document.createElement('button');
     removeButton.type = 'button';
     removeButton.textContent = '削除';
+    removeButton.classList.add('imageset-delete-button');
     removeButton.addEventListener('click', () => {
       container.removeChild(newInputSet);
     });
