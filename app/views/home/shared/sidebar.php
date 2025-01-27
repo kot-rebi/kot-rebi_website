@@ -5,8 +5,11 @@
     <!-- 自己紹介ブロック -->
     <section class="profile">
       <img src="/pj_homepage/assets/image/img_Icon.png">
-      <p class="profile__name">名前</p>
-      <p class="profile__description">自己紹介の説明文を入力します。2行か3行ぐらいは書いても良いんじゃないかな。それぐらいのスペースは空けよう。</p>
+      <p class="profile__name">ことれい</p>
+      <div class="profile__description">
+        <p>ゲーム制作をしています</p>
+        <p>誰かが遊んでくれたらうれしいです</p>
+      </div>
     </section>
 
     <!-- 人気記事ブロック -->
