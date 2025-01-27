@@ -33,12 +33,14 @@ include GLOBAL_SHARED_PATH . '/head.php';
           </a>
         <?php endforeach; ?>
       </div>
+
+      <!-- ページネーション -->
       <div class="pagination">
-        <a href="<?= $currentPage == 1 ? '#' : '?page=' . ($currentPage - 1) ?>" class="<?= $currentPage == 1 ? 'disabled' : '' ?>">前へ</a>
+        <a href="<?= $currentPage == 1 ? '#' : '?category=' . ($_GET['category'] ?? '') . '&page=' . ($currentPage - 1) ?>" class="<?= $currentPage == 1 ? 'disabled' : '' ?>">前へ</a>
         <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-          <a href="?page=<?= $i ?>" class="<?= $i == $currentPage ? 'active' : '' ?>"><?= $i ?></a>
+          <a href="?category=<?= $_GET['category'] ?? '' ?>&page=<?= $i ?>" class="<?= $i == $currentPage ? 'active' : '' ?>"><?= $i ?></a>
         <?php endfor; ?>
-        <a href="<?= $currentPage == $totalPages ? '#' : '?page=' . ($currentPage + 1) ?>" class="<?= $currentPage == $totalPages ? 'disabled' : '' ?>">次へ</a>
+        <a href="<?= $currentPage == $totalPages ? '#' : '?category=' . ($_GET['category']?? '') . '&page=' . ($currentPage + 1) ?>" class="<?= $currentPage == $totalPages ? 'disabled' : '' ?>">次へ</a>
       </div>
     </main>
     <?php include VIEWS_HOME_SHARED_PATH . 'sidebar.php'; ?>

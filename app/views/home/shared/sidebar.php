@@ -46,7 +46,7 @@
         <?php if (!empty($categories)): ?>
           <?php foreach ($categories as $category) : ?>
             <li class="categories__item">
-              <a href="#">
+              <a href="?category=<?= $category['id'] ?>">
                 <p><?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') ?></p>
               </a>
             </li>
