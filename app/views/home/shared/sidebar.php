@@ -43,17 +43,20 @@
     <section class="categories">
       <h3 class="sidebar__title">カテゴリー</h3>
       <ul class="categories__list">
-        <li class="categories__item"><a href="#">
-            <p>カテゴリー1</p>
-          </a></li>
-        <li class="categories__item"><a href="#">
-            <p>カテゴリー2</p>
-          </a></li>
-        <li class="categories__item"><a href="#">
-            <p>カテゴリー3</p>
-          </a></li>
+        <?php if (!empty($categories)): ?>
+          <?php foreach ($categories as $category) : ?>
+            <li class="categories__item">
+              <a href="#">
+                <p><?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') ?></p>
+              </a>
+            </li>
+          <?php endforeach; ?>
+          <?php else: ?>
+          <li class="categories__item">
+            <p>カテゴリーが存在しません</p>
+          </li>
+        <?php endif; ?>
       </ul>
     </section>
   </div>
-
 </aside>
