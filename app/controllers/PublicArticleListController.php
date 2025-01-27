@@ -33,6 +33,13 @@ class PublicArticleListController
     $totalArticles = $this->articleModel->getTotalPublishedArticles();
     $totalPages = ceil($totalArticles / $limit);
 
+    // カテゴリーの取得
+    $categories = $this->listCategories();
+
     require_once VIEWS_HOME_PATH . 'index.php';
+  }
+
+  public function listCategories() {
+    return $this->articleModel->getCategoriesList();
   }
 }

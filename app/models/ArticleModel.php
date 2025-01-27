@@ -633,4 +633,17 @@ class ArticleModel
       return [];
     }
   }
+
+  public function getCategoriesList() 
+  {
+    try {
+      $stmt = $this->db->prepare("SELECT name FROM " . TABLE_CATEGORIES);
+      $stmt->execute();
+      $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      return $categories;
+    } catch (PDOException $e) {
+      echo "Error: " . $e->getMessage();
+      return [];
+    }
+  }
 }
