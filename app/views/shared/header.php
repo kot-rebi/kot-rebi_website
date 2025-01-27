@@ -1,7 +1,7 @@
 <!-- ヘッダー -->
 <header class="header">
   <img src="/pj_homepage/assets/image/img_profile3.png" class="header__icon">
-  <p class="header_title"><?= getHeaderTitle() ?></p>
+  <a href="/pj_homepage/" class="header_title"><?= getHeaderTitle() ?></a>
   <img src="/pj_homepage/assets/image/img_profile2.png" class="header__icon">
   <!-- <nav class="header_navigation">
       <ul class="header_navigation_list">
