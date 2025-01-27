@@ -23,5 +23,5 @@ $requestUri = $_SERVER['REQUEST_URI'];
     <link rel="stylesheet" href="/pj_homepage/assets/css/admin/createArticle.css">
   <?php endif; ?>
 
-  <title>自分のホームページ</title>
+  <title>ことれいのもり</title>
 </head>

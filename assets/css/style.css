@@ -66,7 +66,15 @@ p{
   font-weight: bold;
   text-align: center;
   color: #FBAA31;
+  transition: transform 0.3s ease, color 0.3s ease;
   /* border: solid 3px gold; */
+}
+
+.header_title:hover {
+  padding: 5px;
+  transform: translateY(-2px);
+  color: #FFF;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 /* =======================================
