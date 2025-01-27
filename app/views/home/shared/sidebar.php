@@ -12,19 +12,30 @@
       </div>
     </section>
 
+
     <!-- 人気記事ブロック -->
     <section class="popular-article">
       <h3 class="sidebar__title">人気記事</h3>
-      <ul class="popular-article__list">
-        <li class="popular-article__item"><a href="#"><img src="/pj_homepage/assets/image/img_ranking1.jpg">
-            <p>【PixiJS】deltaTimeの使い方について詳しく解説</p>
-          </a></li>
-        <li class="popular-article__item"><a href="#"><img src="/pj_homepage/assets/image/img_ranking2.jpg">
-            <p>ゲーム制作の技術記事を書いてみよう</p>
-          </a></li>
-        <li class="popular-article__item"><a href="#"><img src="/pj_homepage/assets/image/img_ranking3.jpg">
-            <p>長くても2～3行で収まるタイトルにしよう。あんまり長いとレイアウトが崩れるような気がする。</p>
-          </a></li>
+      <li class="popular-article__item">
+        <ul class="popular-article__list">
+          <p class="prepare">準備中</p>
+          <!-- <a href="#">
+            <img src="/pj_homepage/assets/image/img_ranking1.jpg">
+            <p>タイトル1</p>
+          </a> -->
+      </li>
+      <!-- <li class="popular-article__item">
+        <a href="#">
+            <img src="/pj_homepage/assets/image/img_ranking2.jpg">
+            <p>タイトル2</p>
+          </a>
+      </li>
+      <li class="popular-article__item">
+        <a href="#">
+            <img src="/pj_homepage/assets/image/img_ranking3.jpg">
+            <p>タイトル3</p>
+          </a>
+      </li> -->
       </ul>
     </section>
 
