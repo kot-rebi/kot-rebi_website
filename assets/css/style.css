@@ -114,19 +114,27 @@ main {
   /* background-color: #FFF2C1; */
 }
 
+.content-card {
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.content-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
 .content-card__body {
   height: 100%;
   padding-bottom: 15px;
-  margin: 0 4px;
   border-radius: 20px;
   background-color: white;
-  box-shadow: 2px 2px 2px 2px #bbb;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   /* border: solid 5px saddlebrown; */
 }
 
 .content-card__image {
   border-radius: 20px 20px 0px 0px;
-  /* border: solid 4px darkred; */
 }
 
 .content--card__date-wrapper {
