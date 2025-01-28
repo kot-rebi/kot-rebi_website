@@ -98,8 +98,13 @@ p{
    ======================================= */
 #container {
   display: flex;
-  justify-content: space-between;
-  margin: 0 240px 20px;
+  gap: 10px;
+  margin: 0 auto;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  box-sizing: border-box;
   /* border: solid 5px darksalmon; */
 }
 
@@ -107,24 +112,33 @@ p{
    メイン部分
    ======================================= */
 main {
-  flex: 2.4;
+  flex: 1;
+  width: 100%;
+  max-width: 70%;
   /* border: solid 2px red; */
 }
 
 .main__content {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   padding: 30px 7px 0 7px;
   border-radius: 20px 20px 0px 0px ;
-  max-width: 100%;
+  width: 100%;
   /* border: solid 5px blue; */
-  /* background-color: #FFF2C1; */
 }
 
 .content-card {
+  width: 100%;
+  min-width: 230px;
+  /* min-height: 350px; */
   border-radius: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* overflow: hidden; */
+  display: grid;
+  grid-template-rows: auto;
+  /* border: solid 2px seagreen; */
+  flex-grow: 0;
 }
 
 .content-card:hover {
@@ -133,16 +147,32 @@ main {
 }
 
 .content-card__body {
+  display: flex;
+  flex-direction: column;
+  /* gap: 10px; */
+  /* width: 100%;*/
   height: 100%;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   border-radius: 20px;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   /* border: solid 5px saddlebrown; */
+  /* flex-grow: 1; */
+}
+
+/* サムネイル画像 */
+.content-card__container {
+  flex-shrink: 0;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
 }
 
 .content-card__image {
-  border-radius: 20px 20px 0px 0px;
+  width: 100%;
+  height: auto;
+  border-radius: 20px 20px 0 0;
+  object-fit: cover;
 }
 
 .content--card__date-wrapper {
@@ -168,24 +198,29 @@ main {
 }
 
 .content--card__title {
+  margin: 0 10px;
+  padding: 0.5rem;
   font-size: 1.1rem;
   font-weight: bold;
-  padding: 0.5rem;
-  margin: 0 10px;
+  line-height: 1.4;
+  /* min-height: calc((3 * 1.1rem * 1.4) + 1rem); */
+  /* min-height: 3.5rem;*/
   text-align: justify;
-  /* border: solid 3px red; */
+  /* border: solid 3px red;*/
 }
 
 /* =======================================
    サイドバー
    ======================================= */
 .sidebar__content {
-  flex: 1;
+  flex: none;
   width: 100%;
   max-width: 350px;
+  margin-left: 20px;
   padding: 30px 15px 10px 15px;
   /* border: solid 5px hotpink; */
   /* background-color: #FFF2C1; */
+  min-width: 150px;
 }
 
 .sidebar__title {
@@ -309,14 +344,65 @@ main {
   /* border: solid 1px royalblue; */
 }
 
+/* =======================================
+  タブレット対応
+======================================= */
+@media (max-width: 768px) {
+  #container {
+    flex-direction: column;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .profile {
+    display: none;
+  }
+
+  main {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .main__content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+  }
+
+  .content-card {
+    width: 100%;
+    min-width: 0;
+    min-height: auto;
+    height: auto;
+  }
+
+  .content-card__image {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .content--card__title {
+    font-size: 1rem;
+  }
+
+  .sidebar__content {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+}
 
 /* =======================================
    スマートフォン対応
    ======================================= */
-@media (max-width: 767px) {
+@media (max-width: 480px) {
   #container {
-    display: block;
-    margin: 0 20px 20px;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
     }
 
   .header {
@@ -334,36 +420,39 @@ main {
 
   main {
     width: 100%;
+    max-width: 100%;
   }
 
   .main__content {
     grid-template-columns: 1fr;
+    gap: 30px;
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .content-card {
+    width: 100%;
+    min-width: 0;
+    min-height: auto;
+    height: auto;
+  }
+  
+  .content--card__title {
+    font-size: 1.0rem;
+  }
+
+  .content-card__date {
+    font-size: 0.75rem;
   }
 
   .sidebar__content {
-    width: 100%; 
-  }
-
-  .profile {
-    display: none;
-  }
-}
-
-/* =======================================
-  タブレット対応
-======================================= */
-@media (max-width: 1024px) {
-  #container {
-    display: block;
-    margin: 0 20px 20px;
-  }
-
-  .profile {
-    display: none;
-  }
-
-  .sidebar__content {
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    max-width: 550px;
+  }
+
+  .profile {
+    display: none;
   }
 }
+

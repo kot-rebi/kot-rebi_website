@@ -5,7 +5,7 @@
     <!-- 自己紹介ブロック -->
     <section class="profile">
       <img src="/pj_homepage/assets/image/img_Icon.png">
-      <p class="profile__name">ことれい</p>
+      <p class="profile__name">name</p>
       <div class="profile__description">
         <p>ゲーム制作をしています</p>
         <p>誰かが遊んでくれたらうれしいです</p>
