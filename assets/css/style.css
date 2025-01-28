@@ -210,6 +210,47 @@ main {
 }
 
 /* =======================================
+  ページネーション
+   ======================================= */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  padding: 10px;
+  gap: 8px;
+}
+
+.pagination a {
+  display: inline-block;
+  padding: 8px 14px;
+  /* border: 1px solid #ddd; */
+  border: 2px solid darkblue;
+  border-radius: 20px;
+  color: #333;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.pagination a.active {
+  background-color: #ff8c42;
+  color: #fff;
+  border-color: #ff8c42;
+}
+
+.pagination a:hover {
+  background-color: #ffe0c2;
+  color: #000;
+}
+
+.pagination a.disabled {
+  pointer-events: none;
+  color: #ffa76f;
+  border-color: #ffe0c2;
+  background-color: #fff5eb;
+}
+
+/* =======================================
    サイドバー
    ======================================= */
 .sidebar__content {
