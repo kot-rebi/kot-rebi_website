@@ -9,5 +9,5 @@ function getHeaderTitle() {
     return htmlspecialchars($GLOBALS['headerTitleText']);
   }
 
-  return 'ことれいのもり';
+  return 'もりもりすらいむ';
 }
