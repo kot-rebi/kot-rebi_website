@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config.php';
 require_once MODELS_PATH . 'Database.php';
-require MODELS_PATH .'ArticleModel.php';
+require MODELS_PATH . 'ArticleModel.php';
 
 class PublicArticleListController
 {
@@ -14,11 +14,19 @@ class PublicArticleListController
 
   public function listArticles()
   {
-    // 現在のページをURLパラメータから取得
+    // URLパラメータから取得
+    // 現在のページ
     if (isset($_GET['page'])) {
       $currentPage = (int)$_GET['page'];
     } else {
       $currentPage = 1;
+    }
+
+    // カテゴリID
+    if (isset($_GET['category'])) {
+      $categoryId = (int)$_GET['category'];
+    } else {
+      $categoryId = null;
     }
 
     // 1ページ当たりの表示件数
@@ -26,13 +34,30 @@ class PublicArticleListController
     // データ取得の開始位置
     $offset = ($currentPage - 1) * $limit;
 
+    // 記事の取得（カテゴリが指定されている場合はフィルターをして取得）
+    if ($categoryId) {
+      $articles = $this->articleModel->getArticlesByCategory($categoryId, $limit, $offset);
+      $totalArticles = $this->articleModel->getTotalArticlesByCategory($categoryId);
+    } else {
+      $articles = $this->articleModel->getPublishedArticles($limit, $offset);
+      $totalArticles = $this->articleModel->getTotalPublishedArticles();
+    }
+
     // 記事の取得
-    $articles = $this->articleModel->getPublishedArticles($limit, $offset);
+    // $articles = $this->articleModel->getPublishedArticles($limit, $offset);
 
     // 総ページ数の取得
     $totalArticles = $this->articleModel->getTotalPublishedArticles();
     $totalPages = ceil($totalArticles / $limit);
 
+    // カテゴリーの取得
+    $categories = $this->listCategories();
+
     require_once VIEWS_HOME_PATH . 'index.php';
+  }
+
+  public function listCategories()
+  {
+    return $this->articleModel->getCategoriesList();
   }
 }

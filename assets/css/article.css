@@ -1,14 +1,14 @@
 .article-container {
-  padding: 40px 60px;
-  margin-top: 30px;
-  margin-right: 15px;
-  margin-left: 25px;
+  padding: 40px 40px;
+  /* margin-top: 30px; */
+  /* margin-right: 15px; */
+  /* margin-left: 25px; */
   border-radius: 20px;
   line-height: 1.5;
   letter-spacing: 0.05rem;
   color: #252525;
   background-color: white;
-  /* border: solid 2px red; */
+  border: solid 2px red;
 }
 
 .article h1 {
@@ -22,23 +22,24 @@
 
 .article h2 {
   margin: 32px 0;
-  padding: 10px;
+  padding: 20px 0px 12px;
   font-size: 1.6rem;
   line-height: 1.5;
   /* border: solid 4px darkcyan; */
 }
 
 .article h3 {
-  padding: 10px;
-  margin: 32px 0;
-  font-size: 1.4rem;
+  padding: 12px 0;
+  margin: 24px 0;
+  font-size: 1.3rem;
+  /* border: 1px solid saddlebrown; */
 }
 
 .article p{
   margin: 10px 0;
   font-size: 1.1rem;
-  line-height: 1.5;
-  letter-spacing: 0.05rem;
+  line-height: 1.7;
+  letter-spacing: 0.04rem;
 }
 
 .article ul, .article ol {
@@ -55,6 +56,11 @@
   font-size: 1.1rem;
   list-style-type: disc;
   /* border: solid 3px dimgray; */
+}
+
+.article li a {
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .article a {
@@ -86,10 +92,21 @@
   margin-top: 20px;
   color: #919191;
 }
+
+/* =======================================
+  サムネイル
+======================================= */
 .article__thumbnail {
   margin-top: 20px;
   /* border: solid 3px peru; */
 }
+
+.article__thumbnail img {
+  margin: 0 auto;
+  /* border: solid 2px aqua; */
+}
+
+
 
 /* =======================================
    本文
@@ -118,33 +135,105 @@ pre[class*=language-] {
 /* h2要素 オレンジ背景とオレンジの下線 */
 .underline-with-background {
   position: relative;
-  background-color: #FFF2C1; 
-  border-radius: 5px; 
+  /* background-color: #F5F5F5; */
+  border-radius: 4px;
 }
 
 .underline-with-background::after {
-  content:"";
+  content: "";
   display: block;
-  width: 40%;
-  height: 3px;
-  border-bottom: 3px solid #FBAA31;
+  height: 4px;
+  background: -webkit-linear-gradient(to right, #FBAA31, transparent);
+  background: linear-gradient(to right, #FBAA31, transparent);
   margin: 5px 0 0;
 }
 
 /* h3要素 文字がオレンジ色でオレンジの下線 */
-.orange-underline-heading {
-  font-weight: 600;
-  color: #FBAA31;
-  text-decoration: underline;
-  text-underline-offset: 0.2rem;
+.orange-circle {
+  position: relative;
+  padding-left: 1.8em;
 }
 
-/* =======================================
-   スマートフォン対応
-======================================= */
-
-
+.orange-circle::before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f219";
+  font-weight: 900;
+  left: 0;
+  top: -0.2em;
+  color: #ffdfa1;
+  margin-right: 0.5em;
+}
 
 /* =======================================
   タブレット対応
 ======================================= */
+@media (max-width: 768px) {
+  .article-container {
+    padding: 20px;
+  }
+
+  .article h1 {
+    font-size: 1.8rem;
+  }
+
+  .article h2 {
+    font-size: 1.4rem;
+  }
+
+  .article h3 {
+    font-size: 1.2rem;
+  }
+
+  .article p {
+    font-size: 1rem;
+  }
+
+  .article ul, .article ol {
+    margin: 10px;
+    padding-left: 15px;
+  }
+
+  .article li {
+    font-size: 1rem;
+  }
+}
+
+/* =======================================
+  スマートフォン対応
+======================================= */
+@media (max-width: 480px) {
+  .article-container {
+    padding: 12px 16px;
+  }
+
+  .article h1 {
+    font-size: 1.6rem;
+  }
+
+  .article h2 {
+    font-size: 1.2rem;
+  }
+
+  .article h3 {
+    font-size: 1rem;
+  }
+
+  .article p {
+    font-size: 0.95rem;
+  }
+
+  .article ul, .article ol {
+    margin: 8px;
+    padding-left: 10px;
+  }
+
+  .article li {
+    font-size: 0.95rem;
+  }
+
+  pre[class*=language-] {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    padding: 10px;
+  }
+}
