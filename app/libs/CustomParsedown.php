@@ -66,7 +66,7 @@ class CustomParsedown extends Parsedown
   private function addClassToH3($html)
   {
     $pattern = '/(<h3)([^>]*>)/';
-    $replacement = '$1 class="orange-underline-heading"$2';
+    $replacement = '$1 class="orange-circle"$2';
     return preg_replace($pattern, $replacement, $html);
   }
 
