@@ -22,14 +22,14 @@
 
 .article h2 {
   margin: 32px 0;
-  padding: 20px 12px 12px 12px;
+  padding: 20px 0px 12px;
   font-size: 1.6rem;
   line-height: 1.5;
   /* border: solid 4px darkcyan; */
 }
 
 .article h3 {
-  padding: 12px;
+  padding: 12px 0;
   margin: 24px 0;
   font-size: 1.3rem;
   /* border: 1px solid saddlebrown; */
