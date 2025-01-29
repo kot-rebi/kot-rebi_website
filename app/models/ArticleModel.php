@@ -37,6 +37,51 @@ class ArticleModel
     }
   }
 
+  public function getArticlesByCategory($categoryId, $limit, $offset)
+  {
+    try {
+      $stmt = $this->db->prepare("
+        SELECT 
+        a.id, 
+        a.title, 
+        DATE(a.updated_at) AS formatted_date,
+        i.file_path AS thumbnail_path
+      FROM " . TABLE_ARTICLES . " a
+      LEFT JOIN " . TABLE_THUMBNAILS . " i ON a.id = i.article_id
+      WHERE a.is_published = 1
+      AND a.category_id = :category_id
+      ORDER BY a.updated_at DESC
+      LIMIT :limit OFFSET :offset
+      ");
+      $stmt->bindValue(":category_id", $categoryId, PDO::PARAM_INT);
+      $stmt->bindValue(':category_id', $categoryId, PDO::PARAM_INT);
+      $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+      $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      echo "データの取得に失敗しました: " . $e->getMessage();
+      return [];
+    }
+  }
+
+  public function getTotalArticlesByCategory($categoryId)
+  {
+    try {
+      $stmt = $this->db->prepare(
+        "SELECT COUNT(*) FROM " . TABLE_ARTICLES . "
+      WHERE category_id = :category_id
+      AND published = 1"
+      );
+      $stmt->bindValue(':category_id', $categoryId, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetchColumn();
+    } catch (PDOException $e) {
+      echo $e->getMessage();
+      return [];
+    }
+  }
+
   public function getPublishedArticles($limit, $offset)
   {
     try {
@@ -472,10 +517,27 @@ class ArticleModel
     }
   }
 
+  /**
+   * 記事番号に対応する記事を取得
+   * サムネイル画像も取得
+   * 
+   * @param int $id 記事番号
+   * @return void
+   */
   public function getArticleById($id)
   {
     try {
-      $stmt = $this->db->prepare("SELECT id, title, content, DATE(updated_at) AS formatted_date FROM " . TABLE_ARTICLES . " WHERE id = :id");
+      $stmt = $this->db->prepare("
+      SELECT
+        a.id, 
+        a.title, 
+        a.content, 
+        DATE(a.updated_at) AS formatted_date,
+        i.file_path AS thumbnail_path
+      FROM " . TABLE_ARTICLES . " a
+      LEFT JOIN " . TABLE_THUMBNAILS . " i ON a.id = i.article_id 
+      WHERE a.id = :id
+      ");
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
       $stmt->execute();
       return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -630,6 +692,19 @@ class ArticleModel
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
       error_log("Error fetching schedulued articles: " . $e->getMessage());
+      return [];
+    }
+  }
+
+  public function getCategoriesList()
+  {
+    try {
+      $stmt = $this->db->prepare("SELECT id, name FROM " . TABLE_CATEGORIES);
+      $stmt->execute();
+      $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      return $categories;
+    } catch (PDOException $e) {
+      echo "Error: " . $e->getMessage();
       return [];
     }
   }

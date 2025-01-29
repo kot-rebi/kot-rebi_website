@@ -6,8 +6,8 @@ class CustomParsedown extends Parsedown
   public function text($text)
   {
     // 親のメソッドでマークダウンをHTMLに変換
-    $html = parent::text($text);
-
+    $html = parent::text($text); 
+    
     $html = $this->wrapParagraphs($html);
     $html = $this->wrapHeadingWithDiv($html);
     $html = $this->wrapCodeWithDiv($html);
@@ -66,7 +66,7 @@ class CustomParsedown extends Parsedown
   private function addClassToH3($html)
   {
     $pattern = '/(<h3)([^>]*>)/';
-    $replacement = '$1 class="orange-underline-heading"$2';
+    $replacement = '$1 class="orange-circle"$2';
     return preg_replace($pattern, $replacement, $html);
   }
 
@@ -87,7 +87,7 @@ class CustomParsedown extends Parsedown
   {
     // 文の中身をマッチさせる
     $html = preg_replace_callback('/([^\n\r]+(\n|\r\n)?)/', function ($matches) use (&$isInsidePre) {
-      $line = trim($matches[0]);
+      $line = $matches[0];
 
       // 空行の場合は何も返さない
       if ($line === '') {
@@ -154,17 +154,17 @@ class CustomParsedown extends Parsedown
     // <pre>タグの開始を検知
     if (strpos($line, '<pre') !== false) {
       $isInsidePre = true;
-      return $line . "\n";
+      return $line;
     }
 
     // <pre>タグの終了を検知
     if (strpos($line, '</pre>') !== false) {
       $isInsidePre = false;
-      return $line . "\n";
+      return $line;
     }
 
     if ($isInsidePre) {
-      return $line . "\n";
+      return $line;
     }
 
     return null;
