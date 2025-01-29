@@ -58,6 +58,11 @@
   /* border: solid 3px dimgray; */
 }
 
+.article li a {
+  white-space: normal;
+  word-wrap: break-word;
+}
+
 .article a {
   color: #FF8C42;
   text-decoration: none;
@@ -160,11 +165,75 @@ pre[class*=language-] {
 }
 
 /* =======================================
-   スマートフォン対応
-======================================= */
-
-
-
-/* =======================================
   タブレット対応
 ======================================= */
+@media (max-width: 768px) {
+  .article-container {
+    padding: 20px;
+  }
+
+  .article h1 {
+    font-size: 1.8rem;
+  }
+
+  .article h2 {
+    font-size: 1.4rem;
+  }
+
+  .article h3 {
+    font-size: 1.2rem;
+  }
+
+  .article p {
+    font-size: 1rem;
+  }
+
+  .article ul, .article ol {
+    margin: 10px;
+    padding-left: 15px;
+  }
+
+  .article li {
+    font-size: 1rem;
+  }
+}
+
+/* =======================================
+  スマートフォン対応
+======================================= */
+@media (max-width: 480px) {
+  .article-container {
+    padding: 12px 16px;
+  }
+
+  .article h1 {
+    font-size: 1.6rem;
+  }
+
+  .article h2 {
+    font-size: 1.2rem;
+  }
+
+  .article h3 {
+    font-size: 1rem;
+  }
+
+  .article p {
+    font-size: 0.95rem;
+  }
+
+  .article ul, .article ol {
+    margin: 8px;
+    padding-left: 10px;
+  }
+
+  .article li {
+    font-size: 0.95rem;
+  }
+
+  pre[class*=language-] {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    padding: 10px;
+  }
+}
