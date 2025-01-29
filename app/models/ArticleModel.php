@@ -517,10 +517,27 @@ class ArticleModel
     }
   }
 
+  /**
+   * 記事番号に対応する記事を取得
+   * サムネイル画像も取得
+   * 
+   * @param int $id 記事番号
+   * @return void
+   */
   public function getArticleById($id)
   {
     try {
-      $stmt = $this->db->prepare("SELECT id, title, content, DATE(updated_at) AS formatted_date FROM " . TABLE_ARTICLES . " WHERE id = :id");
+      $stmt = $this->db->prepare("
+      SELECT
+        a.id, 
+        a.title, 
+        a.content, 
+        DATE(a.updated_at) AS formatted_date,
+        i.file_path AS thumbnail_path
+      FROM " . TABLE_ARTICLES . " a
+      LEFT JOIN " . TABLE_THUMBNAILS . " i ON a.id = i.article_id 
+      WHERE a.id = :id
+      ");
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
       $stmt->execute();
       return $stmt->fetch(PDO::FETCH_ASSOC);
