@@ -87,10 +87,21 @@
   margin-top: 20px;
   color: #919191;
 }
+
+/* =======================================
+  サムネイル
+======================================= */
 .article__thumbnail {
   margin-top: 20px;
   /* border: solid 3px peru; */
 }
+
+.article__thumbnail img {
+  margin: 0 auto;
+  /* border: solid 2px aqua; */
+}
+
+
 
 /* =======================================
    本文
