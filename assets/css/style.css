@@ -105,7 +105,7 @@ p{
   max-width: 1250px;
   padding: 20px;
   box-sizing: border-box;
-  border: solid 5px darksalmon;
+  /* border: solid 5px darksalmon; */
 }
 
 /* =======================================
@@ -115,7 +115,7 @@ main {
   flex: 1;
   width: 100%;
   max-width: 75%;
-  border: solid 2px darkcyan;
+  /* border: solid 2px darkcyan; */
 }
 
 .main__content {
