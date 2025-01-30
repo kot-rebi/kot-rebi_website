@@ -8,6 +8,7 @@ $requestUri = $_SERVER['REQUEST_URI'];
   <link rel="stylesheet" href="/pj_homepage/assets/css/reset.css">
   <link rel="stylesheet" href="/pj_homepage/assets/css/style.css">
   <link rel="stylesheet" href="/pj_homepage/assets/css/common.css">
+  <link rel="stylesheet" href="/pj_homepage/assets/css/error.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.css" rel="stylesheet">

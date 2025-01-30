@@ -23,7 +23,7 @@ class PublicArticleController
     // 記事IDが指定されていない場合や不正な場合
     if (!$articleId) {
       http_response_code(400);
-      echo "不正なリクエストです";
+      include $_SERVER['DOCUMENT_ROOT'] . '/pj_homepage/app/views/error-404.php';
       return;
     }
 
