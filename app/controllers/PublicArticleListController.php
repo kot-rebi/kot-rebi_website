@@ -28,7 +28,6 @@ class PublicArticleListController
     } else {
       $categoryId = null;
     }
-    echo $categoryId;
 
     // 1ページ当たりの表示件数
     $limit = 10;
