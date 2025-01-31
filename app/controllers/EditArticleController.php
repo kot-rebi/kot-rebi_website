@@ -189,10 +189,12 @@ class EditArticleController extends BaseArticleController
       $this->articleThumbnailPath = $article['thumbnailPath'];
     }
     $this->articleContent = $article['content'];
-    if ($article['articleImagesPath'] === false) {
-      $this->articleImagesPath = '';
-    } else {
+
+    // 記事画像のパスが存在するか存在する
+    if (isset($article['articleImagesPath']) && $article['articleImagesPath'] !== false) {
       $this->articleImagesPath = $article['articleImagesPath'];
+    } else {
+      $this->articleImagesPath = '';
     }
     $this->submitLabel = '更新';
     $this->articleId = $article['id'];
