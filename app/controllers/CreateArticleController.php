@@ -38,6 +38,7 @@ class CreateArticleController extends BaseArticleController
     $data = $this->getInputData();
     $thumbnailData = null;
     $articleImages = [];
+    $imageData = [];
 
     // サムネイル画像の仮保存
     if (!empty($_FILES['thumbnail']['tmp_name'])) {
@@ -90,7 +91,7 @@ class CreateArticleController extends BaseArticleController
 
       // サムネイル画像のリネーム
       if ($thumbnailData && $articleId) {
-        $newFilePath = IMAGE_UPLOADS_THUMBNAILS_PATH . 'thumbnail_' . $articleId . '.' . pathinfo($thumbnailData['file_name'], PATHINFO_EXTENSION);
+        $newFilePath = IMAGE_UPLOADS_THUMBNAILS_PATH . '/thumbnail_' . $articleId . '.' . pathinfo($thumbnailData['file_name'], PATHINFO_EXTENSION);
         if (rename($thumbnailData['tmp_path'], $newFilePath)) {
           $newFileName = basename($newFilePath);
           $relativePath = '/assets/image/uploads/thumbnails/' . $newFileName;
