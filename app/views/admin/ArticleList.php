@@ -8,7 +8,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
 <body>
   <?php
   require_once FUNCTIONS_PATH;
-  include GLOBAL_SHARED_PATH . 'header.php';
+  include GLOBAL_SHARED_PATH . '/header.php';
 
   // エラーメッセージがあれば表示
   if (isset($_SESSION['error_message'])) {
@@ -62,13 +62,13 @@ include GLOBAL_SHARED_PATH . '/head.php';
                 </div>
               </td>
               <td>
-                <form action="/pj_homepage/admin/articles/edit" method="GET">
+                <form action=<?= ADMIN_ARTICLES_EDIT_URL ?> method="GET">
                   <input type="hidden" name="id" value="<?= htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8'); ?>">
                   <button type="submit" class="admin-edit-btn">編集</button>
                 </form>
               </td>
               <td>
-                <form action="/pj_homepage/admin/articles/delete" method="POST" onsubmit="return confirmDeleteButton()">
+                <form action=<?= ADMIN_ARTICLES_DELETE_URL ?> method="POST" onsubmit="return confirmDeleteButton()">
                   <input type="hidden" name="article_id" value="<?php echo htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8'); ?>">
                   <button type="submit" class="admin-delete-btn">削除</button>
                 </form>
@@ -83,7 +83,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
                 <?php endif; ?>
                 <button type="button" class="publish-date-edit-btn" onclick="toggleScheduledPublishEdit(<?= $article['id'] ?>)">編集</button>
                 <div id="edit-form-<?= $article['id'] ?>" class="edit-form" style="display: none;">
-                  <form method="POST" action="/pj_homepage/admin/articles/update_publish_date">
+                  <form method="POST" action=<?= ADMIN_ARTICLES_PUBLISHDATE_URL ?>>
                     <input type="datetime-local" class="publish-date-input-datetime" id="publish-datetime" name="scheduled_publish_date" value="<?= $article['scheduled_publish_date'] ? htmlspecialchars($article['scheduled_publish_date']) : '' ?>">
                     <input type="hidden" name="article_id" value="<?= htmlentities($article['id'], ENT_QUOTES, 'UTF-8'); ?>">
                     <button type="submit" class="publish-date-save-btn">保存</button>
@@ -98,9 +98,9 @@ include GLOBAL_SHARED_PATH . '/head.php';
   </main>
 
   <footer>
-    <script src="/pj_homepage/assets/js/admin/toggle_publish.js"></script>
-    <script src="/pj_homepage/assets/js/admin/scheduled-publish-editor.js"></script>
-    <script src="/pj_homepage/assets/js/admin/deleteButton.js"></script>
+    <script src=<?= JS_ADMIN_URL . "/toggle_publish.js" ?>></script>
+    <script src=<?= JS_ADMIN_URL . "/scheduled-publish-editor.js" ?>></script>
+    <script src=<?= JS_ADMIN_URL . "/deleteButton.js" ?>></script>
   </footer>
 </body>
 

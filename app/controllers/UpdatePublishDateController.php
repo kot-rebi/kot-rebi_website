@@ -2,8 +2,8 @@
 session_start();
 
 require_once __DIR__ . '/../../config.php';
-require_once MODELS_PATH . 'Database.php';
-require MODELS_PATH . 'ArticleModel.php';
+require_once MODELS_PATH . '/Database.php';
+require MODELS_PATH . '/ArticleModel.php';
 
 class UpdatePublishDateController
 {
@@ -24,8 +24,8 @@ class UpdatePublishDateController
       if (!$articleId || !$scheduledPublishDate) {
         $_SESSION['error_message'] = '記事IDまたは公開日時が無効です';
         echo '記事IDまたは公開日時が無効です';
-        // header('Location: /pj_homepage/admin/articles');
-        // exit;
+        header('Location: ' . ADMIN_ARTICLES_URL);
+        exit;
       }
     
       $articleModel = new ArticleModel(Database::getInstance());
@@ -40,7 +40,7 @@ class UpdatePublishDateController
       }
     }
     
-    // header('Location: /pj_homepage/admin/articles');
-    // exit;
+    header('Location: ' . ADMIN_ARTICLES_URL);
+    exit;
   }
 }
