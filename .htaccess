@@ -3,4 +3,4 @@ RewriteBase /pj_homepage/
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /pj_homepage/index.php [L]
+RewriteRule ^(.*)$ index.php [QSA,L]

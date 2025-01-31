@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../config.php';
-require_once CONTROLLERS_PATH . 'BaseArticleController.php';
+require_once CONTROLLERS_PATH . '/BaseArticleController.php';
 
 
 class CreateArticleController extends BaseArticleController
@@ -30,7 +30,7 @@ class CreateArticleController extends BaseArticleController
     ];
     extract($viewData);
 
-    include VIEWS_ADMIN_PATH . 'createArticle.php';
+    include VIEWS_ADMIN_PATH . '/createArticle.php';
   }
 
   private function insertArticle()
@@ -58,7 +58,7 @@ class CreateArticleController extends BaseArticleController
     }
 
     if (!empty($_FILES['images']['name'][0])) {
-      foreach($_FILES['images']['name'] as $index => $imageName) {
+      foreach ($_FILES['images']['name'] as $index => $imageName) {
         $file = [
           'name' => $_FILES['images']['name'][$index],
           'tmp_name' => $_FILES['images']['tmp_name'][$index],
@@ -102,7 +102,7 @@ class CreateArticleController extends BaseArticleController
       }
       // 記事画像のリネーム
       foreach ($imageData as $index => $image) {
-        $newImageFileName = 'image_' . $articleId . ($index != null ? '_'. $index : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+        $newImageFileName = 'image_' . $articleId . ($index != null ? '_' . $index : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
         $newImageFilePath = IMAGE_UPLOADS_ARTICLES_PATH . $newImageFileName;
 
         if (rename($image['tmp_path'], $newImageFilePath)) {
@@ -117,7 +117,7 @@ class CreateArticleController extends BaseArticleController
       }
 
 
-      
+
 
       // header("Location:" . ADMIN_ARTICLES_URL);
       // exit;
