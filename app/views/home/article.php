@@ -9,7 +9,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
 <body>
   <?php
   require_once FUNCTIONS_PATH;
-  include GLOBAL_SHARED_PATH . 'header.php';
+  include GLOBAL_SHARED_PATH . '/header.php';
   ?>
   <div class="wrapper" id="container">
     <!-- コンテンツ -->
@@ -24,8 +24,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
               <p class="article__date"><?= $article['formatted_date'] ?></p>
             </div>
             <div class="article__thumbnail">
-            <img src="<?= isset($article['thumbnail_path']) ? '/pj_homepage' . htmlspecialchars($article['thumbnail_path'], ENT_QUOTES, 'UTF-8') : '' ?>">
-              <!-- <img src="/pj_homepage/assets/image/img_ranking1.jpg"> -->
+            <img src="<?= isset($article['thumbnail_path']) ? BASE_URL . htmlspecialchars($article['thumbnail_path'], ENT_QUOTES, 'UTF-8') : '' ?>">
             </div>
           </div>
           <?= $article['content_html'] ?>
@@ -34,10 +33,10 @@ include GLOBAL_SHARED_PATH . '/head.php';
       </article>
 
     </main>
-    <?php include VIEWS_HOME_SHARED_PATH . 'sidebar.php'; ?>
+    <?php include VIEWS_HOME_SHARED_PATH . '/sidebar.php'; ?>
   </div>
 
-  <?php include VIEWS_HOME_SHARED_PATH .  'footer.php' ?>
+  <?php include VIEWS_HOME_SHARED_PATH .  '/footer.php' ?>
 
 </body>
 

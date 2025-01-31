@@ -9,7 +9,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
 <body>
   <?php
   require_once FUNCTIONS_PATH;
-  include GLOBAL_SHARED_PATH . 'header.php';
+  include GLOBAL_SHARED_PATH . '/header.php';
   ?>
 
   <!-- コンテンツ -->
@@ -20,10 +20,10 @@ include GLOBAL_SHARED_PATH . '/head.php';
       <div class="main__content">
         <?php foreach ($articles as $article): ?>
           <article class="content-card">
-            <a href="/pj_homepage/articles/<?= htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8') ?>">
+            <a href=<?= ARTICLES_URL . '/' . htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8') ?>>
               <div class="content-card__body">
                 <div class="content-card__container">
-                  <img src="<?= isset($article['thumbnail_path']) ? '/pj_homepage' . htmlspecialchars($article['thumbnail_path'], ENT_QUOTES, 'UTF-8') : '' ?>" class="content-card__image">
+                  <img src="<?= isset($article['thumbnail_path']) ? BASE_URL . htmlspecialchars($article['thumbnail_path'], ENT_QUOTES, 'UTF-8') : '' ?>" class="content-card__image">
                 </div>
                 <div class="content--card__date-wrapper">
                   <i class="fa-regular fa-clock conten-card__icon"></i>
@@ -45,9 +45,9 @@ include GLOBAL_SHARED_PATH . '/head.php';
         <a href="<?= $currentPage == $totalPages ? '#' : '?category=' . ($_GET['category'] ?? '') . '&page=' . ($currentPage + 1) ?>" class="<?= $currentPage == $totalPages ? 'disabled' : '' ?>">次へ</a>
       </div>
     </main>
-    <?php include VIEWS_HOME_SHARED_PATH . 'sidebar.php'; ?>
+    <?php include VIEWS_HOME_SHARED_PATH . '/sidebar.php'; ?>
   </div>
-  <?php include VIEWS_HOME_SHARED_PATH .  'footer.php' ?>
+  <?php include VIEWS_HOME_SHARED_PATH .  '/footer.php' ?>
 </body>
 
 </html>

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../config.php';
-require_once CONTROLLERS_PATH . 'BaseArticleController.php';
+require_once CONTROLLERS_PATH . '/BaseArticleController.php';
 
 class EditArticleController extends BaseArticleController
 {
@@ -41,7 +41,7 @@ class EditArticleController extends BaseArticleController
       ];
       extract($viewData);
 
-      include VIEWS_ADMIN_PATH . 'createArticle.php';
+      include VIEWS_ADMIN_PATH . '/createArticle.php';
     } else {
       header("Location: /error");
       exit;
@@ -99,15 +99,15 @@ class EditArticleController extends BaseArticleController
       }
     }
 
-        // 既存画像の枚数を取得
-        // 更新前の枚数に続いて連番でリネームするため、最後に追加された画像の末尾番号を取得
-        /** @var int $existingImageCount */
-        $existingImageCount = $this->articleModel->getUploadedImageNextNumber($id);
-        echo "existingImageCount = " . $existingImageCount;
-        if ($existingImageCount === -1) {
-          echo "画像の番号のリネームに失敗しました";
-          return;
-        }
+    // 既存画像の枚数を取得
+    // 更新前の枚数に続いて連番でリネームするため、最後に追加された画像の末尾番号を取得
+    /** @var int $existingImageCount */
+    $existingImageCount = $this->articleModel->getUploadedImageNextNumber($id);
+    echo "existingImageCount = " . $existingImageCount;
+    if ($existingImageCount === -1) {
+      echo "画像の番号のリネームに失敗しました";
+      return;
+    }
 
     if ($this->validateArticleId($id)) {
       if ($this->validateArticleSave($data)) {

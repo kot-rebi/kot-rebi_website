@@ -9,7 +9,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
 <body>
   <?php
   require_once FUNCTIONS_PATH;
-  include GLOBAL_SHARED_PATH . 'header.php';
+  include GLOBAL_SHARED_PATH . '/header.php';
   ?>
 
   <!-- コンテンツ -->
@@ -21,16 +21,16 @@ include GLOBAL_SHARED_PATH . '/head.php';
           <p>&nbsp;</p>
           <p>お探しのページは見つかりませんでした</p>
           <p>&nbsp;</p>
-          <p><a href="/pj_homepage">ホームに戻る</a></p>
+          <p><a href="<?= BASE_URL ?>">ホームに戻る</a></p>
         </div>
       </article>
     </main>
 
 
-    <?php include VIEWS_HOME_SHARED_PATH . 'sidebar.php'; ?>
+    <?php include VIEWS_HOME_SHARED_PATH . '/sidebar.php'; ?>
 
   </div>
-  <?php include VIEWS_HOME_SHARED_PATH .  'footer.php' ?>
+  <?php include VIEWS_HOME_SHARED_PATH .  '/footer.php' ?>
 </body>
 
 </html>

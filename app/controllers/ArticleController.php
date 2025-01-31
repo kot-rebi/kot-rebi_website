@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config.php';
-require_once MODELS_PATH . 'Database.php';
-require MODELS_PATH .'ArticleModel.php';
+require_once MODELS_PATH . '/Database.php';
+require MODELS_PATH . '/ArticleModel.php';
 $headerTitleText = "管理画面";
 
 /**
@@ -36,7 +36,7 @@ class ArticleController
     $limit = 10;
     // データ取得の開始位置
     $offset = ($currentPage - 1) * $limit;
-    
+
     // 記事の取得
     $articles = $this->articleModel->getArticles($limit, $offset);
 
@@ -44,6 +44,6 @@ class ArticleController
     $totalArticles = $this->articleModel->getTotalArticles();
     $totalPages = ceil($totalArticles / $limit);
 
-    include VIEWS_ADMIN_PATH . 'ArticleList.php';
+    include VIEWS_ADMIN_PATH . '/ArticleList.php';
   }
 }
