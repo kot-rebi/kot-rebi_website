@@ -381,7 +381,7 @@ class ArticleModel
       $file = $stmt->fetch(PDO::FETCH_ASSOC);
 
       if ($file && isset($file['file_name'])) {
-        $filePath = IMAGE_UPLOADS_THUMBNAILS_PATH . $file['file_name'];
+        $filePath = IMAGE_UPLOADS_THUMBNAILS_PATH . '/' . $file['file_name'];
 
         // データベースのレコードを削除
         $stmtDelete = $this->db->prepare("
