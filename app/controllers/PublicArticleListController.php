@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config.php';
-require_once MODELS_PATH . 'Database.php';
-require MODELS_PATH . 'ArticleModel.php';
+require_once MODELS_PATH . '/Database.php';
+require MODELS_PATH . '/ArticleModel.php';
 
 class PublicArticleListController
 {
@@ -28,6 +28,7 @@ class PublicArticleListController
     } else {
       $categoryId = null;
     }
+    echo $categoryId;
 
     // 1ページ当たりの表示件数
     $limit = 10;
@@ -53,7 +54,7 @@ class PublicArticleListController
     // カテゴリーの取得
     $categories = $this->listCategories();
 
-    require_once VIEWS_HOME_PATH . 'index.php';
+    require_once VIEWS_HOME_PATH . '/index.php';
   }
 
   public function listCategories()

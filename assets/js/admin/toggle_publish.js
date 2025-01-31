@@ -4,7 +4,7 @@ function togglePublish(articleId) {
 
   if (confirm("公開ステータスを変更してもよろしいですか？")) {
     console.log("変更します");
-    fetch("/pj_homepage/app/controllers/toggle_status.php?id=" + articleId)
+    fetch( CONTROLLERS_URL + "/toggle_status.php?id=" + articleId)
       .then(response => {
         if (response.ok) {
           return response.text();

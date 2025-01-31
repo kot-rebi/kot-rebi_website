@@ -6,7 +6,7 @@
 
 <body>
   <?php
-  require 'functions.php';
+  require '/functions.php';
   $headerTitleText = "管理画面";
   include '../includes/header.php';
   ?>
