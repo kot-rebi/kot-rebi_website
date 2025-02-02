@@ -1,11 +1,11 @@
 <?php
 require_once __DIR__ . '/../../config.php';
 require_once MODELS_PATH . '/Database.php';
-require MODELS_PATH .'/ArticleModel.php';
+require MODELS_PATH . '/ArticleModel.php';
 require LIBS_PATH . '/CustomParsedown.php';
 require 'vendor/autoload.php';
 
-class PublicArticleController 
+class PublicArticleController
 {
   private $articleModel;
   private $parsedown;
@@ -29,10 +29,11 @@ class PublicArticleController
 
     // 記事の取得
     $article = $this->articleModel->getArticleById($articleId);
+    // カテゴリーの取得
+    $categories = $this->listCategories();
 
     // 記事が見つからないとき
-    if (!$article)
-    {
+    if (!$article) {
       http_response_code(404);
       // TODO: エラーページ404を作成し、飛ぶ処理
       include VIEWS_PATH . '/error-404.php';
@@ -43,5 +44,9 @@ class PublicArticleController
     $article['content_html'] = $this->parsedown->text($article['content']);
 
     include VIEWS_HOME_PATH . '/article.php';
+  }
+  public function listCategories()
+  {
+    return $this->articleModel->getCategoriesList();
   }
 }
