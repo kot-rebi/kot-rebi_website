@@ -71,7 +71,7 @@ class ArticleModel
       $stmt = $this->db->prepare(
         "SELECT COUNT(*) FROM " . TABLE_ARTICLES . "
       WHERE category_id = :category_id
-      AND published = 1"
+      AND is_published = 1"
       );
       $stmt->bindValue(':category_id', $categoryId, PDO::PARAM_INT);
       $stmt->execute();
