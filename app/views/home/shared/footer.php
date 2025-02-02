@@ -1,8 +1,8 @@
 <!-- フッター -->
 <footer class="footer">
-  <a href="#">
+  <!-- <a href="#">
     <p>プライバシーポリシー</p>
-  </a>
+  </a> -->
   <p class="footer__copyright">&copy;2024 name</p>
 
   <script src= <?= VIEWS_HOME_PATH . "/language-label.js" ?> ></script>

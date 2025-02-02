@@ -27,7 +27,7 @@ include GLOBAL_SHARED_PATH . '/head.php';
     </main>
 
 
-    <?php include VIEWS_HOME_SHARED_PATH . '/sidebar.php'; ?>
+    <!-- <?php // include VIEWS_HOME_SHARED_PATH . '/sidebar.php'; ?> -->
 
   </div>
   <?php include VIEWS_HOME_SHARED_PATH .  '/footer.php' ?>
