@@ -1,11 +1,7 @@
 <?php
-require_once __DIR__ . '/../../config.php';
-require_once CONTROLLERS_PATH . '/BaseArticleController.php';
-
 
 class CreateArticleController extends BaseArticleController
 {
-
   public function handleRequest()
   {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -30,7 +26,7 @@ class CreateArticleController extends BaseArticleController
     ];
     extract($viewData);
 
-    include VIEWS_ADMIN_PATH . '/createArticle.php';
+    include $this->config->get('paths')['views_admin'] . '/createArticle.php';
   }
 
   private function insertArticle()
@@ -91,7 +87,7 @@ class CreateArticleController extends BaseArticleController
 
       // サムネイル画像のリネーム
       if ($thumbnailData && $articleId) {
-        $newFilePath = IMAGE_UPLOADS_THUMBNAILS_PATH . '/thumbnail_' . $articleId . '.' . pathinfo($thumbnailData['file_name'], PATHINFO_EXTENSION);
+        $newFilePath = $this->config->get('assets')['thumbnails'] . '/thumbnail_' . $articleId . '.' . pathinfo($thumbnailData['file_name'], PATHINFO_EXTENSION);
         if (rename($thumbnailData['tmp_path'], $newFilePath)) {
           $newFileName = basename($newFilePath);
           $relativePath = '/assets/image/uploads/thumbnails/' . $newFileName;
@@ -104,7 +100,7 @@ class CreateArticleController extends BaseArticleController
       // 記事画像のリネーム
       foreach ($imageData as $index => $image) {
         $newImageFileName = 'image_' . $articleId . ($index != null ? '_' . $index : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
-        $newImageFilePath = IMAGE_UPLOADS_ARTICLES_PATH . $newImageFileName;
+        $newImageFilePath = $this->config->get('assets')['articles'] . $newImageFileName;
 
         if (rename($image['tmp_path'], $newImageFilePath)) {
           $image['file_name'] = $newImageFileName;
@@ -120,7 +116,7 @@ class CreateArticleController extends BaseArticleController
 
 
 
-      // header("Location:" . ADMIN_ARTICLES_URL);
+      // header("Location:" . $config->get('urls')['admin_articles']);
       // exit;
     } else {
       echo "記事の保存に失敗しました";
@@ -137,7 +133,7 @@ class CreateArticleController extends BaseArticleController
   {
     $this->isEditMode = false;
     $this->formTitle = '新規作成';
-    $this->formAction = ADMIN_ARTICLES_CREATE_URL;
+    $this->formAction = $this->config->get('urls')['admin_articles_create'];
     $this->articleTitle = '';
     $this->articleThumbnailPath = '';
     $this->articleContent = '';

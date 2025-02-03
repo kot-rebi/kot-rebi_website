@@ -1,14 +1,14 @@
 <?php
-require_once __DIR__ . '/../../config.php';
-require_once MODELS_PATH . '/Database.php';
-require MODELS_PATH . '/ArticleModel.php';
+
 
 class PublicArticleListController
 {
+  private $config;
   private $articleModel;
 
   public function __construct()
   {
+    $this->config = Config::getInstance();
     $this->articleModel = new ArticleModel(Database::getInstance());
   }
 
@@ -53,7 +53,7 @@ class PublicArticleListController
     // カテゴリーの取得
     $categories = $this->listCategories();
 
-    require_once VIEWS_HOME_PATH . '/index.php';
+    require_once $this->config->get('paths')['views_home'] . '/index.php';
   }
 
   public function listCategories()

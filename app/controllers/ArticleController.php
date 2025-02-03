@@ -1,7 +1,5 @@
 <?php
-require_once __DIR__ . '/../../config.php';
-require_once MODELS_PATH . '/Database.php';
-require MODELS_PATH . '/ArticleModel.php';
+
 $headerTitleText = "管理画面";
 
 /**
@@ -9,12 +7,13 @@ $headerTitleText = "管理画面";
  */
 class ArticleController
 {
-
+  private $config;
   private $articleModel;
 
   public function __construct()
   {
-    // $database = new Database();
+    $this->config = Config::getInstance();
+
     $this->articleModel = new ArticleModel(Database::getInstance());
   }
 
@@ -44,6 +43,6 @@ class ArticleController
     $totalArticles = $this->articleModel->getTotalArticles();
     $totalPages = ceil($totalArticles / $limit);
 
-    include VIEWS_ADMIN_PATH . '/ArticleList.php';
+    include $this->config->get('paths')['views_admin'] . '/ArticleList.php';
   }
 }

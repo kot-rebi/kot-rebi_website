@@ -4,5 +4,5 @@ Thumbs.db
 .env
 .bak
 .log
-config.php
+config_setting.php
 assets/image

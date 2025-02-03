@@ -5,7 +5,7 @@
   </a> -->
   <p class="footer__copyright">&copy;2024 name</p>
 
-  <script src= <?= VIEWS_HOME_PATH . "/language-label.js" ?> ></script>
+  <script src= <?= $config->get('paths')['views_home'] . "/language-label.js" ?> ></script>
   <!-- Prism.jsの読み込み -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
