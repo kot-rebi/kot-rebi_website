@@ -1,7 +1,4 @@
 <?php
-require_once __DIR__ . '/../../config.php';
-require_once MODELS_PATH . '/Database.php';
-require MODELS_PATH .'/ArticleModel.php';
 
 if (isset($_GET['id'])) {
   $articleId = $_GET['id'];
