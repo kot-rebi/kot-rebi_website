@@ -5,7 +5,7 @@ require_once 'auth.php';
 $config = Config::getInstance();
 
 require_once $config->get('paths')['models'] . '/UserModel.php';
-require_once $config->get('paths')['controllers'] . '/LoginController.php';
+require_once $config->get('paths')['controllers_admin'] . '/LoginController.php';
 
 $userModel = new UserModel();
 $requestUri = $_SERVER['REQUEST_URI'];
@@ -27,14 +27,14 @@ if (preg_match('/^' . preg_quote($config->get('urls')['articles'], '/') . '\/(\d
 // 新規投稿画面
 else if (preg_match('/^' . preg_quote($config->get('urls')['admin_articles_create'], '/') . '\/?/', $requestUri)) {
   requireLogin();
-  require_once $config->get('paths')['controllers'] . '/CreateArticleController.php';
+  require_once $config->get('paths')['controllers_admin'] . '/CreateArticleController.php';
   $controller = new CreateArticleController();
   $controller->handleRequest();
   $matched = true;
 } 
 // 削除画面
 else if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $requestUri === $config->get('urls')['admin_articles_delete']) {
-  require_once $config->get('paths')['controllers'] . '/DeleteArticleController.php';
+  require_once $config->get('paths')['controllers_admin'] . '/DeleteArticleController.php';
   $controller = new DeleteArticleController();
   $controller->handleRequest();
   $matched = true;
@@ -42,7 +42,7 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $requestUri === $config->get(
 // 編集画面
 else if (preg_match('/^' . preg_quote($config->get('urls')['admin_articles_edit'], '/') . '\/?/', $requestUri)) {
   requireLogin();
-  require_once $config->get('paths')['controllers'] . '/EditArticleController.php';
+  require_once $config->get('paths')['controllers_admin'] . '/EditArticleController.php';
   $controller = new EditArticleController();
   $controller->handleRequest();
   $matched = true;
@@ -50,7 +50,7 @@ else if (preg_match('/^' . preg_quote($config->get('urls')['admin_articles_edit'
 // 公開日時の設定
 else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $requestUri === $config->get('urls')['admin_articles_publish_date']) {
   requireLogin();
-  require_once $config->get('paths')['controllers'] . '/UpdatePublishDateController.php';
+  require_once $config->get('paths')['controllers_admin'] . '/UpdatePublishDateController.php';
   $controller = new UpdatePublishDateController();
   $controller->handleRequest();
   $matched = true;
@@ -58,12 +58,11 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $requestUri === $config->get('
 // 記事一覧の表示
 else if (preg_match('/^' . preg_quote($config->get('urls')['admin_articles'], '/') . '\/?/', $requestUri)) {
   requireLogin();
-  require_once $config->get('paths')['controllers'] . '/ArticleController.php';
+  require_once $config->get('paths')['controllers_admin'] . '/ArticleController.php';
   $controller = new ArticleController();
   $controller->listArticles();
   $matched = true;
 }
-
 // トップページ（公開ページ）
 else if ($path == $config->get('BASE_URL') . '/' || $path === $config->get('BASE_URL')) {
   require_once $config->get('paths')['controllers'] . '/PublicArticleListController.php';
@@ -79,7 +78,7 @@ else if ($path === $config->get('urls')['admin_login']) {
 }
 // ログアウトページ
 else if ($path === $config->get('urls')['admin_logout']) {
-  require_once $config->get('paths')['controllers'] . '/LogoutController.php';
+  require_once $config->get('paths')['controllers_admin'] . '/LogoutController.php';
   $controller = new LogoutController();
   $controller->logout();
   $matched = true;

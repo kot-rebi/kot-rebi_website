@@ -83,6 +83,12 @@ include $config->get('paths')['global_shared'] . '/head.php';
                 </td>
                 <td>
                   <form action=<?= $config->get('urls')['admin_articles_delete'] ?> method="POST" onsubmit="return confirmDeleteButton()">
+                    <?php
+                    require_once $config->get('paths')['models'] . '/CSRFProtection.php';
+                    $csrf = new CSRFProtection();
+                    $csrf->generateToken();
+                    ?>
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf->getToken(), ENT_QUOTES, 'UTF-8'); ?>">
                     <input type="hidden" name="article_id" value="<?php echo htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8'); ?>">
                     <button type="submit" class="admin-delete-btn">削除</button>
                   </form>

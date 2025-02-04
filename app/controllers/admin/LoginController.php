@@ -19,7 +19,15 @@ class LoginController {
       session_start();
     }
 
+    require_once $this->config->get('paths')['models'] . '/CSRFProtection.php';
+    $csrf = new CSRFProtection();
+
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
+      // CSRFトークン検証
+      if (!isset($_POST["csrf_token"]) || $_POST["csrf_token"] !== $csrf->getToken()) {
+        die("CSRF検証に失敗しました");
+      }
+
       $username = $_POST["username"];
       $password = $_POST["password"];
       $user = $this->userModel->getUserByUsername($username);
@@ -27,6 +35,7 @@ class LoginController {
       // パスワードの照合
       if ($user && password_verify($password, $user["password"])) {
         $_SESSION["user_id"] = $user["id"];
+        $csrf->destroyToken();
         header("Location: " . $this->config->get('urls')['admin_articles']);
         exit;
       } else {
