@@ -1,4 +1,5 @@
 <?php
+$config = Config::getInstance();
 $requestUri = $_SERVER['REQUEST_URI'];
 ?>
 
@@ -7,7 +8,7 @@ $requestUri = $_SERVER['REQUEST_URI'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <script>
-    const CONTROLLERS_PATH = "<?= $config->get('paths')['controllers'] ?>";
+    const CONTROLLERS_PATH = "<?= $config->get('urls')['controllers']; ?>";
   </script>
 
   <link rel="stylesheet" href=<?= $config->get('paths')['css'] . "/reset.css" ?>>
