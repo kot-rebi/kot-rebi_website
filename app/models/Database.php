@@ -8,34 +8,6 @@ class Database
   private static $instance = null;
 
   /**
-   * ホスト名
-   * 
-   * @var string
-   */
-  private $host = "localhost";
-
-  /**
-   * データベース名
-   *
-   * @var string
-   */
-  private $dbname = "cms";
-
-  /**
-   * ユーザー名
-   *
-   * @var string
-   */
-  private $username = "root";
-
-  /**
-   * パスワード
-   *
-   * @var string
-   */
-  private $password = "";
-
-  /**
    * PDO接続オブジェクト
    *
    * @var PDO|null
@@ -48,7 +20,10 @@ class Database
    */
   public function __construct()
   {
-    $this->connect();
+    $config = Config::getInstance();
+    $dbConfig = $config->get('db');
+
+    $this->connect($dbConfig);
   }
 
   public static function getInstance()
@@ -65,13 +40,15 @@ class Database
    * @return void
    * @throws PDOException 接続に失敗
    */
-  private function connect()
+  private function connect($dbConfig)
   {
     try {
-      $this->connection = new PDO("mysql:host=$this->host;dbname=$this->dbname", $this->username, $this->password);
+      $this->connection = new PDO("mysql:host={$dbConfig['host']};dbname={$dbConfig['dbname']}", $dbConfig['username'], $dbConfig['password']);
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $this->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     } catch (PDOException $e) {
-      echo "接続に失敗しました: " . $e->getMessage();
+
+      die("接続に失敗しました: " . $e->getMessage());
     }
   }
 

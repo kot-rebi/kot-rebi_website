@@ -1,16 +1,14 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../../config.php';
-require_once MODELS_PATH . '/Database.php';
-require MODELS_PATH . '/ArticleModel.php';
-
 class ScheduledPublisher
 {
+  private $config;
   private $articleModel;
 
   public function __construct()
   {
+    $this->config = Config::getInstance(); 
     $this->articleModel = new ArticleModel(Database::getInstance());
     date_default_timezone_set('Asia/Tokyo');
   }

@@ -6,6 +6,7 @@
 class ArticleModel
 {
   private $db;
+  private $config;
 
   /**
    * コンストラクタ
@@ -13,6 +14,7 @@ class ArticleModel
    */
   public function __construct()
   {
+    $this->config = Config::getInstance();
     $this->db = Database::getInstance()->getConnection();
   }
 
@@ -26,7 +28,7 @@ class ArticleModel
   public function getArticles($limit, $offset)
   {
     try {
-      $stmt = $this->db->prepare("SELECT * FROM " . TABLE_ARTICLES . "  LIMIT :limit OFFSET :offset");
+      $stmt = $this->db->prepare("SELECT * FROM " . $this->config->get('tables')['articles'] . "  LIMIT :limit OFFSET :offset");
       $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
       $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
       $stmt->execute();
@@ -46,8 +48,8 @@ class ArticleModel
         a.title, 
         DATE(a.updated_at) AS formatted_date,
         i.file_path AS thumbnail_path
-      FROM " . TABLE_ARTICLES . " a
-      LEFT JOIN " . TABLE_THUMBNAILS . " i ON a.id = i.article_id
+      FROM " . $this->config->get('tables')['articles'] . " a
+      LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON a.id = i.article_id
       WHERE a.is_published = 1
       AND a.category_id = :category_id
       ORDER BY a.updated_at DESC
@@ -69,7 +71,7 @@ class ArticleModel
   {
     try {
       $stmt = $this->db->prepare(
-        "SELECT COUNT(*) FROM " . TABLE_ARTICLES . "
+        "SELECT COUNT(*) FROM " . $this->config->get('tables')['articles'] . "
       WHERE category_id = :category_id
       AND is_published = 1"
       );
@@ -91,8 +93,8 @@ class ArticleModel
         a.title, 
         DATE(a.updated_at) AS formatted_date,
         i.file_path AS thumbnail_path
-      FROM " . TABLE_ARTICLES . " a
-      LEFT JOIN " . TABLE_THUMBNAILS . " i ON a.id = i.article_id
+      FROM " . $this->config->get('tables')['articles'] . " a
+      LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON a.id = i.article_id
       WHERE a.is_published = 1
       ORDER BY a.updated_at DESC
       LIMIT :limit OFFSET :offset
@@ -115,7 +117,7 @@ class ArticleModel
   public function getTotalArticles()
   {
     try {
-      $stmt = $this->db->prepare("SELECT COUNT(*) AS total FROM " . TABLE_ARTICLES);
+      $stmt = $this->db->prepare("SELECT COUNT(*) AS total FROM " . $this->config->get('tables')['articles']);
       $stmt->execute();
       $result = $stmt->fetch(PDO::FETCH_ASSOC);
       return $result['total'];
@@ -128,7 +130,7 @@ class ArticleModel
   public function getTotalPublishedArticles()
   {
     try {
-      $stmt = $this->db->prepare("SELECT COUNT(*) AS total FROM " . TABLE_ARTICLES . " WHERE is_published = 1");
+      $stmt = $this->db->prepare("SELECT COUNT(*) AS total FROM " . $this->config->get('tables')['articles'] . " WHERE is_published = 1");
       $stmt->execute();
       $result = $stmt->fetch(PDO::FETCH_ASSOC);
       return $result['total'];
@@ -155,7 +157,7 @@ class ArticleModel
       $this->db->beginTransaction();
 
       // 記事の挿入
-      $stmt = $this->db->prepare("INSERT INTO " . TABLE_ARTICLES . " (title, content) VALUES (:title, :content)");
+      $stmt = $this->db->prepare("INSERT INTO " . $this->config->get('tables')['articles'] . " (title, content) VALUES (:title, :content)");
       $stmt->bindValue(":title", $title, PDO::PARAM_STR);
       $stmt->bindValue(":content", $content, PDO::PARAM_STR);
       $stmt->execute();
@@ -168,7 +170,7 @@ class ArticleModel
       // サムネイル画像はimagesテーブルに保存
       if ($thumbnailData) {
         $stmtImage = $this->db->prepare("
-        INSERT INTO " . TABLE_THUMBNAILS . " (article_id, file_name, file_path, alt_text, upload_date)
+        INSERT INTO " . $this->config->get('tables')['thumbnails'] . " (article_id, file_name, file_path, alt_text, upload_date)
         VALUES (:article_id, :file_name, :file_path, :alt_text, NOW())
         ");
         $stmtImage->bindValue(":article_id", $articleId, PDO::PARAM_INT);
@@ -181,7 +183,7 @@ class ArticleModel
       // 記事の画像を挿入し、挿入後のIDを取得
       if ($imageData) {
         $stmtUploadedImages = $this->db->prepare("
-        INSERT INTO " . TABLE_IMAGES . " (article_id, file_url, alt_text, uploaded_at)
+        INSERT INTO " . $this->config->get('tables')['images'] . " (article_id, file_url, alt_text, uploaded_at)
         VALUES (:article_id, :file_url, :alt_text, NOW())
         ");
 
@@ -228,7 +230,7 @@ class ArticleModel
 
       // 記事の更新
       $stmt = $this->db->prepare("
-        UPDATE " . TABLE_ARTICLES . "
+        UPDATE " . $this->config->get('tables')['articles'] . "
         SET title = :title, content = :content, updated_at = NOW()
         WHERE id = :id
       ");
@@ -243,7 +245,7 @@ class ArticleModel
       if ($thumbnailData) {
         // 新しいサムネイルを挿入
         $stmtImage = $this->db->prepare("
-          INSERT INTO " . TABLE_THUMBNAILS . " (article_id, file_name, file_path, alt_text, upload_date)
+          INSERT INTO " . $this->config->get('tables')['thumbnails'] . " (article_id, file_name, file_path, alt_text, upload_date)
           VALUES (:article_id, :file_name, :file_path, :alt_text, NOW())
         ");
         $stmtImage->bindValue(":article_id", $id, PDO::PARAM_INT);
@@ -263,7 +265,7 @@ class ArticleModel
       // 記事の画像を挿入し、挿入後のIDを取得
       if ($imageData) {
         $stmtUploadedImages = $this->db->prepare("
-        INSERT INTO " . TABLE_IMAGES . " (article_id, file_url, alt_text, uploaded_at)
+        INSERT INTO " . $this->config->get('tables')['images'] . " (article_id, file_url, alt_text, uploaded_at)
         VALUES (:article_id, :file_url, :alt_text, NOW())
         ");
 
@@ -297,7 +299,7 @@ class ArticleModel
   public function updateThumbnailPath($articleId, $newFileName, $newFilePath)
   {
     try {
-      $stmt = $this->db->prepare("UPDATE " . TABLE_THUMBNAILS . " SET file_name = :file_name, file_path = :file_path WHERE article_id = :article_id");
+      $stmt = $this->db->prepare("UPDATE " . $this->config->get('tables')['thumbnails'] . " SET file_name = :file_name, file_path = :file_path WHERE article_id = :article_id");
       $stmt->bindValue(":file_name", $newFileName, PDO::PARAM_STR);
       $stmt->bindValue(":file_path", $newFilePath, PDO::PARAM_STR);
       $stmt->bindValue(":article_id", $articleId, PDO::PARAM_INT);
@@ -313,7 +315,7 @@ class ArticleModel
   {
     try {
       $stmt = $this->db->prepare("
-        UPDATE " . TABLE_IMAGES . "
+        UPDATE " . $this->config->get('tables')['images'] . "
         SET file_url = :file_url WHERE id = :id");
       $stmt->bindValue(":file_url", $newFileUrl, PDO::PARAM_STR);
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
@@ -356,7 +358,7 @@ class ArticleModel
   {
     try {
       echo $id;
-      $stmt = $this->db->prepare("DELETE FROM " . TABLE_ARTICLES . " WHERE id = :id");
+      $stmt = $this->db->prepare("DELETE FROM " . $this->config->get('tables')['articles'] . " WHERE id = :id");
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
       return $stmt->execute();
     } catch (PDOException $e) {
@@ -371,7 +373,7 @@ class ArticleModel
       // 削除対象のファイル名を取得
       $stmt = $this->db->prepare("
         SELECT file_name
-        FROM " . TABLE_THUMBNAILS . "
+        FROM " . $this->config->get('tables')['thumbnails'] . "
         WHERE article_id = :article_id
         ORDER BY upload_date ASC
         LIMIT 1
@@ -381,11 +383,11 @@ class ArticleModel
       $file = $stmt->fetch(PDO::FETCH_ASSOC);
 
       if ($file && isset($file['file_name'])) {
-        $filePath = IMAGE_UPLOADS_THUMBNAILS_PATH . '/' . $file['file_name'];
+        $filePath = $this->config->get('assets')['thumbnails'] . '/' . $file['file_name'];
 
         // データベースのレコードを削除
         $stmtDelete = $this->db->prepare("
-          DELETE FROM " . TABLE_THUMBNAILS . "
+          DELETE FROM " . $this->config->get('tables')['thumbnails'] . "
           WHERE article_id = :article_id AND file_name = :file_name
         ");
         $stmtDelete->bindValue(":article_id", $id, PDO::PARAM_INT);
@@ -416,7 +418,7 @@ class ArticleModel
       // 削除対象のファイルパスを取得
       $stmt = $this->db->prepare("
         SELECT file_url
-        FROM " . TABLE_IMAGES . "
+        FROM " . $this->config->get('tables')['images'] . "
         WHERE article_id = :article_id
       ");
       $stmt->bindValue(":article_id", $id, PDO::PARAM_INT);
@@ -425,7 +427,7 @@ class ArticleModel
 
       // ファイルシステムから削除
       foreach ($files as $file) {
-        $filePath =  rtrim(ROOT_PATH, '/') . '/' . ltrim($file['file_url'], '/');
+        $filePath =  rtrim($this->config->get('ROOT_PATH'), '/') . '/' . ltrim($file['file_url'], '/');
 
         if (file_exists($filePath)) {
           if (unlink($filePath)) {
@@ -437,7 +439,7 @@ class ArticleModel
       }
 
       // データベースのレコードを削除
-      $stmt = $this->db->prepare("DELETE FROM " . TABLE_IMAGES . " WHERE article_id = :article_id");
+      $stmt = $this->db->prepare("DELETE FROM " . $this->config->get('tables')['images'] . " WHERE article_id = :article_id");
       $stmt->bindValue(":article_id", $id, PDO::PARAM_INT);
       return $stmt->execute();
     } catch (PDOException $e) {
@@ -462,13 +464,13 @@ class ArticleModel
       // DBの記事番号とファイルパスが一致するレコードが存在するときに削除
       // データベースのレコードを削除
       foreach ($deleteImages as $deleteImage) {
-        $stmt = $this->db->prepare("DELETE FROM " . TABLE_IMAGES . " WHERE article_id = :article_id AND file_url = :file_url");
+        $stmt = $this->db->prepare("DELETE FROM " . $this->config->get('tables')['images'] . " WHERE article_id = :article_id AND file_url = :file_url");
         $stmt->bindValue(":article_id", $id, PDO::PARAM_INT);
         $stmt->bindValue(":file_url", $deleteImage, PDO::PARAM_STR);
         $stmt->execute();
 
         // ファイルシステムから削除
-        $filePath =  rtrim(ROOT_PATH, '/') . '/' . ltrim($deleteImage, '/');
+        $filePath =  rtrim($this->config->get('ROOT_PATH'), '/') . '/' . ltrim($deleteImage, '/');
         if (file_exists($filePath)) {
           if (unlink($filePath)) {
             echo "記事に紐付いている画像を削除しました: " . $filePath . "\n";
@@ -534,8 +536,8 @@ class ArticleModel
         a.content, 
         DATE(a.updated_at) AS formatted_date,
         i.file_path AS thumbnail_path
-      FROM " . TABLE_ARTICLES . " a
-      LEFT JOIN " . TABLE_THUMBNAILS . " i ON a.id = i.article_id 
+      FROM " . $this->config->get('tables')['articles'] . " a
+      LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON a.id = i.article_id 
       WHERE a.id = :id
       ");
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
@@ -550,7 +552,7 @@ class ArticleModel
   public function getThumbnailById($id)
   {
     try {
-      $stmt = $this->db->prepare("SELECT file_name, file_path FROM " . TABLE_THUMBNAILS . " WHERE article_id = :id");
+      $stmt = $this->db->prepare("SELECT file_name, file_path FROM " . $this->config->get('tables')['thumbnails'] . " WHERE article_id = :id");
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
       $stmt->execute();
       return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -563,7 +565,7 @@ class ArticleModel
   public function getArticleImagesById($id)
   {
     try {
-      $stmt = $this->db->prepare("SELECT file_url, alt_text FROM " . TABLE_IMAGES . " WHERE article_id = :id");
+      $stmt = $this->db->prepare("SELECT file_url, alt_text FROM " . $this->config->get('tables')['images'] . " WHERE article_id = :id");
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
       $stmt->execute();
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -576,7 +578,7 @@ class ArticleModel
   public function getArticleImageCount($id)
   {
     try {
-      $stmt = $this->db->prepare("SELECT COUNT(*) AS image_count FROM " . TABLE_IMAGES . " WHERE article_id = :article_id");
+      $stmt = $this->db->prepare("SELECT COUNT(*) AS image_count FROM " . $this->config->get('tables')['images'] . " WHERE article_id = :article_id");
       $stmt->bindValue(":article_id", $id, PDO::PARAM_INT);
       $stmt->execute();
       $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -599,7 +601,7 @@ class ArticleModel
     try {
       $stmt = $this->db->prepare("
       SELECT file_url
-      FROM " . TABLE_IMAGES . "
+      FROM " . $this->config->get('tables')['images'] . "
       WHERE article_id = :article_id
       ORDER BY id DESC
       LIMIT 1
@@ -633,7 +635,7 @@ class ArticleModel
   public function togglePublish($articleId)
   {
     try {
-      $stmt = $this->db->prepare("SELECT is_published FROM " . TABLE_ARTICLES .  " WHERE id = :id");
+      $stmt = $this->db->prepare("SELECT is_published FROM " . $this->config->get('tables')['articles'] .  " WHERE id = :id");
       $stmt->bindValue(":id", $articleId, PDO::PARAM_INT);
       $stmt->execute();
       $article = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -644,7 +646,7 @@ class ArticleModel
         } else {
           $newStatus = 1;
         }
-        $updateStmt = $this->db->prepare("UPDATE " . TABLE_ARTICLES . " SET is_published = :status WHERE id = :id");
+        $updateStmt = $this->db->prepare("UPDATE " . $this->config->get('tables')['articles'] . " SET is_published = :status WHERE id = :id");
         $updateStmt->bindValue(':status', $newStatus, PDO::PARAM_INT);
         $updateStmt->bindValue(':id', $articleId, PDO::PARAM_INT);
         return $updateStmt->execute();
@@ -660,7 +662,7 @@ class ArticleModel
   public function updatePublishDate($articleId, $scheduledPublishDate)
   {
     try {
-      $stmt = $this->db->prepare("UPDATE " . TABLE_ARTICLES . " SET scheduled_publish_date = :scheduledPublishDate WHERE id = :id");
+      $stmt = $this->db->prepare("UPDATE " . $this->config->get('tables')['articles'] . " SET scheduled_publish_date = :scheduledPublishDate WHERE id = :id");
       $stmt->bindValue('scheduledPublishDate', $scheduledPublishDate, PDO::PARAM_STR);
       $stmt->bindValue('id', $articleId, PDO::PARAM_INT);
       $stmt->execute();
@@ -674,7 +676,7 @@ class ArticleModel
   public function publishArticle($articleId)
   {
     try {
-      $stmt = $this->db->prepare("UPDATE " . TABLE_ARTICLES . " SET is_published = 1 WHERE id = :id");
+      $stmt = $this->db->prepare("UPDATE " . $this->config->get('tables')['articles'] . " SET is_published = 1 WHERE id = :id");
       $stmt->bindValue(':id', $articleId, PDO::PARAM_INT);
       return $stmt->execute();
     } catch (PDOException $e) {
@@ -686,7 +688,7 @@ class ArticleModel
   public function getScheduleArticlesForPublishing($currentDateTime)
   {
     try {
-      $stmt = $this->db->prepare("SELECT * FROM " . TABLE_ARTICLES . " WHERE scheduled_publish_date <= :currentDateTime AND is_published = 0");
+      $stmt = $this->db->prepare("SELECT * FROM " . $this->config->get('tables')['articles'] . " WHERE scheduled_publish_date <= :currentDateTime AND is_published = 0");
       $stmt->bindValue(':currentDateTime', $currentDateTime, PDO::PARAM_STR);
       $stmt->execute();
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -699,7 +701,7 @@ class ArticleModel
   public function getCategoriesList()
   {
     try {
-      $stmt = $this->db->prepare("SELECT id, name FROM " . TABLE_CATEGORIES);
+      $stmt = $this->db->prepare("SELECT id, name FROM " . $this->config->get('tables')['categories']);
       $stmt->execute();
       $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
       return $categories;

@@ -2,14 +2,14 @@
 <html lang="ja">
 
 <?php
-require_once __DIR__ . '/../../../config.php';
-include GLOBAL_SHARED_PATH . '/head.php';
+$config = Config::getInstance();
+include $config->get('paths')['global_shared'] . '/head.php';
 ?>
 
 <body>
   <?php
-  require_once FUNCTIONS_PATH;
-  include GLOBAL_SHARED_PATH . '/header.php';
+  require_once $config->get('FUNCTIONS_PATH');
+  include $config->get('paths')['global_shared'] . '/header.php';
   ?>
 
   <!-- コンテンツ -->
@@ -21,16 +21,17 @@ include GLOBAL_SHARED_PATH . '/head.php';
           <p>&nbsp;</p>
           <p>お探しのページは見つかりませんでした</p>
           <p>&nbsp;</p>
-          <p><a href="<?= BASE_URL ?>">ホームに戻る</a></p>
+          <p><a href="<?= $config->get('BASE_URL') ?>">ホームに戻る</a></p>
         </div>
       </article>
     </main>
 
 
-    <!-- <?php // include VIEWS_HOME_SHARED_PATH . '/sidebar.php'; ?> -->
+    <!-- <?php // include $config->get('paths')['views_home_shared'] . '/sidebar.php'; 
+          ?> -->
 
   </div>
-  <?php include VIEWS_HOME_SHARED_PATH .  '/footer.php' ?>
+  <?php include $config->get('paths')['views_home_shared'] .  '/footer.php' ?>
 </body>
 
 </html>
