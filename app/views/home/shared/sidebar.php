@@ -4,7 +4,7 @@
 
     <!-- 自己紹介ブロック -->
     <section class="profile">
-      <img src= <?= IMAGE_URL . "/img_Icon.png" ?> >
+      <img src= <?= $config->get('assets')['image'] . "/img_Icon.png" ?> >
       <p class="profile__name">name</p>
       <div class="profile__description">
         <p>ゲーム制作をしています</p>
@@ -46,7 +46,7 @@
         <?php if (!empty($categories)): ?>
           <?php foreach ($categories as $category) : ?>
             <li class="categories__item">
-              <a href= <?= BASE_URL . "?category=" . $category['id'] ?>>
+              <a href= <?= $config->get('BASE_URL') . "?category=" . $category['id'] ?>>
                 <p><?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') ?></p>
               </a>
             </li>

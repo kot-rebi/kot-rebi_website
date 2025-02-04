@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="ja">
 <?php
-require_once __DIR__ . '/../../../config.php';
-include GLOBAL_SHARED_PATH . '/head.php';
+$config = Config::getInstance();
+include $config->get('paths')['global_shared'] . '/head.php';
 ?>
 
 <body>
   <?php
-  require_once FUNCTIONS_PATH;
+  require_once $config->get('FUNCTIONS_PATH');
   $headerTitleText = "管理画面";
-  include GLOBAL_SHARED_PATH . '/header.php';
+  include $config->get('paths')['global_shared'] . '/header.php';
   ?>
   <main>
     <div class="admin-create">
-      <?php include VIEWS_ADMIN_PATH . '/articleForm.php'; ?>
+      <?php include $config->get('paths')['views_admin'] . '/articleForm.php'; ?>
     </div>
   </main>
 
   <footer>
-    <script src=<?= JS_ADMIN_URL . "/textarea-auto-resize.js" ?>></script>
-    <script src=<?= JS_ADMIN_URL . "/input-label-interaction.js" ?>></script>
-    <script src=<?= JS_ADMIN_URL . "/imagePreview.js" ?>></script>
-    <script src=<?= JS_ADMIN_URL . "/addArticleImages.js" ?>></script>
-    <script src=<?= JS_ADMIN_URL . "/copy-to-clipboard.js" ?>> </script>
-    <script src=<?= JS_ADMIN_URL . "/fileLabelUpdater.js" ?>></script>
+    <script src=<?= $config->get('paths')['js_admin'] . "/textarea-auto-resize.js" ?>></script>
+    <script src=<?= $config->get('paths')['js_admin'] . "/input-label-interaction.js" ?>></script>
+    <script src=<?= $config->get('paths')['js_admin'] . "/imagePreview.js" ?>></script>
+    <script src=<?= $config->get('paths')['js_admin'] . "/addArticleImages.js" ?>></script>
+    <script src=<?= $config->get('paths')['js_admin'] . "/copy-to-clipboard.js" ?>> </script>
+    <script src=<?= $config->get('paths')['js_admin'] . "/fileLabelUpdater.js" ?>></script>
   </footer>
 </body>

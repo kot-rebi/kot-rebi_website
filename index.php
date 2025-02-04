@@ -1,60 +1,91 @@
 <?php
-require 'vendor/autoload.php';
-require_once 'config.php';
+require_once 'bootstrap.php';
+require_once 'auth.php';
 
+$config = Config::getInstance();
+
+require_once $config->get('paths')['models'] . '/UserModel.php';
+require_once $config->get('paths')['controllers_admin'] . '/LoginController.php';
+
+$userModel = new UserModel();
 $requestUri = $_SERVER['REQUEST_URI'];
 $parsedUrl = parse_url($requestUri);
 $path = $parsedUrl['path'];           // クエリパラメーターを省いたURL
 $matched = false; // ルートが見つかったかのフラグ
 
-if (preg_match('/^' . preg_quote(ARTICLES_URL, '/') . '\/(\d+)$/', $requestUri, $matches)) {
-  // 記事内容を表示
+// 記事内容の表示（公開ページなのでログインチェックは不要）
+if (preg_match('/^' . preg_quote($config->get('urls')['articles'], '/') . '\/(\d+)$/', $requestUri, $matches)) {
   // 動的な記事IDを取得する
-  require_once CONTROLLERS_PATH . '/PublicArticleController.php';
+  require_once $config->get('paths')['controllers'] . '/PublicArticleController.php';
   $controller = new PublicArticleController();
-
   $articleId = intval($matches[1]);
   $controller->show($articleId);
   $matched = true;
-} else if (preg_match('/^' . preg_quote(ADMIN_ARTICLES_CREATE_URL, '/') . '\/?/', $requestUri)) {
-  // 新規投稿画面の表示
-  require_once CONTROLLERS_PATH . '/CreateArticleController.php';
+} 
+
+// 管理画面（ログインチェックを行なう）
+// 新規投稿画面
+else if (preg_match('/^' . preg_quote($config->get('urls')['admin_articles_create'], '/') . '\/?/', $requestUri)) {
+  requireLogin();
+  require_once $config->get('paths')['controllers_admin'] . '/CreateArticleController.php';
   $controller = new CreateArticleController();
   $controller->handleRequest();
   $matched = true;
-} else if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $requestUri === ADMIN_ARTICLES_DELETE_URL) {
-  // 削除処理の実行
-  require_once CONTROLLERS_PATH . '/DeleteArticleController.php';
+} 
+// 削除画面
+else if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $requestUri === $config->get('urls')['admin_articles_delete']) {
+  require_once $config->get('paths')['controllers_admin'] . '/DeleteArticleController.php';
   $controller = new DeleteArticleController();
   $controller->handleRequest();
   $matched = true;
-} else if (preg_match('/^' . preg_quote(ADMIN_ARTICLES_EDIT_URL, '/') . '\/?/', $requestUri)) {
-  // 編集処理
-  require_once CONTROLLERS_PATH . '/EditArticleController.php';
+} 
+// 編集画面
+else if (preg_match('/^' . preg_quote($config->get('urls')['admin_articles_edit'], '/') . '\/?/', $requestUri)) {
+  requireLogin();
+  require_once $config->get('paths')['controllers_admin'] . '/EditArticleController.php';
   $controller = new EditArticleController();
   $controller->handleRequest();
   $matched = true;
-} else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $requestUri === ADMIN_ARTICLES_PUBLISHDATE_URL) {
-  // 公開日時の設定
-  require_once CONTROLLERS_PATH . '/UpdatePublishDateController.php';
+} 
+// 公開日時の設定
+else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $requestUri === $config->get('urls')['admin_articles_publish_date']) {
+  requireLogin();
+  require_once $config->get('paths')['controllers_admin'] . '/UpdatePublishDateController.php';
   $controller = new UpdatePublishDateController();
   $controller->handleRequest();
   $matched = true;
-} else if (preg_match('/^' . preg_quote(ADMIN_ARTICLES_URL, '/') . '\/?/', $requestUri)) {
-  // 記事一覧の表示
-  require_once CONTROLLERS_PATH . '/ArticleController.php';
+} 
+// 記事一覧の表示
+else if (preg_match('/^' . preg_quote($config->get('urls')['admin_articles'], '/') . '\/?/', $requestUri)) {
+  requireLogin();
+  require_once $config->get('paths')['controllers_admin'] . '/ArticleController.php';
   $controller = new ArticleController();
   $controller->listArticles();
   $matched = true;
-} else if ($path == BASE_URL . '/' || $path === BASE_URL) {
-  require_once CONTROLLERS_PATH . '/PublicArticleListController.php';
+}
+// トップページ（公開ページ）
+else if ($path == $config->get('BASE_URL') . '/' || $path === $config->get('BASE_URL')) {
+  require_once $config->get('paths')['controllers'] . '/PublicArticleListController.php';
   $controller = new PublicArticleListController();
   $controller->listArticles();
   $matched = true;
 }
+// ログインページ
+else if ($path === $config->get('urls')['admin_login']) {
+  $controller = new LoginController($userModel);
+  $controller->login();
+  $matched = true;
+}
+// ログアウトページ
+else if ($path === $config->get('urls')['admin_logout']) {
+  require_once $config->get('paths')['controllers_admin'] . '/LogoutController.php';
+  $controller = new LogoutController();
+  $controller->logout();
+  $matched = true;
+}
 
-// どのルートにもマッチしなかったら404ページを表示
+// 404エラーページ
 if (!$matched) {
   http_response_code(404);
-  require_once VIEWS_HOME_PATH . '/error-404.php';
+  require_once $config->get('paths')['views_home'] . '/error-404.php';
 }

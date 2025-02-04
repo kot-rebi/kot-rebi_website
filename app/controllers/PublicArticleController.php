@@ -1,17 +1,16 @@
 <?php
-require_once __DIR__ . '/../../config.php';
-require_once MODELS_PATH . '/Database.php';
-require MODELS_PATH . '/ArticleModel.php';
-require LIBS_PATH . '/CustomParsedown.php';
-require 'vendor/autoload.php';
 
 class PublicArticleController
 {
+  private $config;
   private $articleModel;
   private $parsedown;
 
   public function __construct()
   {
+
+    $this->config = Config::getInstance();
+    require $this->config->get('paths')['libs'] . '/CustomParsedown.php';
     $this->articleModel = new ArticleModel(Database::getInstance());
     $this->parsedown = new CustomParsedown();
     $this->parsedown->setSafeMode(true);
@@ -23,7 +22,7 @@ class PublicArticleController
     // 記事IDが指定されていない場合や不正な場合
     if (!$articleId) {
       http_response_code(404);
-      include VIEWS_PATH . '/error-404.php';
+      include $config->get('paths')['views'] . '/error-404.php';
       return;
     }
 
@@ -36,14 +35,14 @@ class PublicArticleController
     if (!$article) {
       http_response_code(404);
       // TODO: エラーページ404を作成し、飛ぶ処理
-      include VIEWS_PATH . '/error-404.php';
+      include $config->get('paths')['libs'] . '/error-404.php';
       // echo "記事が見つかりません";
       return;
     }
 
     $article['content_html'] = $this->parsedown->text($article['content']);
 
-    include VIEWS_HOME_PATH . '/article.php';
+    include $this->config->get('paths')['views_home'] . '/article.php';
   }
   public function listCategories()
   {

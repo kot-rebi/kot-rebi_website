@@ -1,17 +1,19 @@
 <?php
-require_once __DIR__ . '/../../config.php';
-require_once CONTROLLERS_PATH . '/BaseArticleController.php';
 
 class EditArticleController extends BaseArticleController
 {
-
-
   public function handleRequest()
   {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
       $this->displayEditForm();
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      require_once $this->config->get('paths')['models'] . '/CSRFProtection.php';
+      $csrf = new CSRFProtection();
+      if (!isset($_POST["csrf_token"]) || $_POST["csrf_token"] !== $csrf->getToken()) {
+        die("CSRF検証に失敗しました");
+      }
       $this->updateArticle();
+      $csrf->destroyToken();
     }
   }
 
@@ -41,7 +43,7 @@ class EditArticleController extends BaseArticleController
       ];
       extract($viewData);
 
-      include VIEWS_ADMIN_PATH . '/createArticle.php';
+      include $this->config->get('paths')['views_admin'] . '/createArticle.php';
     } else {
       header("Location: /error");
       exit;
@@ -55,6 +57,7 @@ class EditArticleController extends BaseArticleController
    */
   private function updateArticle()
   {
+    echo "updateArticle()が実行されました"; // 3. ここが表示されるか
     $id = $this->getArticleID();
     $data = $this->getInputData();
 
@@ -118,7 +121,7 @@ class EditArticleController extends BaseArticleController
 
         // サムネイル画像のリネーム
         if ($thumbnailData && $id) {
-          $newFilePath = IMAGE_UPLOADS_THUMBNAILS_PATH . 'thumbnail_' . $id . '.' . pathinfo($thumbnailData['file_name'], PATHINFO_EXTENSION);
+          $newFilePath = $this->config->get('assets')['thumbnails'] . 'thumbnail_' . $id . '.' . pathinfo($thumbnailData['file_name'], PATHINFO_EXTENSION);
           if (rename($thumbnailData['tmp_path'], $newFilePath)) {
             $newFileName = basename($newFilePath);
             $relativePath = '/assets/image/uploads/thumbnails/' . $newFileName;
@@ -138,7 +141,7 @@ class EditArticleController extends BaseArticleController
           echo "foreachの中: " . $existingImageCount;
           $imageNumber = $existingImageCount + $index;
           $newImageFileName = 'image_' . $id . ($existingImageCount != 0 ? '_' . $imageNumber : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
-          $newImageFilePath = IMAGE_UPLOADS_ARTICLES_PATH . $newImageFileName;
+          $newImageFilePath = $this->config->get('assets')['articles'] . $newImageFileName;
 
           echo 'New FILE NAME: ' . PHP_EOL;
           echo $imageNumber;
@@ -157,8 +160,8 @@ class EditArticleController extends BaseArticleController
           }
         }
 
-        // header("Location:" . ADMIN_ARTICLES_URL);
-        // exit;
+        header("Location:" . $this->config->get('urls')['admin_articles']);
+        exit;
       } else {
         echo "エラー: 記事の保存に失敗しました";
       }
@@ -181,7 +184,7 @@ class EditArticleController extends BaseArticleController
   {
     $this->isEditMode = true;
     $this->formTitle = '編集';
-    $this->formAction = ADMIN_ARTICLES_URL . 'edit?id=' . $article['id'];
+    $this->formAction = $this->config->get('urls')['admin_articles'] . '/edit?id=' . $article['id'];
     $this->articleTitle = $article['title'];
     if ($article['thumbnailPath'] === false) {
       $this->articleThumbnailPath = '';

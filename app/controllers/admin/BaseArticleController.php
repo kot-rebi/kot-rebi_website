@@ -1,11 +1,9 @@
 <?php
-require_once __DIR__ . '/../../config.php';
-require_once MODELS_PATH . '/Database.php';
-require MODELS_PATH . '/ArticleModel.php';
 
 abstract class BaseArticleController
 {
   protected $articleModel;
+  protected $config;
 
 
   /** 編集画面かどうか @var bool */
@@ -37,6 +35,8 @@ abstract class BaseArticleController
 
   public function __construct()
   {
+    $this->config = Config::getInstance();
+
     $this->articleModel = new ArticleModel(Database::getInstance());
   }
 
@@ -102,10 +102,10 @@ abstract class BaseArticleController
     }
 
     // 仮のファイル名生成（記事IDがない場合は一時的にユニークIDを使用）
-    $uploadDirectory = IMAGE_UPLOADS_THUMBNAILS_PATH;
+    $uploadDirectory = $this->config->get('assets')['thumbnails'];
     $fileName = $articleId
-    ? 'thumbnail_' . $articleId . '.' . pathinfo($file['name'], PATHINFO_EXTENSION)
-    : 'temp_' . uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+      ? 'thumbnail_' . $articleId . '.' . pathinfo($file['name'], PATHINFO_EXTENSION)
+      : 'temp_' . uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
     $uploadPath = $uploadDirectory . $fileName;
 
     // 画像圧縮
@@ -231,14 +231,14 @@ abstract class BaseArticleController
     return true;
   }
 
-  
+
   protected function uploadImage($file, $articleId = null, $index)
   {
-    $uploadDir = IMAGE_UPLOADS_ARTICLES_PATH;
-    
+    $uploadDir = $this->config->get('assets')['articles'];
+
     $fileName = $articleId
-    ? 'image_' . $articleId . ($index != null ? '_' . $index : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION)
-    : 'temp_' . uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+      ? 'image_' . $articleId . ($index != null ? '_' . $index : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION)
+      : 'temp_' . uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
 
     $filePath = $uploadDir . $fileName;
 

@@ -17,6 +17,12 @@
 </h2>
 
 <form action="<?= htmlspecialchars($formAction) ?>" method="POST" enctype="multipart/form-data">
+<?php
+    require_once $config->get('paths')['models'] . '/CSRFProtection.php'; 
+    $csrf = new CSRFProtection();
+    $csrf->generateToken();
+    ?>
+<input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf->getToken(), ENT_QUOTES, 'UTF-8'); ?>">
   <?php if (isset($articleId)): ?>
     <input type="hidden" name="article_id" value="<?= htmlspecialchars($articleId) ?>">
   <?php endif; ?>
@@ -32,7 +38,7 @@
     <input type="file" id="thumbnail" name="thumbnail" class="hidden-file-input" accept="image/*">
 
     <!-- 現在のサムネイル -->
-    <img id="thumbnailPreview" class="<?= $isEditMode && !empty($articleThumbnailPath) ? '' : 'admin-create__thumbnailHidden' ?>" src="<?= BASE_URL . htmlspecialchars($articleThumbnailPath) ?? '' ?>" alt="現在のサムネイル画像">
+    <img id="thumbnailPreview" class="<?= $isEditMode && !empty($articleThumbnailPath) ? '' : 'admin-create__thumbnailHidden' ?>" src="<?= $config->get('BASE_URL') . htmlspecialchars($articleThumbnailPath) ?? '' ?>" alt="現在のサムネイル画像">
 
     <!-- 新しいサムネイル -->
     <img id="newThumbnailPreview" class="admin-create__thumbnailHidden" src="" alt="新しいプレビュー">
@@ -47,11 +53,11 @@
           <?php for ($i = 0; $i < count($articleImagesPath); $i++): ?>
             <div class="inserted-image-set">
 
-              <img src="<?= BASE_URL .  htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
+              <img src="<?= $config->get('BASE_URL') .  htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
               <p>URL</p>
               <div class="url-container">
-                <span class="url-text" id="url-<?= $i ?>" title="<?= BASE_URL . htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
-                  <?= BASE_URL . htmlspecialchars($articleImagesPath[$i]['file_url']) ?>
+                <span class="url-text" id="url-<?= $i ?>" title="<?= $config->get('BASE_URL') . htmlspecialchars($articleImagesPath[$i]['file_url']) ?>">
+                  <?= $config->get('BASE_URL') . htmlspecialchars($articleImagesPath[$i]['file_url']) ?>
                 </span>
                 <button type="button" class="copy-button" data-target="url-<?= $i ?>"><i class="fa-regular fa-copy"></i></button>
               </div>
