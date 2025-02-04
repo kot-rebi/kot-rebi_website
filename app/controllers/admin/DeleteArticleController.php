@@ -14,10 +14,20 @@ class DeleteArticleController
 
   public function handleRequest()
   {
+    require_once $this->config->get('paths')['models'] . '/CSRFProtection.php';
+    $csrf = new CSRFProtection(); 
+
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+      if (!isset($_POST["csrf_token"]) || $_POST["csrf_token"] !== $csrf->getToken()) {
+        die("CSRF検証に失敗しました");
+      }
+    }
+
     $id = $this->getArticleID();
 
     if ($this->validate($id)) {
       if ($this->articleModel->deleteArticleProcess($id)) {
+        $csrf->destroyToken();
         // 削除成功
         header("Location: ") . $this->config->get('urls')['admin_articles'];
         exit;

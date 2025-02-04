@@ -2,12 +2,19 @@
 
 class CreateArticleController extends BaseArticleController
 {
+
   public function handleRequest()
   {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
       $this->displayCreateForm();
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      require_once $this->config->get('paths')['models'] . '/CSRFProtection.php';
+      $csrf = new CSRFProtection();
+      if (!isset($_POST["csrf_token"]) || $_POST["csrf_token"] !== $csrf->getToken()) {
+        die("CSRF検証に失敗しました");
+      }
       $this->insertArticle();
+      $csrf->destroyToken();
     }
   }
 
@@ -112,12 +119,8 @@ class CreateArticleController extends BaseArticleController
           return;
         }
       }
-
-
-
-
-      // header("Location:" . $config->get('urls')['admin_articles']);
-      // exit;
+      header("Location:" . $this->config->get('urls')['admin_articles']);
+      exit;
     } else {
       echo "記事の保存に失敗しました";
     }

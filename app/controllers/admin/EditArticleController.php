@@ -7,7 +7,13 @@ class EditArticleController extends BaseArticleController
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
       $this->displayEditForm();
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      require_once $this->config->get('paths')['models'] . '/CSRFProtection.php';
+      $csrf = new CSRFProtection();
+      if (!isset($_POST["csrf_token"]) || $_POST["csrf_token"] !== $csrf->getToken()) {
+        die("CSRF検証に失敗しました");
+      }
       $this->updateArticle();
+      $csrf->destroyToken();
     }
   }
 
@@ -51,6 +57,7 @@ class EditArticleController extends BaseArticleController
    */
   private function updateArticle()
   {
+    echo "updateArticle()が実行されました"; // 3. ここが表示されるか
     $id = $this->getArticleID();
     $data = $this->getInputData();
 
@@ -153,8 +160,8 @@ class EditArticleController extends BaseArticleController
           }
         }
 
-        // header("Location:" . $this->config->get('urls')['admin_articles']);
-        // exit;
+        header("Location:" . $this->config->get('urls')['admin_articles']);
+        exit;
       } else {
         echo "エラー: 記事の保存に失敗しました";
       }
@@ -177,7 +184,7 @@ class EditArticleController extends BaseArticleController
   {
     $this->isEditMode = true;
     $this->formTitle = '編集';
-    $this->formAction = $this->config->get('urls')['admin_articles'] . 'edit?id=' . $article['id'];
+    $this->formAction = $this->config->get('urls')['admin_articles'] . '/edit?id=' . $article['id'];
     $this->articleTitle = $article['title'];
     if ($article['thumbnailPath'] === false) {
       $this->articleThumbnailPath = '';
