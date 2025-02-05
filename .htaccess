@@ -1,11 +1,11 @@
 RewriteEngine On
-RewriteBase /pj_homepage/
+RewriteBase /
 
 # adminディレクトリへのアクセス制限
-RewriteCond %{REQUEST_URI} ^/pj_homepage/admin
+RewriteCond %{REQUEST_URI} ^/admin
 RewriteCond %{REQUEST_MEHOD} !POST
 RewriteCond %{HTTP_COOKIE} !^.*(PHPSESID|user_id)=.*$ [NC]
-RewriteRule ^(.*)$ /pj_homepage/admin/login
+RewriteRule ^(.*)$ /admin/login
 
 # ファイルやディレクトリが存在しない場合はindex.phpへリダイレクト
 RewriteCond %{REQUEST_FILENAME} !-f
