@@ -1,11 +1,12 @@
 <?php
-require_once 'bootstrap.php';
-require_once 'auth.php';
 
+require_once __DIR__ . '/../app/config/Config.php';
 $config = Config::getInstance();
 
 require_once $config->get('paths')['models'] . '/UserModel.php';
 require_once $config->get('paths')['controllers_admin'] . '/LoginController.php';
+require_once $config->get('paths')['core'] . '/bootstrap.php';
+require_once $config->get('paths')['config'] . '/auth.php';
 
 $userModel = new UserModel();
 $requestUri = $_SERVER['REQUEST_URI'];

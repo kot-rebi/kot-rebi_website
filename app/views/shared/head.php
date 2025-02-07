@@ -6,6 +6,14 @@ $requestUri = $_SERVER['REQUEST_URI'];
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ことれいのもりは技術ブログです。制作で学んだ内容を記事としてまとめ、更新します。完成したゲームも公開しています。" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta property="og:site_name" content="ことれいのもり" />
+  <meta property="og:url" content="URL" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="ことれいのもり" />
+  <meta property="og:description" content="ことれいのもりは技術ブログです。制作で学んだ内容を記事としてまとめ、更新します。完成したゲームも公開しています。" />
+  <meta property="og:locale" content="ja_JP" />
 
   <script>
     const CONTROLLERS_PATH = "<?= $config->get('urls')['controllers']; ?>";
@@ -30,5 +38,7 @@ $requestUri = $_SERVER['REQUEST_URI'];
     <link rel="stylesheet" href=<?= $config->get('paths')['css_admin'] . "/createArticle.css" ?>>
   <?php endif; ?>
 
+  <link rel="icon" href="<?= $config->get('assets')['image'] . '/favicon.ico' ?>">
+  <link rel="apple-touch-icon" href="<?= $config->get('assets')['image'] . '/webclip.png' ?>">
   <title>ことれいのもり</title>
 </head>
