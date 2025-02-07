@@ -1,6 +1,6 @@
 <?php
-require_once 'vendor/autoload.php';
-require_once __DIR__ . '/Config.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../config/Config.php';
 $config = Config::getInstance();
 
 require_once $config->get('paths')['models'] . '/Database.php';
