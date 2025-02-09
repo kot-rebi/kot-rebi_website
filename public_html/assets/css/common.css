@@ -1,0 +1,27 @@
+.file-input-label {
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #f3d0c1;
+  border: 2px solid #d17d58;
+  color: #555;
+  transition: all 0.3s ease;
+}
+
+.file-input-label:hover {
+  background-color: #e2b29d;
+  border-color: #bc7a52;
+}
+
+.file-input-label:active {
+  transform: scale(0.98);
+}
+
+.hidden-file-input {
+  display: none;
+}

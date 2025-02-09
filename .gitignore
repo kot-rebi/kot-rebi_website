@@ -4,5 +4,5 @@ Thumbs.db
 .env
 .bak
 .log
-app/config/*
+app/config/
 public_html/assets/image/*
