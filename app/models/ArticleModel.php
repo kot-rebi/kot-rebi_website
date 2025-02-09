@@ -149,7 +149,7 @@ class ArticleModel
    * @param array|null $imageData 記事の画像ファイル
    * @return int|null 成功したときは記事ID、失敗したときはfalse
    */
-  public function insertArticles($title, $content, $thumbnailData, &$imageData)
+  public function insertArticles($title, $content, $thumbnailData, &$imageData, $metaTag)
   {
     $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
 
@@ -157,9 +157,10 @@ class ArticleModel
       $this->db->beginTransaction();
 
       // 記事の挿入
-      $stmt = $this->db->prepare("INSERT INTO " . $this->config->get('tables')['articles'] . " (title, content) VALUES (:title, :content)");
+      $stmt = $this->db->prepare("INSERT INTO " . $this->config->get('tables')['articles'] . " (title, content, meta_tag) VALUES (:title, :content, :meta_tag)");
       $stmt->bindValue(":title", $title, PDO::PARAM_STR);
       $stmt->bindValue(":content", $content, PDO::PARAM_STR);
+      $stmt->bindValue(":meta_tag", $metaTag, PDO::PARAM_STR);
       $stmt->execute();
 
       $articleId = $this->db->lastInsertId();
@@ -221,7 +222,7 @@ class ArticleModel
    * @param string $content 更新後の内容
    * @return bool 成功したときはtrue、失敗したときはfalse
    */
-  public function updateArticles($id, $title, $content, $thumbnailData = null, &$imageData)
+  public function updateArticles($id, $title, $content, $thumbnailData = null, &$imageData, $metaTag)
   {
     $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
 
@@ -231,11 +232,12 @@ class ArticleModel
       // 記事の更新
       $stmt = $this->db->prepare("
         UPDATE " . $this->config->get('tables')['articles'] . "
-        SET title = :title, content = :content, updated_at = NOW()
+        SET title = :title, content = :content, updated_at = NOW(), meta_tag = :meta_tag
         WHERE id = :id
       ");
       $stmt->bindValue(":title", $title, PDO::PARAM_STR);
       $stmt->bindValue(":content", $content, PDO::PARAM_STR);
+      $stmt->bindValue(":meta_tag", $metaTag, PDO::PARAM_STR);
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
       if (!$stmt->execute()) {
         throw new Exception("記事の更新に失敗しました");
@@ -533,7 +535,8 @@ class ArticleModel
       SELECT
         a.id, 
         a.title, 
-        a.content, 
+        a.content,
+        a.meta_tag,
         DATE(a.updated_at) AS formatted_date,
         i.file_path AS thumbnail_path
       FROM " . $this->config->get('tables')['articles'] . " a

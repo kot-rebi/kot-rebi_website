@@ -30,6 +30,9 @@ abstract class BaseArticleController
   /** 決定ボタンの文字列 @var string */
   protected $submitLabel;
 
+  /** メタタグの文字列 @var string */
+  protected $metaTag;
+
   /** 記事ID @var int */
   protected $articleId;
 
@@ -44,7 +47,8 @@ abstract class BaseArticleController
   {
     return [
       'title' => $_POST['title'],
-      'content' => $_POST['content']
+      'content' => $_POST['content'],
+      'meta_tag' => $_POST['meta_tag']
     ];
   }
 
@@ -104,16 +108,19 @@ abstract class BaseArticleController
     // 仮のファイル名生成（記事IDがない場合は一時的にユニークIDを使用）
     $uploadDirectory = $this->config->get('assets')['thumbnails'];
     $fileName = $articleId
-      ? 'thumbnail_' . $articleId . '.' . pathinfo($file['name'], PATHINFO_EXTENSION)
-      : 'temp_' . uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+      ? '/thumbnail_' . $articleId . '.' . pathinfo($file['name'], PATHINFO_EXTENSION)
+      : '/temp_' . uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
     $uploadPath = $uploadDirectory . $fileName;
+
+    echo "uploadPath: " . $uploadPath;
+    echo "url_path: " . '/assets/image/uploads/thumbnails' . $fileName;
 
     // 画像圧縮
     $compressedPath = $this->compressImage($file['tmp_name'], $uploadPath, $file['type']);
     if ($compressedPath) {
       return [
         'tmp_path' => $uploadPath,
-        'url_path' => '/assets/image/uploads/thumbnails/' . $fileName
+        'url_path' => '/assets/image/uploads/thumbnails' . $fileName
       ];
     }
 
@@ -132,6 +139,7 @@ abstract class BaseArticleController
    */
   private function compressImage($sourcePath, $destinationPath, $mimeType, $quality = 75)
   {
+    echo "画像の圧縮後のパス: " . $destinationPath;
     // PHPで扱いやすいように変換→圧縮→保存の過程を辿る
     switch ($mimeType) {
       case 'image/jpeg':

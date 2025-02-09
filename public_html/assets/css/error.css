@@ -1,0 +1,15 @@
+.article-container_error {
+  min-height: 200px;
+  padding: 40px;
+  border-radius: 20px;
+  line-height: 1.5;
+  letter-spacing: 0.05rem;
+  text-align: center;
+  color: #252525;
+  background-color: white;
+  /* border: 2px solid seagreen; */
+}
+
+.admin-create_error p {
+  text-align: center;
+}

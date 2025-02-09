@@ -29,6 +29,7 @@ class CreateArticleController extends BaseArticleController
       'articleThumbnailPath' => $this->articleThumbnailPath,
       'articleContent' => $this->articleContent,
       'submitLabel' => $this->submitLabel,
+      'metaTag' => $this->metaTag,
       'articleId' => $this->articleId
     ];
     extract($viewData);
@@ -42,6 +43,9 @@ class CreateArticleController extends BaseArticleController
     $thumbnailData = null;
     $articleImages = [];
     $imageData = [];
+
+    var_dump("data: ");
+    var_dump($data);
 
     // サムネイル画像の仮保存
     if (!empty($_FILES['thumbnail']['tmp_name'])) {
@@ -83,7 +87,7 @@ class CreateArticleController extends BaseArticleController
 
     // 記事挿入処理
     if ($this->validateArticleSave($data)) {
-      $articleId = $this->articleModel->insertArticles($data['title'], $data['content'], $thumbnailData, $imageData);
+      $articleId = $this->articleModel->insertArticles($data['title'], $data['content'], $thumbnailData, $imageData, $data['meta_tag']);
       var_dump("記事を挿入しました");
       var_dump($imageData);
       echo $articleId;
@@ -119,7 +123,7 @@ class CreateArticleController extends BaseArticleController
           return;
         }
       }
-      header("Location:" . $this->config->get('urls')['admin_articles']);
+      // header("Location:" . $this->config->get('urls')['admin_articles']);
       exit;
     } else {
       echo "記事の保存に失敗しました";
@@ -141,6 +145,7 @@ class CreateArticleController extends BaseArticleController
     $this->articleThumbnailPath = '';
     $this->articleContent = '';
     $this->submitLabel = '送信';
+    $this->metaTag = '';
     $this->articleId = '';
   }
 }
