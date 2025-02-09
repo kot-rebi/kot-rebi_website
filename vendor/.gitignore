@@ -1,8 +1,8 @@
 .vscode/
-/vendor/
+vendor/*
 Thumbs.db
 .env
 .bak
 .log
-/app/config/
-/public_html/assets/image/
+app/config/*
+public_html/assets/image/*
