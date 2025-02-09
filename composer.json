@@ -1,0 +1,6 @@
+{
+    "name": "koto-rebi/pj_homepage",
+    "require": {
+        "erusev/parsedown": "^1.7"
+    }
+}
