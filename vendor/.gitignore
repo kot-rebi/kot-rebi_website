@@ -1,10 +1,5 @@
 .vscode/
-/vendor/composer/
-/vendor/erusev/
-/vendor/graham-cambell/
-/vendor/phpoption/
-/vendor/symfony/
-/vendor/vlucas/
+/vendor/
 Thumbs.db
 .env
 .bak
