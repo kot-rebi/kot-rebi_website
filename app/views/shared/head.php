@@ -6,7 +6,7 @@ $requestUri = $_SERVER['REQUEST_URI'];
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="ことれいのもりは技術ブログです。制作で学んだ内容を記事としてまとめ、更新します。完成したゲームも公開しています。" />
+  <meta name="description" content="<?= isset($article) && isset($article['meta_tag']) && $article['meta_tag'] !== null ? $article['meta_tag'] : 'ことれいのもりは技術ブログです。制作で学んだ内容を記事としてまとめ、更新します。完成したゲームも公開しています。' ?>" />
   <meta name="format-detection" content="telephone=no" />
   <meta property="og:site_name" content="ことれいのもり" />
   <meta property="og:url" content="URL" />
