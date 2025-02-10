@@ -39,6 +39,7 @@ class EditArticleController extends BaseArticleController
         'articleContent' => $this->articleContent,
         'articleImagesPath' => $this->articleImagesPath,
         'submitLabel' => $this->submitLabel,
+        'metaTag' => $this->metaTag,
         'articleId' => $this->articleId
       ];
       extract($viewData);
@@ -57,10 +58,10 @@ class EditArticleController extends BaseArticleController
    */
   private function updateArticle()
   {
-    echo "updateArticle()が実行されました"; // 3. ここが表示されるか
     $id = $this->getArticleID();
     $data = $this->getInputData();
 
+    var_dump($data);
     if (isset($_POST['delete_images'])) {
       $deleteImages = $_POST['delete_images'];
       $this->articleModel->deleteArticleImage($id, $deleteImages);
@@ -115,7 +116,7 @@ class EditArticleController extends BaseArticleController
     if ($this->validateArticleId($id)) {
       if ($this->validateArticleSave($data)) {
         // 記事の更新
-        $this->articleModel->updateArticles($id, $data['title'], $data['content'], $thumbnailData, $imageData);
+        $this->articleModel->updateArticles($id, $data['title'], $data['content'], $thumbnailData, $imageData, $data['meta_tag']);
 
         echo "記事を更新しました";
 
@@ -160,7 +161,7 @@ class EditArticleController extends BaseArticleController
           }
         }
 
-        header("Location:" . $this->config->get('urls')['admin_articles']);
+        // header("Location:" . $this->config->get('urls')['admin_articles']);
         exit;
       } else {
         echo "エラー: 記事の保存に失敗しました";
@@ -200,6 +201,7 @@ class EditArticleController extends BaseArticleController
       $this->articleImagesPath = '';
     }
     $this->submitLabel = '更新';
+    $this->metaTag = $article['meta_tag'];
     $this->articleId = $article['id'];
   }
 }

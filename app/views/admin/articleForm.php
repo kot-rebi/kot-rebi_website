@@ -9,6 +9,7 @@
  * @param string $articleThumbnailPath 記事のサムネイルパス
  * @param string $articleContent 記事の本文
  * @param string $submitLabel ボタンのラベル
+ * @param string $metaTag メタタグ
  * @param int|null $articleId 記事ID（編集時のみ使用する）
  */
 ?>
@@ -93,6 +94,11 @@
   <div class="admin-create__content">
     <label for="article-content">記事本文</label>
     <textarea name="content" id="article-content" rows="20" cols="50" placeholder="記事の本文を入力してください"><?= htmlspecialchars($articleContent) ?></textarea>
+  </div>
+
+  <div class="admin-create__title">
+    <label for="meta_tag">メタタグ</label>
+    <input type="text" name="meta_tag" id="meta_tag" value="<?= htmlspecialchars($metaTag) ?>" placeholder="メタタグを入力してください">
   </div>
 
   <input type="submit" value="<?= htmlspecialchars($submitLabel) ?>">
