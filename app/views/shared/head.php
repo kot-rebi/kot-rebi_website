@@ -1,6 +1,9 @@
 <?php
 $config = Config::getInstance();
 $requestUri = $_SERVER['REQUEST_URI'];
+$ogType = ($_SERVER['REQUEST_URI'] === '/' || $_SERVER['REQUEST_URI'] === '/index.php' ? 'website' : 'article');
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+$currentUrl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 ?>
 
 <head>
@@ -9,9 +12,9 @@ $requestUri = $_SERVER['REQUEST_URI'];
   <meta name="description" content="<?= isset($article) && isset($article['meta_tag']) && $article['meta_tag'] !== null ? $article['meta_tag'] : 'ことれいのもりは技術ブログです。制作で学んだ内容を記事としてまとめ、更新します。完成したゲームも公開しています。' ?>" />
   <meta name="format-detection" content="telephone=no" />
   <meta property="og:site_name" content="ことれいのもり" />
-  <meta property="og:url" content="URL" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="ことれいのもり" />
+  <meta property="og:url" content="<?= htmlspecialchars($currentUrl, ENT_QUOTES, 'UTF-8') ?>" />
+  <meta property="og:type" content="<?= htmlspecialchars($ogType) ?>"/>
+  <meta property="og:title" content="<?= isset($article['title']) ? htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8') : 'ことれいのもり' ?>" />
   <meta property="og:description" content="<?= isset($article) && isset($article['meta_tag']) && $article['meta_tag'] !== null ? $article['meta_tag'] : 'ことれいのもりは技術ブログです。制作で学んだ内容を記事としてまとめ、更新します。完成したゲームも公開しています。' ?>"  />
   <meta property="og:image" content="<?= isset($article['thumbnail_path']) ? rtrim($config->get('BASE_URL'), '/') . '/' . ltrim(htmlspecialchars($article['thumbnail_path']), '/') : '' ?>" />
   <meta property="og:locale" content="ja_JP" />
