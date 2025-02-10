@@ -3,7 +3,7 @@
   <!-- <a href="#">
     <p>プライバシーポリシー</p>
   </a> -->
-  <p class="footer__copyright">&copy;2024 name</p>
+  <p class="footer__copyright">&copy;2024 ことれい</p>
 
   <script src= <?= $config->get('paths')['views_home'] . "/language-label.js" ?> ></script>
   <!-- Prism.jsの読み込み -->

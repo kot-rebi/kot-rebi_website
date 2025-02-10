@@ -12,7 +12,8 @@ $requestUri = $_SERVER['REQUEST_URI'];
   <meta property="og:url" content="URL" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="ことれいのもり" />
-  <meta property="og:description" content="ことれいのもりは技術ブログです。制作で学んだ内容を記事としてまとめ、更新します。完成したゲームも公開しています。" />
+  <meta property="og:description" content="<?= isset($article) && isset($article['meta_tag']) && $article['meta_tag'] !== null ? $article['meta_tag'] : 'ことれいのもりは技術ブログです。制作で学んだ内容を記事としてまとめ、更新します。完成したゲームも公開しています。' ?>"  />
+  <meta property="og:image" content="<?= isset($article['thumbnail_path']) ? rtrim($config->get('BASE_URL'), '/') . '/' . ltrim(htmlspecialchars($article['thumbnail_path']), '/') : '' ?>" />
   <meta property="og:locale" content="ja_JP" />
 
   <script>
