@@ -45,4 +45,14 @@ $currentUrl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   <link rel="icon" href="<?= $config->get('assets')['image'] . '/favicon.ico' ?>">
   <link rel="apple-touch-icon" href="<?= $config->get('assets')['image'] . '/webclip.png' ?>">
   <title>ことれいのもり</title>
+
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QDDKCLS2FX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-QDDKCLS2FX');
+</script>
 </head>
