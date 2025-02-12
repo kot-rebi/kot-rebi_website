@@ -3,24 +3,20 @@ function togglePublish(articleId) {
   const checkedStatus = checkbox.checked;
 
   if (confirm("公開ステータスを変更してもよろしいですか？")) {
-    console.log("変更します");
-    fetch(CONTROLLERS_PATH + "/toggle_status.php?id=" + articleId)
-      .then(response => {
-        if (response.ok) {
-          return response.text();
+    fetch("/api/admin/toggle_status.php?id=" + articleId)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log(data.message);
+          location.reload;
         } else {
-          throw new Error("サーバーエラーが発生しました");
+          alert('エラー: ' + data.error);
         }
       })
-      .then(data => {
-        console.log(data);
-        location.reload();
-      })
       .catch(error => {
-        alert("エラーが発生しました: " + error.message);
+        alert("通信エラーが発生しました: " + error.message);
       });
   } else {
     checkbox.checked = !checkedStatus;
-    return;
   }
 }
