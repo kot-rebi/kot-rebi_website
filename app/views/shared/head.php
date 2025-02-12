@@ -20,7 +20,7 @@ $currentUrl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   <meta property="og:locale" content="ja_JP" />
 
   <script>
-    const CONTROLLERS_PATH = "<?= $config->get('urls')['controllers']; ?>";
+    const ADMIN_API_PATH = "<?= $config->get('urls')['admin_api']; ?>";
   </script>
 
   <link rel="stylesheet" href=<?= $config->get('paths')['css'] . "/reset.css" ?>>
@@ -47,12 +47,12 @@ $currentUrl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   <title>ことれいのもり</title>
 
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-QDDKCLS2FX"></script>
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDDKCLS2FX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-QDDKCLS2FX');
-</script>
+</script> -->
 </head>
