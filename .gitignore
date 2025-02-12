@@ -6,3 +6,4 @@ Thumbs.db
 .log
 app/config/
 public_html/assets/image/*
+public_html/sitemap.xml
