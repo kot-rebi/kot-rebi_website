@@ -93,12 +93,14 @@ class EditArticleController extends BaseArticleController
           'error' => $_FILES['images']['error'][$index],
         ];
 
+        $altText = isset($_POST['alt_texts'][$index]) ? $_POST['alt_texts'][$index] : '';
+
         $imageInfo = $this->uploadImage($file, null, $index);
         $imageData[] = [
           'tmp_path' => $imageInfo['tmp_path'],
           'file_name' => basename($imageInfo['url_path']),
           'file_path' => $imageInfo['url_path'],
-          'alt_text' => $data['title'],
+          'alt_text' => $altText,
         ];
       }
     }
