@@ -3,13 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const addButton = document.getElementById('add-image-button');
 
   addButton.addEventListener('click', () => {
+
+    const uniqueId = `image-${Date.now()}`;
+
     // 画像と説明テキストのセットを生成
     const newInputSet = document.createElement('div');
     newInputSet.classList.add('image-input-set');
 
     // ラベル
     const customFileLabel = document.createElement('label');
-    customFileLabel.htmlFor = 'image'
+    customFileLabel.htmlFor = uniqueId;
     customFileLabel.classList.add('file-input-label');
     customFileLabel.textContent = "画像を選択";
 
@@ -17,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageInput = document.createElement('input');
     imageInput.type = 'file';
     imageInput.classList.add('hidden-file-input');
-    imageInput.id = 'image';
+    imageInput.id = uniqueId;
     imageInput.name = 'images[]';
     imageInput.accept = 'image/*';
     imageInput.required = true;
@@ -37,6 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
     removeButton.addEventListener('click', () => {
       container.removeChild(newInputSet);
     });
+
+    // 追加されたinputにファイル名を表示するイベントリスナーを設定
+    imageInput.addEventListener('change', (event) => {
+      const fileName = event.target.files[0]?.name || "画像を選択";
+      customFileLabel.textContent = fileName;
+    })
 
     // 作成したセットを追加
     newInputSet.appendChild(customFileLabel);

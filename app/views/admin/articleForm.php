@@ -65,8 +65,10 @@
 
               <p>altテキスト</p>
               <div class="alt-container">
-                <p id="alt-<= $i ?>" class="alt-text"><?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?></p>
-                <button type="button" class="copy-button" data-target="alt-<? $i ?>"><i class="fa-regular fa-copy"></i></button>
+                <span class="alt-text" id="alt-<?= $i ?>" title="<?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?>">
+                <?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?>
+                </span>
+                <button type="button" class="copy-button" data-target="alt-<?= $i ?>"><i class="fa-regular fa-copy"></i></button>
               </div>
 
               <label class="delete-button-label">

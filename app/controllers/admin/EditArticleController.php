@@ -93,12 +93,14 @@ class EditArticleController extends BaseArticleController
           'error' => $_FILES['images']['error'][$index],
         ];
 
+        $altText = isset($_POST['alt_texts'][$index]) ? $_POST['alt_texts'][$index] : '';
+
         $imageInfo = $this->uploadImage($file, null, $index);
         $imageData[] = [
           'tmp_path' => $imageInfo['tmp_path'],
           'file_name' => basename($imageInfo['url_path']),
           'file_path' => $imageInfo['url_path'],
-          'alt_text' => $data['title'],
+          'alt_text' => $altText,
         ];
       }
     }
@@ -141,7 +143,7 @@ class EditArticleController extends BaseArticleController
         foreach ($imageData as $index => $image) {
           echo "foreachの中: " . $existingImageCount;
           $imageNumber = $existingImageCount + $index;
-          $newImageFileName = 'image_' . $id . ($existingImageCount != 0 ? '_' . $imageNumber : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+          $newImageFileName = '/image_' . $id . ($existingImageCount != 0 ? '_' . $imageNumber : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
           $newImageFilePath = $this->config->get('assets')['articles'] . $newImageFileName;
 
           echo 'New FILE NAME: ' . PHP_EOL;
@@ -152,7 +154,7 @@ class EditArticleController extends BaseArticleController
 
           if (rename($image['tmp_path'], $newImageFilePath)) {
             $image['file_name'] = $newImageFileName;
-            $image['file_url'] = '/assets/image/uploads/articles/' . $newImageFileName;
+            $image['file_url'] = '/assets/image/uploads/articles' . $newImageFileName;
 
             $this->articleModel->updateArticleImagePath($image['id'], $image['file_url']);
           } else {
