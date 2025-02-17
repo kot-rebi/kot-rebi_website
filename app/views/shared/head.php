@@ -13,9 +13,9 @@ $currentUrl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   <meta name="format-detection" content="telephone=no" />
   <meta property="og:site_name" content="ことれいのもり" />
   <meta property="og:url" content="<?= htmlspecialchars($currentUrl, ENT_QUOTES, 'UTF-8') ?>" />
-  <meta property="og:type" content="<?= htmlspecialchars($ogType) ?>"/>
+  <meta property="og:type" content="<?= htmlspecialchars($ogType) ?>" />
   <meta property="og:title" content="<?= isset($article['title']) ? htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8') . ' | ことれいのもり' : 'ことれいのもり' ?>" />
-  <meta property="og:description" content="<?= isset($article) && isset($article['meta_tag']) && $article['meta_tag'] !== null ? $article['meta_tag'] : 'ことれいのもりは技術ブログです。制作で学んだ内容を記事としてまとめ、更新します。完成したゲームも公開しています。' ?>"  />
+  <meta property="og:description" content="<?= isset($article) && isset($article['meta_tag']) && $article['meta_tag'] !== null ? $article['meta_tag'] : 'ことれいのもりは技術ブログです。制作で学んだ内容を記事としてまとめ、更新します。完成したゲームも公開しています。' ?>" />
   <meta property="og:image" content="<?= isset($article['thumbnail_path']) ? rtrim($config->get('BASE_URL'), '/') . '/' . ltrim(htmlspecialchars($article['thumbnail_path']), '/') : '' ?>" />
   <meta property="og:locale" content="ja_JP" />
 
@@ -46,13 +46,19 @@ $currentUrl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   <link rel="apple-touch-icon" href="<?= $config->get('assets')['image'] . '/webclip.png' ?>">
   <title><?= isset($article['title']) ? htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8') . ' | ことれいのもり' : 'ことれいのもり' ?></title>
 
-  <!-- Google tag (gtag.js) -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDDKCLS2FX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-QDDKCLS2FX');
-</script> -->
+  <?php if (strpos($_SERVER['REQUEST_URI'], '/admin') === false): ?>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDDKCLS2FX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-QDDKCLS2FX');
+  </script>
+  <?php endif; ?>
 </head>
