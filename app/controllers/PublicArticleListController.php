@@ -53,6 +53,9 @@ class PublicArticleListController
     // カテゴリーの取得
     $categories = $this->listCategories();
 
+    // ゲームの取得
+    $games = $this->articleModel->getGames();
+
     require_once $this->config->get('paths')['views_home'] . '/index.php';
   }
 

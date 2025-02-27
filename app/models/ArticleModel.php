@@ -141,6 +141,24 @@ class ArticleModel
   }
 
   /**
+   * ゲームのデータを取得する
+   *
+   * @return void
+   */
+  public function getGames()
+  {
+    try {
+      $stmt = $this->db->prepare("SELECT title, thumbnail_path, description, url, published_at 
+      FROM " . $this->config->get('tables')['games']);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      echo "ゲームの取得に失敗しました: " . $e->getMessage();
+      return 0;
+    }
+  }
+
+  /**
    * 新しい記事を挿入
    *
    * @param string $title 記事のタイトル
