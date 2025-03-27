@@ -36,6 +36,12 @@ abstract class BaseArticleController
   /** 記事ID @var int */
   protected $articleId;
 
+  /** カテゴリー一覧 @var array */
+  protected $categories;
+
+  /** カテゴリーID @var int */
+  protected $categoryId;
+
   public function __construct()
   {
     $this->config = Config::getInstance();
@@ -48,6 +54,7 @@ abstract class BaseArticleController
     return [
       'title' => $_POST['title'],
       'content' => $_POST['content'],
+      'category_id' => $_POST['category'],
       'meta_tag' => $_POST['meta_tag']
     ];
   }

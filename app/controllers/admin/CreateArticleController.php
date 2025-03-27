@@ -20,7 +20,8 @@ class CreateArticleController extends BaseArticleController
 
   private function displayCreateForm()
   {
-    $this->setArticleVariables();
+    $categories = $this->articleModel->getCategoriesList();
+    $this->setArticleVariables($categories);
     $viewData = [
       'isEditMode' => $this->isEditMode,
       'formTitle' => $this->formTitle,
@@ -30,7 +31,8 @@ class CreateArticleController extends BaseArticleController
       'articleContent' => $this->articleContent,
       'submitLabel' => $this->submitLabel,
       'metaTag' => $this->metaTag,
-      'articleId' => $this->articleId
+      'articleId' => $this->articleId,
+      'categories' => $this->categories,
     ];
     extract($viewData);
 
@@ -87,7 +89,7 @@ class CreateArticleController extends BaseArticleController
 
     // 記事挿入処理
     if ($this->validateArticleSave($data)) {
-      $articleId = $this->articleModel->insertArticles($data['title'], $data['content'], $thumbnailData, $imageData, $data['meta_tag']);
+      $articleId = $this->articleModel->insertArticles($data['title'], $data['content'], $thumbnailData, $imageData, $data['category_id'], $data['meta_tag']);
       var_dump("記事を挿入しました");
       var_dump($imageData);
       echo $articleId;
@@ -136,7 +138,7 @@ class CreateArticleController extends BaseArticleController
    * 
    * @return void
    */
-  private function setArticleVariables()
+  private function setArticleVariables($categories)
   {
     $this->isEditMode = false;
     $this->formTitle = '新規作成';
@@ -147,5 +149,6 @@ class CreateArticleController extends BaseArticleController
     $this->submitLabel = '送信';
     $this->metaTag = '';
     $this->articleId = '';
+    $this->categories = $categories;
   }
 }

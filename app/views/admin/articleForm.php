@@ -18,12 +18,12 @@
 </h2>
 
 <form action="<?= htmlspecialchars($formAction) ?>" method="POST" enctype="multipart/form-data">
-<?php
-    require_once $config->get('paths')['models'] . '/CSRFProtection.php'; 
-    $csrf = new CSRFProtection();
-    $csrf->generateToken();
-    ?>
-<input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf->getToken(), ENT_QUOTES, 'UTF-8'); ?>">
+  <?php
+  require_once $config->get('paths')['models'] . '/CSRFProtection.php';
+  $csrf = new CSRFProtection();
+  $csrf->generateToken();
+  ?>
+  <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf->getToken(), ENT_QUOTES, 'UTF-8'); ?>">
   <?php if (isset($articleId)): ?>
     <input type="hidden" name="article_id" value="<?= htmlspecialchars($articleId) ?>">
   <?php endif; ?>
@@ -31,6 +31,20 @@
   <div class="admin-create__title">
     <label for="title">タイトル</label>
     <input type="text" name="title" id="title" value="<?= htmlspecialchars($articleTitle) ?>" placeholder="タイトルを入力してください">
+  </div>
+
+  <div class="admin-create__category">
+    <label for="caegory">カテゴリー</label>
+    <select name="category" id="category">
+      <?php if (isset($categories)): ?>
+        <?php foreach ($categories as $category): ?>
+          <option value="<?= htmlspecialchars($category['id']) ?>"
+            <?= (isset($category_id) && $category_id == $category['id']) ? 'selected' : '' ?>>
+            <?= htmlspecialchars($category['name']) ?>
+          </option>
+        <?php endforeach; ?>
+      <?php endif; ?>
+    </select>
   </div>
 
   <div class="admin-create__thumbnail">
@@ -66,7 +80,7 @@
               <p>altテキスト</p>
               <div class="alt-container">
                 <span class="alt-text" id="alt-<?= $i ?>" title="<?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?>">
-                <?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?>
+                  <?= htmlspecialchars($articleImagesPath[$i]['alt_text']) ?>
                 </span>
                 <button type="button" class="copy-button" data-target="alt-<?= $i ?>"><i class="fa-regular fa-copy"></i></button>
               </div>

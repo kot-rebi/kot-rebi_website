@@ -49,6 +49,7 @@ include $config->get('paths')['global_shared'] . '/head.php';
             <tr>
               <th>ID</th>
               <th>タイトル</th>
+              <th>カテゴリー</th>
               <th>作成日</th>
               <th>更新日</th>
               <th>公開ステータス</th>
@@ -62,8 +63,9 @@ include $config->get('paths')['global_shared'] . '/head.php';
               <tr>
                 <td><?= htmlspecialchars($article['id']) ?></td>
                 <td><?= htmlspecialchars($article['title']) ?></td>
-                <td><?= htmlspecialchars($article['created_at']) ?></td>
-                <td><?= htmlspecialchars($article['updated_at']) ?></td>
+                <td><?=htmlspecialchars($article['category_name']) ?></td>
+                <td><?= htmlspecialchars($article['formatted_created_at']) ?></td>
+                <td><?= htmlspecialchars($article['formatted_updated_at']) ?></td>
                 <td>
                   <div class="toggle-container">
                     <span class="toggle-text"><?= htmlspecialchars($article['is_published'] == 1 ? '公開' : '非公開') ?></span>

@@ -27,7 +27,8 @@ class EditArticleController extends BaseArticleController
     $id = $this->getArticleID();
     if ($this->validateArticleId($id)) {
       $article = $this->articleModel->getAricleWithImagesById($id);
-      $this->setArticleVariables($article);
+      $categories = $this->articleModel->getCategoriesList();
+      $this->setArticleVariables($article, $categories);
 
       // ビューに渡す配列データ
       $viewData = [
@@ -40,7 +41,9 @@ class EditArticleController extends BaseArticleController
         'articleImagesPath' => $this->articleImagesPath,
         'submitLabel' => $this->submitLabel,
         'metaTag' => $this->metaTag,
-        'articleId' => $this->articleId
+        'articleId' => $this->articleId,
+        'categories' => $this->categories,
+        'category_id' => $this->categoryId,
       ];
       extract($viewData);
 
@@ -118,7 +121,7 @@ class EditArticleController extends BaseArticleController
     if ($this->validateArticleId($id)) {
       if ($this->validateArticleSave($data)) {
         // 記事の更新
-        $this->articleModel->updateArticles($id, $data['title'], $data['content'], $thumbnailData, $imageData, $data['meta_tag']);
+        $this->articleModel->updateArticles($id, $data['title'], $data['content'], $thumbnailData, $imageData, $data['category_id'], $data['meta_tag']);
 
         echo "記事を更新しました";
 
@@ -181,9 +184,10 @@ class EditArticleController extends BaseArticleController
    *  - string $article['thumbnailPath'] | false 記事のサムネイルパス、ない場合はfalse
    *  - string $article['title'] 記事のタイトル
    *  - string $article['content'] 記事の本文
+   * @param array $categories DBに保存されているカテゴリー一覧
    * @return void
    */
-  private function setArticleVariables($article)
+  private function setArticleVariables($article, $categories)
   {
     $this->isEditMode = true;
     $this->formTitle = '編集';
@@ -205,5 +209,7 @@ class EditArticleController extends BaseArticleController
     $this->submitLabel = '更新';
     $this->metaTag = $article['meta_tag'];
     $this->articleId = $article['id'];
+    $this->categories = $categories;
+    $this->categoryId = $article['category_id'];
   }
 }

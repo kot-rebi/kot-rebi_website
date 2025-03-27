@@ -28,7 +28,17 @@ class ArticleModel
   public function getArticles($limit, $offset)
   {
     try {
-      $stmt = $this->db->prepare("SELECT * FROM " . $this->config->get('tables')['articles'] . "  LIMIT :limit OFFSET :offset");
+      $stmt = $this->db->prepare("
+        SELECT 
+          a.*, 
+          c.name AS category_name, 
+          DATE_FORMAT(a.created_at, '%Y年%c月%e日') AS formatted_created_at, 
+          DATE_FORMAT(a.updated_at, '%Y年%c月%e日') AS formatted_updated_at 
+        FROM " . $this->config->get('tables')['articles'] . " AS a 
+        LEFT JOIN " . $this->config->get('tables')['categories'] . " AS c 
+        ON a.category_id = c.id 
+        LIMIT :limit OFFSET :offset
+      ");
       $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
       $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
       $stmt->execute();
@@ -39,6 +49,14 @@ class ArticleModel
     }
   }
 
+  /**
+   * 指定されたカテゴリーの記事を取得する
+   *
+   * @param int $categoryId カテゴリーID
+   * @param int $limit 取得件数
+   * @param int $offset 何件目から取得するか
+   * @return void
+   */
   public function getArticlesByCategory($categoryId, $limit, $offset)
   {
     try {
@@ -167,7 +185,7 @@ class ArticleModel
    * @param array|null $imageData 記事の画像ファイル
    * @return int|null 成功したときは記事ID、失敗したときはfalse
    */
-  public function insertArticles($title, $content, $thumbnailData, &$imageData, $metaTag)
+  public function insertArticles($title, $content, $thumbnailData, &$imageData, $categoryId, $metaTag)
   {
     $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
 
@@ -175,9 +193,10 @@ class ArticleModel
       $this->db->beginTransaction();
 
       // 記事の挿入
-      $stmt = $this->db->prepare("INSERT INTO " . $this->config->get('tables')['articles'] . " (title, content, meta_tag) VALUES (:title, :content, :meta_tag)");
+      $stmt = $this->db->prepare("INSERT INTO " . $this->config->get('tables')['articles'] . " (title, content, category_id, meta_tag) VALUES (:title, :content, :category_id, :meta_tag)");
       $stmt->bindValue(":title", $title, PDO::PARAM_STR);
       $stmt->bindValue(":content", $content, PDO::PARAM_STR);
+      $stmt->bindValue(":category_id", $categoryId, PDO::PARAM_INT);
       $stmt->bindValue(":meta_tag", $metaTag, PDO::PARAM_STR);
       $stmt->execute();
 
@@ -240,7 +259,7 @@ class ArticleModel
    * @param string $content 更新後の内容
    * @return bool 成功したときはtrue、失敗したときはfalse
    */
-  public function updateArticles($id, $title, $content, $thumbnailData = null, &$imageData, $metaTag)
+  public function updateArticles($id, $title, $content, $thumbnailData = null, &$imageData, $categoryId, $metaTag)
   {
     $this->db->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
 
@@ -250,11 +269,12 @@ class ArticleModel
       // 記事の更新
       $stmt = $this->db->prepare("
         UPDATE " . $this->config->get('tables')['articles'] . "
-        SET title = :title, content = :content, updated_at = NOW(), meta_tag = :meta_tag
+        SET title = :title, content = :content, updated_at = NOW(), category_id = :category_id, meta_tag = :meta_tag
         WHERE id = :id
       ");
       $stmt->bindValue(":title", $title, PDO::PARAM_STR);
       $stmt->bindValue(":content", $content, PDO::PARAM_STR);
+      $stmt->bindValue(":category_id", $categoryId, PDO::PARAM_INT);
       $stmt->bindValue(":meta_tag", $metaTag, PDO::PARAM_STR);
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
       if (!$stmt->execute()) {
@@ -554,6 +574,7 @@ class ArticleModel
         a.id, 
         a.title, 
         a.content,
+        a.category_id,
         a.meta_tag,
         DATE(a.updated_at) AS formatted_date,
         i.file_path AS thumbnail_path
@@ -719,6 +740,16 @@ class ArticleModel
     }
   }
 
+
+  // ========================================
+  // カテゴリー一覧
+  // ========================================
+
+  /**
+   * カテゴリー一覧を取得する
+   *
+   * @return void
+   */
   public function getCategoriesList()
   {
     try {
@@ -729,6 +760,30 @@ class ArticleModel
     } catch (PDOException $e) {
       echo "Error: " . $e->getMessage();
       return [];
+    }
+  }
+
+  /**
+   * 記事のカテゴリーを更新する
+   *
+   * @param int $articleId 記事ID
+   * @param int $categoryId カテゴリーID
+   * @return void
+   */
+  public function updateArticleCategory($articleId, $categoryId)
+  {
+    try {
+      $stmt = $this->db->prepare("
+        UPDATE " . $this->config->get('tables')['articles'] . " 
+        SET category_id = :category_id
+        WHERE id = :article_id
+      ");
+      $stmt->bindValue(':category_id', $categoryId, PDO::PARAM_INT);
+      $stmt->bindValue(':article_id', $articleId, PDO::PARAM_INT);
+      return $stmt->execute();
+    } catch (PDOException $e) {
+      echo "Error: " . $e->getMessage();
+      return false;
     }
   }
 }
