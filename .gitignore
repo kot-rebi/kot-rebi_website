@@ -8,3 +8,5 @@ app/config/
 public_html/assets/image/*
 public_html/sitemap.xml
 public_html/games/*
+public_html/api/game*
+game_server
