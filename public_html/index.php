@@ -15,12 +15,18 @@ $path = $parsedUrl['path'];           // クエリパラメーターを省いた
 $matched = false; // ルートが見つかったかのフラグ
 
 // 記事内容の表示（公開ページなのでログインチェックは不要）
-if (preg_match('/^' . preg_quote($config->get('urls')['articles'], '/') . '\/(\d+)$/', $requestUri, $matches)) {
-  // 動的な記事IDを取得する
+if (preg_match('#^/([^/]+)/([a-zA-Z0-9\-]+)-(\d+)$#', $path, $matches)) {
+  // 動的な記事ID、スラッグを取得する
   require_once $config->get('paths')['controllers'] . '/PublicArticleController.php';
   $controller = new PublicArticleController();
-  $articleId = intval($matches[1]);
-  $controller->show($articleId);
+
+  // マッチした値
+  $categorySlug = $matches[1];
+  $articleSlug = $matches[2];
+  $articleId = intval($matches[3]);
+  
+  // IDを元に取得して記事固有のページを表示
+  $controller->show($categorySlug, $articleSlug, $articleId);
   $matched = true;
 } 
 

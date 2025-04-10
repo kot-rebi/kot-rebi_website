@@ -37,7 +37,7 @@ include $config->get('paths')['global_shared'] . '/head.php';
       <div class="main__content">
         <?php foreach ($articles as $article): ?>
           <article class="content-card">
-            <a href="https://kotorei.com<?= $config->get('urls')['articles'] . '/' . htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8') ?>">
+            <a href="https://kotorei.com<?= '/' . htmlspecialchars($article['category_name']) . '/' . htmlspecialchars($article['slug']) . '-' . htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8') ?>">
               <div class="content-card__body">
                 <div class="content-card__container">
                   <img src="<?= isset($article['thumbnail_path']) ? $config->get('BASE_URL') . htmlspecialchars($article['thumbnail_path'], ENT_QUOTES, 'UTF-8') : '' ?>" class="content-card__image">
