@@ -16,9 +16,8 @@ class PublicArticleController
     $this->parsedown->setSafeMode(true);
   }
 
-  public function show($articleId)
+  public function show($categorySlug, $articleSlug, $articleId)
   {
-
     // 記事IDが指定されていない場合や不正な場合
     if (!$articleId) {
       http_response_code(404);
@@ -26,20 +25,27 @@ class PublicArticleController
       return;
     }
 
-    // 記事の取得
+    // 最初に記事IDで取得
     $article = $this->articleModel->getArticleById($articleId);
-    // カテゴリーの取得
-    $categories = $this->listCategories();
-
+    
+    // 記事IDで見つからなかった場合、カテゴリーと記事スラッグで検索
+    if (!$article) {
+      $article = $this->articleModel->getArticleByCategorySlugAndArticleSlug($categorySlug, $articleSlug);
+    }
+    
     // 記事が見つからないとき
     if (!$article) {
       http_response_code(404);
-      // TODO: エラーページ404を作成し、飛ぶ処理
+      // エラーページ404に飛ぶ
       include $config->get('paths')['libs'] . '/error-404.php';
       // echo "記事が見つかりません";
       return;
     }
 
+    // カテゴリーの取得（カテゴリー一覧用）
+    $categories = $this->listCategories();
+
+    // 記事内容をマークダウンへ変換する
     $article['content_html'] = $this->parsedown->text($article['content']);
 
     include $this->config->get('paths')['views_home'] . '/article.php';

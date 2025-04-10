@@ -109,10 +109,13 @@ class ArticleModel
       SELECT 
         a.id, 
         a.title, 
+        c.slug AS category_name,
+        a.slug,
         DATE(a.updated_at) AS formatted_date,
         i.file_path AS thumbnail_path
       FROM " . $this->config->get('tables')['articles'] . " a
       LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON a.id = i.article_id
+      LEFT JOIN " . $this->config->get('tables')['categories'] . " c ON a.category_id = c.id
       WHERE a.is_published = 1
       ORDER BY a.updated_at DESC
       LIMIT :limit OFFSET :offset
@@ -583,6 +586,33 @@ class ArticleModel
       WHERE a.id = :id
       ");
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      echo "記事の取得に失敗しました" . $e->getMessage();
+      return false;
+    }
+  }
+
+  public function getArticleByCategorySlugAndArticleSlug($categorySlug, $articleSlug)
+  {
+    try {
+      $stmt = $this->db->prepare("
+      SELECT
+        a.id,
+        a.title,
+        a.content,
+        a.category_id,
+        a.meta_tag,
+        DATE(a.updated_at) AS formatted_date,
+        i.file_path AS thumbnail_path
+      FROM " . $this->config->get('tables')['articles'] . " a
+      LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON a.id = i.article_id 
+      LEFT JOIN " . $this->config->get('tables')['categories'] . " c ON a.category_id = c.id
+      WHERE c.slug = :categorySlug AND a.slug = :articleSlug
+      ");
+      $stmt->bindValue(":categorySlug", $categorySlug, PDO::PARAM_STR);
+      $stmt->bindValue(":articleSlug", $articleSlug, PDO::PARAM_STR);
       $stmt->execute();
       return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
