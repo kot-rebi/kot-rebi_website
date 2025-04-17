@@ -14,8 +14,15 @@ $parsedUrl = parse_url($requestUri);
 $path = $parsedUrl['path'];           // クエリパラメーターを省いたURL
 $matched = false; // ルートが見つかったかのフラグ
 
+// カテゴリーページ
+if (preg_match('#^/([^/]+)$#', $path, $matches)) {
+  require_once $config->get('paths')['controllers'] . '/PublicArticleListController.php';
+  $controller = new PublicArticleListController();
+  $controller->listArticlesByCategorySlug($matches[1]);
+  $matched = true;
+}
 // 記事内容の表示（公開ページなのでログインチェックは不要）
-if (preg_match('#^/([^/]+)/([a-zA-Z0-9\-]+)-(\d+)$#', $path, $matches)) {
+else if (preg_match('#^/([^/]+)/([a-zA-Z0-9\-]+)-(\d+)$#', $path, $matches)) {
   // 動的な記事ID、スラッグを取得する
   require_once $config->get('paths')['controllers'] . '/PublicArticleController.php';
   $controller = new PublicArticleController();

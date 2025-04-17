@@ -56,6 +56,38 @@ class PublicArticleListController
     // ゲームの取得
     $games = $this->articleModel->getGames();
 
+    // ゲームを表示させるかどうか
+    $showGames = true;
+
+    require_once $this->config->get('paths')['views_home'] . '/index.php';
+  }
+
+  public function listArticlesByCategorySlug($slug)
+  {
+    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $limit = 10;
+    $offset = ($currentPage - 1) * $limit;
+
+    // スラッグからカテゴリ情報を取得
+    $category = $this->articleModel->getCategoryBySlug($slug);
+
+    if (!$category) {
+      http_response_code(404);
+      include $this->config->get('paths')['views'] . '/error-404.php';
+      return;
+    }
+
+    $categoryId = $category['id'];
+    $articles = $this->articleModel->getArticlesByCategory($categoryId, $limit, $offset);
+    $totalArticles = $this->articleModel->getTotalArticlesByCategory($categoryId);
+    $totalPages = ceil($totalArticles / $limit);
+
+    $categories = $this->listCategories();
+    $games = $this->articleModel->getGames();
+
+    // ゲームを表示させるかどうか
+    $showGames = false;
+
     require_once $this->config->get('paths')['views_home'] . '/index.php';
   }
 
