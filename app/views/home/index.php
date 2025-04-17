@@ -17,27 +17,29 @@ include $config->get('paths')['global_shared'] . '/head.php';
 
     <!-- メインコンテンツ -->
     <main>
-      <h2 class="section-title"><i class="fa-solid fa-gamepad"></i>ゲーム</h2>
-      <div class="game__content">
-        <?php foreach ($games as $game): ?>
-          <article class="content-card">
-            <a href="<?= htmlspecialchars($game['url'], ENT_QUOTES, 'UTF-8') ?>">
-              <div class="content-card__body">
-                <div class="content-card__container">
-                  <img src="<?= htmlspecialchars($game['thumbnail_path'], ENT_QUOTES, 'UTF-8') ?>" class="content-card__image">
+      <?php if (!isset($showGames) || $showGames) : ?>
+        <h2 class="section-title"><i class="fa-solid fa-gamepad"></i>ゲーム</h2>
+        <div class="game__content">
+          <?php foreach ($games as $game): ?>
+            <article class="content-card">
+              <a href="<?= htmlspecialchars($game['url'], ENT_QUOTES, 'UTF-8') ?>">
+                <div class="content-card__body">
+                  <div class="content-card__container">
+                    <img src="<?= htmlspecialchars($game['thumbnail_path'], ENT_QUOTES, 'UTF-8') ?>" class="content-card__image">
+                  </div>
+                  <p class="content--card__title"><?= htmlspecialchars($game['title'], ENT_QUOTES, 'UTF-8') ?></p>
+                  <p class="content--card__description"><?= htmlspecialchars($game['description'], ENT_QUOTES, 'UTF-8') ?>
                 </div>
-                <p class="content--card__title"><?= htmlspecialchars($game['title'], ENT_QUOTES, 'UTF-8') ?></p>
-                <p class="content--card__description"><?= htmlspecialchars($game['description'], ENT_QUOTES, 'UTF-8') ?>
-              </div>
-            </a>
-          </article>
+              </a>
+            </article>
           <?php endforeach; ?>
-      </div>
+        </div>
+      <?php endif; ?>
       <h2 class="section-title"><i class="fa-solid fa-file"></i>記事</h2>
       <div class="main__content">
         <?php foreach ($articles as $article): ?>
           <article class="content-card">
-            <a href="https://kotorei.com<?= '/' . htmlspecialchars($article['category_name']) . '/' . htmlspecialchars($article['slug']) . '-' . htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8') ?>">
+            <a href="<?= '/' . htmlspecialchars($article['category_name']) . '/' . htmlspecialchars($article['slug']) . '-' . htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8') ?>">
               <div class="content-card__body">
                 <div class="content-card__container">
                   <img src="<?= isset($article['thumbnail_path']) ? $config->get('BASE_URL') . htmlspecialchars($article['thumbnail_path'], ENT_QUOTES, 'UTF-8') : '' ?>" class="content-card__image">

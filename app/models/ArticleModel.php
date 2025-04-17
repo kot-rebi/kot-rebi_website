@@ -63,18 +63,21 @@ class ArticleModel
       $stmt = $this->db->prepare("
         SELECT 
         a.id, 
-        a.title, 
+        a.title,
+        a.slug, 
         DATE(a.updated_at) AS formatted_date,
-        i.file_path AS thumbnail_path
+        i.file_path AS thumbnail_path,
+        c.slug AS category_slug,
+        c.name AS category_name
       FROM " . $this->config->get('tables')['articles'] . " a
       LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON a.id = i.article_id
+      LEFT JOIN " . $this->config->get('tables')['categories'] . " c ON a.category_id = c.id
       WHERE a.is_published = 1
       AND a.category_id = :category_id
       ORDER BY a.updated_at DESC
       LIMIT :limit OFFSET :offset
       ");
       $stmt->bindValue(":category_id", $categoryId, PDO::PARAM_INT);
-      $stmt->bindValue(':category_id', $categoryId, PDO::PARAM_INT);
       $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
       $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
       $stmt->execute();
@@ -804,7 +807,7 @@ class ArticleModel
   public function getCategoriesList()
   {
     try {
-      $stmt = $this->db->prepare("SELECT id, name FROM " . $this->config->get('tables')['categories']);
+      $stmt = $this->db->prepare("SELECT id, name, slug FROM " . $this->config->get('tables')['categories']);
       $stmt->execute();
       $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
       return $categories;
@@ -847,6 +850,28 @@ class ArticleModel
         WHERE id = :id
       ");
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      echo "Error: " . $e->getMessage();
+      return false;
+    }
+  }
+
+  /**
+   * スラッグからカテゴリ情報を取得する
+   *
+   * @param string $slug カテゴリのスラッグ名
+   * @return void カテゴリに関するデータ
+   */
+  public function getCategoryBySlug($slug)
+  {
+    try {
+      $stmt = $this->db->prepare("
+        SELECT * FROM " . $this->config->get('tables')['categories'] . " 
+        WHERE slug = :slug LIMIT 1
+      ");
+      $stmt->bindValue(":slug", $slug, PDO::PARAM_STR);
       $stmt->execute();
       return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
