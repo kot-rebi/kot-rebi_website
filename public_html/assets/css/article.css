@@ -74,10 +74,32 @@
   text-decoration: underline;
 }
 
+/* =======================================
+  パンくずリスト
+======================================= */
+.article__breadcrumb {
+  font-size: 0.85rem;
+  color: #999;
+  margin-bottom: 1.5rem;
+}
 
+.article__breadcrumb a {
+  color: #FF8C42;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.article__breadcrumb a:hover {
+  color: #FFB85C;
+  text-decoration: underline;
+}
+
+.article__breadcrumb span {
+  color: #666;
+}
 
 /* =======================================
-   ヘッダー部分
+  ヘッダー部分
 ======================================= */
 
 .article__header {

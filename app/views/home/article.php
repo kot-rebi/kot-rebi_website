@@ -16,6 +16,12 @@ include $config->get('paths')['global_shared'] . '/head.php';
     <main>
       <article class="article">
         <div class="article-container">
+          <!-- パンくずリスト -->
+          <nav class="article__breadcrumb">
+            <a href="/">ホーム</a> &gt;
+            <a href="/<?= htmlspecialchars($category['slug']) ?>"><?= htmlspecialchars($category['name']) ?></a> &gt;
+            <span><?= htmlspecialchars($article['title']) ?></span>
+          </nav>
           <!-- メインコンテンツ -->
           <div class="article__header">
             <h1 class="ariticle__title"><?= htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8') ?></h1>

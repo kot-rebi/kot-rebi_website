@@ -42,10 +42,13 @@ class PublicArticleController
       return;
     }
 
-    // カテゴリーの取得（カテゴリー一覧用）
+    // パンくずリスト用：この1記事が所属するカテゴリーを取得
+    $category = $this->articleModel->getCategoryById($article['category_id']);
+
+    // サイドバー用：全カテゴリー一覧
     $categories = $this->listCategories();
 
-    // 記事内容をマークダウンへ変換する
+    // マークダウン変換など表示準備
     $article['content_html'] = $this->parsedown->text($article['content']);
 
     include $this->config->get('paths')['views_home'] . '/article.php';

@@ -837,4 +837,21 @@ class ArticleModel
       return false;
     }
   }
+
+  public function getCategoryById($id)
+  {
+    try {
+      $stmt = $this->db->prepare(" 
+        SELECT id, name, slug 
+        FROM " . $this->config->get('tables')['categories'] . " 
+        WHERE id = :id
+      ");
+      $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      echo "Error: " . $e->getMessage();
+      return false;
+    }
+  }
 }
