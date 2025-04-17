@@ -621,6 +621,27 @@ class ArticleModel
     }
   }
 
+  public function getSlugsByArticleId($id)
+  {
+    try {
+      $stmt = $this->db->prepare("
+      SELECT
+        a.slug AS article_slug,
+        c.slug AS category_slug
+      FROM " . $this->config->get('tables')['articles'] . " a 
+      INNER JOIN " . $this->config->get('tables')['categories'] . " c 
+      ON a.category_id = c.id 
+      WHERE a.id = :id  
+      ");
+      $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+      echo "スラッグの取得に失敗しました: " . $e->getMessage();
+      return false;
+    }
+  }
+
   public function getThumbnailById($id)
   {
     try {
