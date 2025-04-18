@@ -14,8 +14,12 @@ $parsedUrl = parse_url($requestUri);
 $path = $parsedUrl['path'];           // クエリパラメーターを省いたURL
 $matched = false; // ルートが見つかったかのフラグ
 
+if ($path == '/privacy-policy') {
+  require_once $config->get('paths')['views_home'] . '/static/privacy-policy.php';
+  $matched = true;
+}
 // カテゴリーページ
-if (preg_match('#^/([^/]+)$#', $path, $matches)) {
+else if (preg_match('#^/([^/]+)$#', $path, $matches)) {
   require_once $config->get('paths')['controllers'] . '/PublicArticleListController.php';
   $controller = new PublicArticleListController();
   $controller->listArticlesByCategorySlug($matches[1]);
