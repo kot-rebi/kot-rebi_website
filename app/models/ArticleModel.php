@@ -65,7 +65,7 @@ class ArticleModel
         a.id, 
         a.title,
         a.slug, 
-        DATE(a.updated_at) AS formatted_date,
+        DATE(a.scheduled_publish_date) AS formatted_date,
         i.file_path AS thumbnail_path,
         c.slug AS category_slug,
         c.name AS category_name
@@ -74,7 +74,7 @@ class ArticleModel
       LEFT JOIN " . $this->config->get('tables')['categories'] . " c ON a.category_id = c.id
       WHERE a.is_published = 1
       AND a.category_id = :category_id
-      ORDER BY a.updated_at DESC
+      ORDER BY a.scheduled_publish_date DESC
       LIMIT :limit OFFSET :offset
       ");
       $stmt->bindValue(":category_id", $categoryId, PDO::PARAM_INT);
@@ -114,13 +114,13 @@ class ArticleModel
         a.title, 
         c.slug AS category_name,
         a.slug,
-        DATE(a.updated_at) AS formatted_date,
+        DATE(a.scheduled_publish_date) AS formatted_date,
         i.file_path AS thumbnail_path
       FROM " . $this->config->get('tables')['articles'] . " a
       LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON a.id = i.article_id
       LEFT JOIN " . $this->config->get('tables')['categories'] . " c ON a.category_id = c.id
       WHERE a.is_published = 1
-      ORDER BY a.updated_at DESC
+      ORDER BY a.scheduled_publish_date DESC
       LIMIT :limit OFFSET :offset
       ");
       $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
@@ -582,7 +582,7 @@ class ArticleModel
         a.content,
         a.category_id,
         a.meta_tag,
-        DATE(a.updated_at) AS formatted_date,
+        DATE(a.scheduled_publish_date) AS formatted_date,
         i.file_path AS thumbnail_path
       FROM " . $this->config->get('tables')['articles'] . " a
       LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON a.id = i.article_id 
@@ -607,7 +607,7 @@ class ArticleModel
         a.content,
         a.category_id,
         a.meta_tag,
-        DATE(a.updated_at) AS formatted_date,
+        DATE(a.scheduled_publish_date) AS formatted_date,
         i.file_path AS thumbnail_path
       FROM " . $this->config->get('tables')['articles'] . " a
       LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON a.id = i.article_id 
@@ -639,7 +639,7 @@ class ArticleModel
       $stmt->bindValue(":id", $id, PDO::PARAM_INT);
       $stmt->execute();
       return $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch(PDOException $e) {
+    } catch (PDOException $e) {
       echo "スラッグの取得に失敗しました: " . $e->getMessage();
       return false;
     }
