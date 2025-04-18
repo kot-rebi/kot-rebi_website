@@ -56,12 +56,12 @@ if (preg_match('/^\/games\/LastLineDefenseGame\/$/', $requestUri)) {
   <link rel="icon" href="<?= $config->get('assets')['image'] . '/favicon.ico' ?>">
   <link rel="apple-touch-icon" href="<?= $config->get('assets')['image'] . '/webclip.png' ?>">
 
-  <title><?=  htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
+  <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
 
 
   <?php if (strpos($_SERVER['REQUEST_URI'], '/admin') === false): ?>
-  <!-- Google tag (gtag.js) -->
-  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDDKCLS2FX"></script>
+    <!-- Google tag (gtag.js) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDDKCLS2FX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -72,5 +72,8 @@ if (preg_match('/^\/games\/LastLineDefenseGame\/$/', $requestUri)) {
 
     gtag('config', 'G-QDDKCLS2FX');
   </script> -->
+    <!-- Google AdSense -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4739065352463829"
+      crossorigin="anonymous"></script> -->
   <?php endif; ?>
 </head>
