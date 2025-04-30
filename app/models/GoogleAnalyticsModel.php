@@ -37,14 +37,15 @@ class GoogleAnalyticsModel
   public function __construct()
   {
     // .envの読み込み
-    $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
-    $dotenv->load();
+    // $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+    // $dotenv->load();
 
     // 環境変数を取得
-    $relativePath = $_ENV['GOOGLE_APPLICATION_CREDENTIALS'];
-    $absolutePath = realpath(__DIR__ . '/../../' . '/' . $relativePath);
-    $this->propertyId = $_ENV['GA_PROPERTY_ID'];
-    $this->startDate = $_ENV['GA_START_DATE'];
+    // $relativePath = $_ENV['GOOGLE_APPLICATION_CREDENTIALS'];
+    // $absolutePath = realpath(__DIR__ . '/../../' . '/' . $relativePath);
+    $absolutePath = __DIR__ . '/../config/kotorei-analytics-api-d94ac92af124.json';
+    $this->propertyId = 477533887;
+    $this->startDate = '2025-02-14';
 
     // 環境変数として設定
     putenv("GOOGLE_APPLICATION_CREDENTIALS={$absolutePath}");

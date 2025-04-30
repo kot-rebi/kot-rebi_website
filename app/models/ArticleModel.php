@@ -812,13 +812,14 @@ class ArticleModel
   {
     try {
       $stmt = $this->db->prepare("
-      INSERT INTO" . $this->config->get('tables')['dailyViews'] . "(article_id, views, view_date) 
+      INSERT INTO " . $this->config->get('tables')['dailyViews'] . "(article_id, views, view_date) 
       VALUES (:article_id, :views, :view_date)
-      ON DUPLICATE KEY UPDATE views = :views
+      ON DUPLICATE KEY UPDATE views = :update_views
       ");
       $stmt->bindValue(':article_id', $articleId, PDO::PARAM_INT);
-      $stmt->bindValue(':views', $views, PDO::PARAM_STR);
+      $stmt->bindValue(':views', $views, PDO::PARAM_INT);
       $stmt->bindValue(':view_date', $viewDate, PDO::PARAM_STR);
+      $stmt->bindValue(':update_views', $views, PDO::PARAM_INT);
       return $stmt->execute();
     } catch(PDOException $e) {
       echo "保存できませんでした";
