@@ -794,6 +794,37 @@ class ArticleModel
     }
   }
 
+  public function articleExists($id)
+  {
+    try {
+      $stmt = $this->db->prepare("
+        SELECT COUNT(*) FROM " . $this->config->get('tables')['articles'] . " WHERE id = :id");
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    } catch (PDOException $e) {
+      echo "記事が存在しません";
+      return;
+    }
+  }
+
+  public function saveDailyViews($articleId, $views, $viewDate)
+  {
+    try {
+      $stmt = $this->db->prepare("
+      INSERT INTO" . $this->config->get('tables')['dailyViews'] . "(article_id, views, view_date) 
+      VALUES (:article_id, :views, :view_date)
+      ON DUPLICATE KEY UPDATE views = :views
+      ");
+      $stmt->bindValue(':article_id', $articleId, PDO::PARAM_INT);
+      $stmt->bindValue(':views', $views, PDO::PARAM_STR);
+      $stmt->bindValue(':view_date', $viewDate, PDO::PARAM_STR);
+      return $stmt->execute();
+    } catch(PDOException $e) {
+      echo "保存できませんでした";
+      return;
+    }
+  }
 
   // ========================================
   // カテゴリー一覧
