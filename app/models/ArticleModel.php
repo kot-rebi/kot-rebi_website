@@ -911,4 +911,34 @@ class ArticleModel
       return false;
     }
   }
+
+  // ========================================
+  // 人気記事
+  // ========================================
+
+  public function getPopularArticles($limit = 3)
+  {
+    try {
+      $stmt = $this->db->prepare("
+        SELECT 
+          v.article_id,
+          a.title,
+          a.slug,
+          c.slug AS category_name,
+          i.file_path AS thumbnail_path 
+        FROM " . $this->config->get('tables')['dailyViews'] . " v 
+        LEFT JOIN " .  $this->config->get('tables')['articles'] . " a ON v.article_id = a.id 
+        LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON v.article_id = i.article_id 
+        LEFT JOIN " . $this->config->get('tables')['categories'] . " c ON a.category_id = c.id 
+        ORDER BY v.views DESC 
+        LIMIT :limit"
+      );
+      $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      echo "取得に失敗しました" . $e->getMessage();
+      return false;
+    }
+  }
 }

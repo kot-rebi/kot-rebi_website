@@ -50,7 +50,10 @@ class PublicArticleListController
     $totalArticles = $this->articleModel->getTotalPublishedArticles();
     $totalPages = ceil($totalArticles / $limit);
 
-    // カテゴリーの取得
+    //  サイドバー：人気記事の取得
+    $popularArticles = $this->articleModel->getPopularArticles(3);
+
+    //  サイドバー：カテゴリーの取得
     $categories = $this->listCategories();
 
     // ゲームの取得
@@ -82,6 +85,7 @@ class PublicArticleListController
     $totalArticles = $this->articleModel->getTotalArticlesByCategory($categoryId);
     $totalPages = ceil($totalArticles / $limit);
 
+    $popularArticles = $this->articleModel->getPopularArticles(3);
     $categories = $this->listCategories();
     $games = $this->articleModel->getGames();
 

@@ -45,7 +45,10 @@ class PublicArticleController
     // パンくずリスト用：この1記事が所属するカテゴリーを取得
     $category = $this->articleModel->getCategoryById($article['category_id']);
 
-    // サイドバー用：全カテゴリー一覧
+    // サイドバー：人気記事の取得
+    $popularArticles = $this->articleModel->getPopularArticles(3);
+
+    // サイドバー：カテゴリーの取得
     $categories = $this->listCategories();
 
     // マークダウン変換など表示準備
