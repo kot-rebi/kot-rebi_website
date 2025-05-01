@@ -794,6 +794,38 @@ class ArticleModel
     }
   }
 
+  public function articleExists($id)
+  {
+    try {
+      $stmt = $this->db->prepare("
+        SELECT COUNT(*) FROM " . $this->config->get('tables')['articles'] . " WHERE id = :id");
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    } catch (PDOException $e) {
+      echo "記事が存在しません";
+      return;
+    }
+  }
+
+  public function saveDailyViews($articleId, $views, $viewDate)
+  {
+    try {
+      $stmt = $this->db->prepare("
+      INSERT INTO " . $this->config->get('tables')['dailyViews'] . "(article_id, views, view_date) 
+      VALUES (:article_id, :views, :view_date)
+      ON DUPLICATE KEY UPDATE views = :update_views
+      ");
+      $stmt->bindValue(':article_id', $articleId, PDO::PARAM_INT);
+      $stmt->bindValue(':views', $views, PDO::PARAM_INT);
+      $stmt->bindValue(':view_date', $viewDate, PDO::PARAM_STR);
+      $stmt->bindValue(':update_views', $views, PDO::PARAM_INT);
+      return $stmt->execute();
+    } catch(PDOException $e) {
+      echo "保存できませんでした";
+      return;
+    }
+  }
 
   // ========================================
   // カテゴリー一覧
@@ -876,6 +908,36 @@ class ArticleModel
       return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
       echo "Error: " . $e->getMessage();
+      return false;
+    }
+  }
+
+  // ========================================
+  // 人気記事
+  // ========================================
+
+  public function getPopularArticles($limit = 3)
+  {
+    try {
+      $stmt = $this->db->prepare("
+        SELECT 
+          v.article_id,
+          a.title,
+          a.slug,
+          c.slug AS category_name,
+          i.file_path AS thumbnail_path 
+        FROM " . $this->config->get('tables')['dailyViews'] . " v 
+        LEFT JOIN " .  $this->config->get('tables')['articles'] . " a ON v.article_id = a.id 
+        LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON v.article_id = i.article_id 
+        LEFT JOIN " . $this->config->get('tables')['categories'] . " c ON a.category_id = c.id 
+        ORDER BY v.views DESC 
+        LIMIT :limit"
+      );
+      $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      echo "取得に失敗しました" . $e->getMessage();
       return false;
     }
   }

@@ -5,6 +5,8 @@ Thumbs.db
 .bak
 .log
 app/config/
+app/tests/
+app/logs/
 public_html/assets/image/*
 public_html/sitemap.xml
 public_html/games/*
