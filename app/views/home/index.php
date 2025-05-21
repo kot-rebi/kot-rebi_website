@@ -22,7 +22,7 @@ include $config->get('paths')['global_shared'] . '/head.php';
         <div class="game__content">
           <?php foreach ($games as $game): ?>
             <article class="content-card">
-              <a href="<?= htmlspecialchars($game['url'], ENT_QUOTES, 'UTF-8') ?>">
+              <a href="https://kotorei.com<?= htmlspecialchars($game['url'], ENT_QUOTES, 'UTF-8') ?>">
                 <div class="content-card__body">
                   <div class="content-card__container">
                     <img src="<?= htmlspecialchars($game['thumbnail_path'], ENT_QUOTES, 'UTF-8') ?>" class="content-card__image">
