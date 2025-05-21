@@ -925,12 +925,14 @@ class ArticleModel
           a.title,
           a.slug,
           c.slug AS category_name,
-          i.file_path AS thumbnail_path 
+          i.file_path AS thumbnail_path,
+          SUM(v.views) AS total_views 
         FROM " . $this->config->get('tables')['dailyViews'] . " v 
         LEFT JOIN " .  $this->config->get('tables')['articles'] . " a ON v.article_id = a.id 
         LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON v.article_id = i.article_id 
         LEFT JOIN " . $this->config->get('tables')['categories'] . " c ON a.category_id = c.id 
-        ORDER BY v.views DESC 
+        GROUP BY v.article_id 
+        ORDER BY total_views DESC 
         LIMIT :limit"
       );
       $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
