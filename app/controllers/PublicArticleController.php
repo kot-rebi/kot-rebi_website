@@ -13,7 +13,7 @@ class PublicArticleController
     require $this->config->get('paths')['libs'] . '/CustomParsedown.php';
     $this->articleModel = new ArticleModel(Database::getInstance());
     $this->parsedown = new CustomParsedown();
-    $this->parsedown->setSafeMode(true);
+    $this->parsedown->setSafeMode(false);
   }
 
   public function show($categorySlug, $articleSlug, $articleId)

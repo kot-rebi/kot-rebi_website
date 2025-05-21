@@ -143,8 +143,8 @@
    コードブロック
 ======================================= */
 pre[class*=language-] {
-  background-color: #EAF2F8;
-  border: 1px solid #D6EAF8;
+  /* background-color: #EAF2F8;
+  border: 1px solid #D6EAF8; */
   border-radius: 5px;
 }
 .code-block {
