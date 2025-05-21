@@ -35,13 +35,14 @@ if (preg_match('/^\/games\/LastLineDefenseGame\/$/', $requestUri)) {
   </script>
 
   <link rel="stylesheet" href=<?= $config->get('paths')['css'] . "/reset.css" ?>>
+  <link rel="stylesheet" href=<?= $config->get('paths')['css'] . "/prism.css" ?>>
   <link rel="stylesheet" href=<?= $config->get('paths')['css'] . "/style.css" ?>>
   <link rel="stylesheet" href=<?= $config->get('paths')['css'] . "/common.css" ?>>
   <link rel="stylesheet" href=<?= $config->get('paths')['css'] . "/error.css" ?>>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet"> -->
   <link rel="stylesheet" href=<?= $config->get('paths')['css'] . "/article.css" ?>>
 
   <!-- 管理画面の記事一覧ページに適用 -->

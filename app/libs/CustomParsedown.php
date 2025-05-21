@@ -2,11 +2,23 @@
 
 class CustomParsedown extends Parsedown
 {
+  protected $mathBlocks = [];
+
   public function text($text)
   {
+    // 数式部分を一時的に置換（ブロック式 $$...$$）
+    $text = preg_replace_callback('/\$\$(.*?)\$\$/s', function ($matches) {
+      $key = 'MATHBLOCK_' . count($this->mathBlocks);
+      $this->mathBlocks[$key] = $matches[0];
+      return $key;
+    }, $text);
+
     // 親のメソッドでマークダウンをHTMLに変換
-    $html = parent::text($text); 
-    
+    $html = parent::text($text);
+
+    // MathBlockを復元する
+    $html = $this->restoreMathBlocks($html);
+
     $html = $this->wrapParagraphs($html);
     $html = $this->wrapHeadingWithDiv($html);
     $html = $this->wrapCodeWithDiv($html);
@@ -14,6 +26,19 @@ class CustomParsedown extends Parsedown
     $html = $this->addClassToH3($html);
     $html = $this->addClassToPre($html);
 
+    return $html;
+  }
+
+  private function restoreMathBlocks(string $html)
+  {
+    $keys = array_keys($this->mathBlocks);
+    usort($keys, function ($a, $b) {
+      return strlen($b) - strlen($a);
+    });
+
+    foreach ($keys as $key) {
+      $html = str_replace($key, $this->mathBlocks[$key], $html);
+    }
     return $html;
   }
 
@@ -85,7 +110,7 @@ class CustomParsedown extends Parsedown
   private function wrapParagraphs($html)
   {
     // 文の中身をマッチさせる
-    $html = preg_replace_callback('/([^\n\r]+(\n|\r\n)?)/', function ($matches) use (&$isInsidePre) {
+    $html = preg_replace_callback('/([^\n\r]+(\n|\r\n)?)/', function ($matches) use (&$isInsidePre, &$isInsideMath) {
       $line = $matches[0];
 
       // 空行の場合は何も返さない
@@ -97,6 +122,12 @@ class CustomParsedown extends Parsedown
       $preHandled = $this->handlePreTags($line, $isInsidePre);
       if ($preHandled !== null) {
         return $preHandled;
+      }
+
+      // 数式ブロック中は<p>タグをつけない
+      $mathHandled = $this->handleMathJax($line, $isInsideMath);
+      if ($mathHandled !== null) {
+        return $mathHandled;
       }
 
       // 他のHTMLタグがある場合はそのまま返す
@@ -118,9 +149,9 @@ class CustomParsedown extends Parsedown
       if ($this->hasClosingPTag($line)) {
         return '<p>' . trim($matches[1]);
       }
-      
+
       // </p>のみないときは追加
-      if (!$this->hasClosingPTag($line)){
+      if (!$this->hasClosingPTag($line)) {
         return trim($matches[1]) . '</p>' . "\n";
       }
 
@@ -136,7 +167,8 @@ class CustomParsedown extends Parsedown
    * @param string $line 
    * @return boolean
    */
-  private function hasOtherTags($line) {
+  private function hasOtherTags($line)
+  {
     // 先頭に<p>
     return substr($line, 0, 1) === '<' && substr($line, 1, 1) !== 'p';
   }
@@ -186,7 +218,8 @@ class CustomParsedown extends Parsedown
    * @param string $line
    * @return boolean
    */
-  private function hasPTags($line) {
+  private function hasPTags($line)
+  {
     return strpos($line, '<p>') !== false || strpos($line, '</p>') !== false;
   }
 
@@ -196,7 +229,38 @@ class CustomParsedown extends Parsedown
    * @param string $line
    * @return boolean
    */
-  private function hasClosingPTag($line) {
-    return substr($line, -4) === '</p>';
+  private function hasClosingPTag($line)
+  {
+    return substr(rtrim($line), -4) === '</p>';
+  }
+
+  /**
+   * 数式ブロック中の処理
+   *
+   * @param string $line
+   * @param boolean $isInsideMath 数式ブロック中かどうか
+   * @return void
+   */
+  private function handleMathJax($line, &$isInsideMath)
+  {
+    $stripped = trim(strip_tags($line));
+
+    // 一行完結の場合（$$ ... $$）
+    if (preg_match('/^\$\$(.*?)\$\$$/s', $line)) {
+      return $line;
+    }
+
+    // ブロック式の開始行
+    if ($stripped === '$$') {
+      $isInsideMath = !$isInsideMath;
+      return "$$";
+    }
+
+    // 数式ブロック中はそのまま返す
+    if ($isInsideMath) {
+      return $line . "\n";
+    }
+
+    return null;
   }
 }
