@@ -45,6 +45,9 @@ class PublicArticleController
     // パンくずリスト用：この1記事が所属するカテゴリーを取得
     $category = $this->articleModel->getCategoryById($article['category_id']);
 
+    // 関連記事を取得（同じカテゴリーの中で、現在の記事を除いた最新6件）
+    $relatedArticles = $this->articleModel->getArticlesByCategory($article['category_id'], 6, 0, $article['id']);
+
     // サイドバー：人気記事の取得
     $popularArticles = $this->articleModel->getPopularArticles(3);
 

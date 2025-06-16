@@ -37,7 +37,7 @@ include $config->get('paths')['global_shared'] . '/head.php';
         </div>
 
       </article>
-
+      <?php include $config->get('paths')['views_home'] . '/related-articles.php'; ?>
     </main>
     <?php include $config->get('paths')['views_home_shared'] . '/sidebar.php'; ?>
   </div>
