@@ -57,10 +57,10 @@ class ArticleModel
    * @param int $offset 何件目から取得するか
    * @return void
    */
-  public function getArticlesByCategory($categoryId, $limit, $offset)
+  public function getArticlesByCategory($categoryId, $limit, $offset, $excludeArticleId = null)
   {
     try {
-      $stmt = $this->db->prepare("
+      $query = "
         SELECT 
         a.id, 
         a.title,
@@ -73,13 +73,23 @@ class ArticleModel
       LEFT JOIN " . $this->config->get('tables')['thumbnails'] . " i ON a.id = i.article_id
       LEFT JOIN " . $this->config->get('tables')['categories'] . " c ON a.category_id = c.id
       WHERE a.is_published = 1
-      AND a.category_id = :category_id
-      ORDER BY a.scheduled_publish_date DESC
-      LIMIT :limit OFFSET :offset
-      ");
+      AND a.category_id = :category_id";
+
+      if ( $excludeArticleId !== null)
+      {
+        $query .= " AND a.id != :exclude_id";
+      }
+
+      $query .= " ORDER BY a.scheduled_publish_date DESC
+      LIMIT :limit OFFSET :offset";
+      
+      $stmt = $this->db->prepare($query);
       $stmt->bindValue(":category_id", $categoryId, PDO::PARAM_INT);
       $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
       $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+      if ($excludeArticleId !== null) {
+        $stmt->bindValue(":exclude_id", $excludeArticleId, PDO::PARAM_INT);
+      }
       $stmt->execute();
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
