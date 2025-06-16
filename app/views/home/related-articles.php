@@ -13,7 +13,7 @@
                 <i class="fa-regular fa-clock conten-card__icon"></i>
                 <p class="content-card__date"><?= $article['formatted_date'] ?></p>
               </div>
-              <p class="content--card__title"><?= $article['title'] ?></p>
+              <p class="related-content-card__title"><?= $article['title'] ?></p>
             </div>
           </a>
         </article>
