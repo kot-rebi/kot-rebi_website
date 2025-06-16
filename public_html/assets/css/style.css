@@ -344,6 +344,16 @@ main {
   overflow: hidden;
 }
 
+/* タイトル */
+.related-content-card__title {
+  margin: 0 10px;
+  padding: 0.5rem;
+  font-size: 1.0rem;
+  font-weight: bold;
+  line-height: 1.4;
+  text-align: justify;
+}
+
 /* =======================================
    サイドバー
    ======================================= */
@@ -632,6 +642,10 @@ main {
     margin: 0 auto;
     max-width: 100%;
   }
+
+  .related__content {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* =======================================
@@ -693,6 +707,11 @@ main {
 
   .profile {
     display: none;
+  }
+
+  .related__content {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 }
 
