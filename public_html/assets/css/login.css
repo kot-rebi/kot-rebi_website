@@ -1,0 +1,76 @@
+.form-wrapper
+{
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.form-group input:-webkit-autofill {
+  background-color: #fff7e6 !important;
+  -webkit-box-shadow: 0 0 0px 1000px #fff7e6 inset !important;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: #333333;
+}
+
+.form-group h2 {
+  color: #FBAA31;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+  padding: 0.5rem;
+  border: 2px solid #FBAA31;
+  border-radius: 8px;
+  background-color: #fff7e6;
+  color: #555;
+  transition: all 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="password"]:focus {
+  outline: none;
+  border-color: #FF8C00;
+  background-color: #fff1d4;
+}
+
+.form-group input[type="text"]:hover,
+.form-group input[type="password"]:hover {
+  border-color: #FF8C00;
+}
+
+.form-group button[type="submit"] {
+  display: block;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #fff;
+  background-color: #d17d58;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group button[type="submit"]:hover {
+  background-color: #bc6a48;
+  transform: scale(1.05);
+}
+
+.form-group button[type="submit"]:active {
+  background-color: #9f5535;
+  transform: scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

@@ -18,9 +18,12 @@ include $config->get('paths')['global_shared'] . '/head.php';
   ?>
 
   <div class="admin-container">
+
+
     <aside class="admin-sidebar">
       <nav>
         <ul>
+          <h3 class="admin-sidebar-title">管理メニュー</h3>
           <li>
             <form method="POST" action="<?= $config->get('urls')['admin_logout'] ?>">
               <button type="submit">ログアウト</button>
@@ -63,7 +66,7 @@ include $config->get('paths')['global_shared'] . '/head.php';
               <tr>
                 <td><?= htmlspecialchars($article['id']) ?></td>
                 <td><?= htmlspecialchars($article['title']) ?></td>
-                <td><?=htmlspecialchars($article['category_name']) ?></td>
+                <td><?= htmlspecialchars($article['category_name']) ?></td>
                 <td><?= htmlspecialchars($article['formatted_created_at']) ?></td>
                 <td><?= htmlspecialchars($article['formatted_updated_at']) ?></td>
                 <td>
