@@ -40,6 +40,7 @@ UnityのWebGL版のゲームは  初回ロードで大きなデータを読み�
 <table>
   <tr>
     <td>新規作成画面</td>
+    <td>編集画面</td>
   </tr>
   <tr>
     <td><img src="images/image_sc_fullpage_create.png" width="600"/></td>
