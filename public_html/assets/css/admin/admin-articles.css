@@ -17,9 +17,7 @@ form {
 ======================================= */
 .admin-sidebar {
   width: 10%;
-  background-color: #f5f5f5;
   padding: 20px;
-  border-radius: 10px;
 }
 
 .admin-sidebar nav ul {
@@ -28,6 +26,36 @@ form {
 
 .admin-sidebar nav ul li {
   margin-bottom: 10px;
+}
+
+.admin-sidebar-title {
+  margin-bottom: 30px;
+}
+
+.admin-sidebar form button {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  background-color: #e06666;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.admin-sidebar form button:hover {
+  background-color: #cc4444;
+  transform: scale(1.03);
+}
+
+.admin-sidebar form button:active {
+  background-color: #a33d3d;
+  transform: scale(0.98);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 
