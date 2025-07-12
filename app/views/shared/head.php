@@ -39,6 +39,7 @@ if (preg_match('/^\/games\/LastLineDefenseGame\/$/', $requestUri)) {
   <link rel="stylesheet" href=<?= $config->get('paths')['css'] . "/style.css" ?>>
   <link rel="stylesheet" href=<?= $config->get('paths')['css'] . "/common.css" ?>>
   <link rel="stylesheet" href=<?= $config->get('paths')['css'] . "/error.css" ?>>
+  <link rel="stylesheet" href=<?= $config->get('paths')['css'] . "/login.css" ?>>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
   <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.css" rel="stylesheet">
