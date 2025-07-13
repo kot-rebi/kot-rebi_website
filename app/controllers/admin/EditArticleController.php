@@ -166,7 +166,7 @@ class EditArticleController extends BaseArticleController
           }
         }
 
-        // header("Location:" . $this->config->get('urls')['admin_articles']);
+        header("Location:" . $this->config->get('urls')['admin_articles']);
         exit;
       } else {
         echo "エラー: 記事の保存に失敗しました";

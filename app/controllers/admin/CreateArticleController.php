@@ -125,7 +125,7 @@ class CreateArticleController extends BaseArticleController
           return;
         }
       }
-      // header("Location:" . $this->config->get('urls')['admin_articles']);
+      header("Location:" . $this->config->get('urls')['admin_articles']);
       exit;
     } else {
       echo "記事の保存に失敗しました";
