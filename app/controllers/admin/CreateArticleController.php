@@ -112,7 +112,7 @@ class CreateArticleController extends BaseArticleController
       }
       // 記事画像のリネーム
       foreach ($imageData as $index => $image) {
-        $newImageFileName = 'image_' . $articleId . ($index != null ? '_' . $index : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+        $newImageFileName = '/image_' . $articleId . ($index != null ? '_' . $index : '') . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
         $newImageFilePath = $this->config->get('assets')['articles'] . $newImageFileName;
 
         if (rename($image['tmp_path'], $newImageFilePath)) {
