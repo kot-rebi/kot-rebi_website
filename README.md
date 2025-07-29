@@ -7,6 +7,8 @@
 記事の表示にはマークダウン、コード表示にはPrism.js、数式表示にはMathJaxを用いるなど、**読みやすく整った表示**を実現しています。
 
 ## 🌐 公開サイト
+[![ことれいのもり](images/image_sc_blog_top.png)](https://kotorei.com/)
+
 [ことれいのもり](https://kotorei.com/)
 
 実際に動作しているサイトです。  
@@ -112,34 +114,40 @@ UnityのWebGLを活用したゲーム公開サイトを構築しました。
 
 ### フロントエンド
 
-- **HTML**: Webサイト全体のベース構築
-- **CSS**: レイアウトの2カラム、ブログ部分のレスポンシブ対応を実装
-- **JavaScript**: Prism.jsによるコードハイライトや、textareaのサイズ変更などを実装
+- **HTML**
+- **CSS**
+- **JavaScript**
 
 ### バックエンド
 
-- **PHP 8**: CMSの投稿・編集・削除などのロジック、HTML内への変数埋め込み、DB接続
-- **MySQL**: 記事、ユーザー情報を保存するデータベースとして使用
+- **PHP**
+- **MySQL**
 
 ### ローカル環境
 
-- **XAMPP**: ローカルでの開発・動作確認用に利用
+- **XAMPP**
 
 ### 本番環境
 
-- **Xserver**: Webサイトの公開用として契約。独自ドメイン取得・SSL対応済
+- **Xserver**
 
 ### PHPライブラリ
 
-- **Parsedown** v1.7: マークダウン形式の記事をHTMLに変換するために使用
-- **Google API Client** v2.13: Google Analyticsと連携
-- **Google Analytics Data API** v0.22.2: 人気記事ランキングに使用
-- **phpdotenv** v5.6: `.env`ファイルから環境変数を読み込み、認証情報を安全に管理
+- **Parsedown** v1.7
+- **Google API Client** v2.13
+- **Google Analytics Data API** v0.22.2
+- **phpdotenv** v5.6
 
 ### JavaScriptライブラリ（CDNで読み込み）
 
-- **Prism.js**: ブログ記事中のコードブロックに構文ハイライトを使用
-- **MathJax**: LateX形式の数式を表示するために使用
+- **Prism.js**
+- **MathJax**
+
+## 🧑‍💻 開発体制・期間
+- **開発者**: 個人開発（1人）
+- **開発期間**
+  - 制作：2024年11月～2025年2月（約4ヶ月）
+  - 運営：2025年2月～現在（記事の追加・機能改良を継続中）
 
 ## ✅ 工夫した点
 
