@@ -7,7 +7,6 @@
   <p class="footer__copyright"><a href="/privacy-policy">プライバシーポリシー</a></p>
   <p class="footer__copyright">&copy;2024-2025 ことれい</p>
 
-  <script src=<?= $config->get('urls')['views_home'] . "/language-label.js" ?>></script>
   <!-- Prism.jsの読み込み -->
   <script src=<?= $config->get('urls')['views_home'] . "/prism.js" ?>></script>
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
