@@ -166,12 +166,11 @@ abstract class BaseArticleController
         break;
 
       case 'image/gif':
-        $image = imagecreatefromgif($sourcePath);
-        if ($image === false) {
+        if (!copy($sourcePath, $destinationPath))
+        {
           return false;
         }
-        // gifは圧縮なし
-        $result = imagegif($image, $destinationPath);
+        $result = true;
         break;
 
       default:
